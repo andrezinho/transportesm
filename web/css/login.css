@@ -1,0 +1,17 @@
+* 	{ padding:0;margin:0;}
+body{background: #fff ;font-family: "Trebuchet MS", "Helvetica", "Arial",  "Verdana", "sans-serif";font-size: 66%;padding: 0;margin: 0;	}
+#contenedor {width: 100%; margin: 70px 0;}
+#content {width: 935px;margin: 0 auto;height: 440px;background: #FFFFFF;box-shadow: 0 1px 3px rgba(0,0,0,0.3);}
+#cont-left {width: 485px;float: left;height: 440px;background: #fafafa url('../images/header.jpg') repeat;box-shadow: 0 0px 3px rgba(0,0,0,0.5);}		
+#cont-right {width: 450px;float: left;height: 440px;background: #fafafa;}
+#formulario { padding: 20px;}
+#logo { height: 70px; background: url('../images/bck_head2.jpg') repeat-x;clear: both;padding: 15px 0 5px 10px;}
+.labels { font-size: 14px;text-shadow: 0 -1px 1px rgba(244,244,244,0.25);padding: 3px 0 2px 0;display: block;}
+.box-item-form { padding: 3px;margin-top: 3px;}
+.box-item-form input {padding: 2px;height: 30px;font-size: 17px;}
+#foot { width: 935px; margin: 50px auto;border-top: 1px solid #dadada;padding: 10px 0 0 0;margin-bottom: 0;}
+#foot span { color: #666;}		
+.header_cont h1 a:hover {background-position: 0px -170px;}			
+.header_cont h1 a {background: url('../images/sprite.png') no-repeat;background-position:0px -125px;width: 252px;height: 45px;display: block;}
+#title { color: #FFF; font-size: 24px;text-shadow: 0 -1px 1px rgba(0,0,0,0.25); display: block;text-align: center;}
+#logo-acces { display: block;text-align: center;}
