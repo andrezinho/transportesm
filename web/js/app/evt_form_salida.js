@@ -36,7 +36,7 @@ $(function() {
                         var html_printer = "";
                         if(result[0]==1)
                             {
-                                html_printer = '<a class="lnk-results" target="_blank" href="index.php?controller=salida&action=printer&iv='+result[2]+'">Imprimir</a>';                       
+                                html_printer = '<a class="lnk-results" target="_blank" href="index.php?controller=salida&action=printer&ie='+result[2]+'">Imprimir</a>';                       
                                 html_printer += '<a class="lnk-results" href="javascript:" id="re-new">Registrar Nuevo</a>';
                                 $("#save").empty().append("Ticket Generado");
                                 $("#idsalida").val(result[2]);

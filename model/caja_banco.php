@@ -33,7 +33,7 @@ class caja_banco extends Main
     {
         $total = 0;        
         //Obtenemos el total de caja
-        $stmt = $this->db->prepare("SELECT total from caja_banco where idoficina = ".$_SESSION['idoficina']." and estado = 1 
+        $stmt = $this->db->prepare("SELECT total from caja_banco where  estado = 1 
                                     order by idcaja_banco desc limit 1");
         $stmt->execute();
         $r = $stmt->fetchObject();
@@ -65,7 +65,7 @@ class caja_banco extends Main
         
         $total = 0;
         //Obtenemos el total de caja
-        $stmt = $this->db->prepare("SELECT total from caja_banco where idoficina = ".$_SESSION['idof']." and estado = 1 
+        $stmt = $this->db->prepare("SELECT total from caja_banco where  estado = 1 
                                     order by idcaja_banco desc limit 1");
         $stmt->execute();
         $r = $stmt->fetchObject();
@@ -106,7 +106,7 @@ class caja_banco extends Main
         $tipo = $r->tipo;
         
         //Obtenemos el total de caja
-        $stmt = $this->db->prepare("SELECT total from caja_banco where idoficina = ".$_SESSION['idoficina']." and estado = 1 
+        $stmt = $this->db->prepare("SELECT total from caja_banco where  estado = 1 
                                     order by idcaja_banco desc limit 1");
         $stmt->execute();
         $r = $stmt->fetchObject();
