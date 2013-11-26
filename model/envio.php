@@ -18,7 +18,7 @@ class envio extends Main{
                             end as estado,
                          em.login,
                         case e.estado when 1 then 
-                            case coalesce(e.idsalida,'') when '' then 
+                            case coalesce(e.idsalida,0) when 0 then 
                                     concat('<a class=\"conp-envio box-boton boton-hand\" id=\"cpe-',e.idenvio,'\" href=\"#\" title=\"Confirmar Envio de la Encomienda\" ></a>')
                                 else concat('<a class=\"conf-envio box-boton boton-hand\" id=\"cfe-',e.idenvio,'\" href=\"#\" title=\"Confirmar Envio de la Encomienda\" ></a>')
                             end
@@ -396,7 +396,7 @@ class envio extends Main{
                                             idremitente = :p3,
                                             consignado = :p4,
                                             direccion = :p5,
-                                            atendido = :p6
+                                            atentamente = :p6
                                     where idenvio = :idenvio ");
         try 
         { 
@@ -415,6 +415,23 @@ class envio extends Main{
                 $stmt3 = $this->db->prepare('DELETE FROM envio_detalle where idenvio = :id');
                 $stmt3->bindParam(':id',$_P['idenvio'],PDO::PARAM_INT);
                 $stmt3->execute();
+                
+                
+                
+                //Anulamos los movimientos detalle asociados a este envio
+                $stmt3 = $this->db->prepare("SELECT num_mov FROM envio WHERE idenvio = :id");
+                $stmt3->bindParam(':id',$_P['idenvio'],PDO::PARAM_INT);
+                $stmt3->execute();
+                $row1 = $stmt3->fetchObject();
+                $num_mov = $row1->num_mov;
+                $stmt3 = $this->db->prepare("SELECT idmovimiento from movimiento where num_mov = '{$num_mov}'");
+                $stmt3->execute();
+                $row1 = $stmt3->fetchObject();
+                $idmov = $row1->idmovimiento;
+                $stmt3 = $this->db->prepare("DELETE FROM movimiento_detalle where idmovimiento = {$idmov}");
+                $stmt3->execute();
+                //fin de anular detalle de movimientos
+                
 
                 $stmt2 = $this->db->prepare('CALL insert_envio_detalle(:p1,:p2,:p3,:p4,:p5,:p6,:p7)');
                 $obj    = $_SESSION['envios'];

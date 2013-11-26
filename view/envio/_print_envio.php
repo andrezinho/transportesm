@@ -56,8 +56,11 @@ function printThis() {
   </tr>
   <tr><td colspan="4"><hr></td></tr>
     <tr>
-    <td colspan="3" align="center" class="Cabecera">GUIA DE CORRESPONDENCIA:&nbsp;<?php echo $head->serie." - ".$head->numero?>&nbsp;</td>
+    <td colspan="3" align="center" class="Cabecera">GUIA DE CORRESPONDENCIA</td>
   </tr>  
+  <tr>
+      <td colspan="3" align="center" class="Cabecera"><?php echo $head->serie." - ".$head->numero?></td>
+  </tr>
    <tr>
     <td align="left" class="Cabecera" colspan="2">
         Fecha de Emision :   <?php echo Separar($head->fecha); ?> &nbsp;&nbsp; Hora: <?php echo Separar($head->hora); ?>

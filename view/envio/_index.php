@@ -112,7 +112,7 @@ function loadSalidas(idd)
             $.get('index.php','controller=itinerario&action=getPriceEncomienda&idd='+idd,function(p){
                 p = parseFloat(p);
                 $("#precio").val(p.toFixed(2));
-                calcTotales();
+                //calcTotales();
             });
             $("#loadsalida").css("display","inline");
             $.get('index.php','controller=salida&action=getSalidasOk&idd='+idd,function(result){
@@ -137,6 +137,7 @@ function updateSend()
          $.post('index.php','controller=envio&action=update&'+str,function(data){
             if(data[0]=='1')
             {
+                $("#box-envios").dialog('close');
                 Sending(data[2],tr);
             }
             else 
@@ -154,6 +155,7 @@ function Sending(key,tr)
         {
             tr.empty().append("<span class='box-boton boton-ok'></span>");
             tr.parent().find('td:eq(7)').empty().append('<p style="font-size:9px; font-style:italic">ENVIADA</p>');
+             
         }        
         else {
             alert("Ocurrio un error, actualize la pagina (F5) y vuleve a intentarlo");

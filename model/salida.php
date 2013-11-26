@@ -256,16 +256,17 @@ class salida extends Main
     {
         $fecha = $this->fdate($fecha,'EN');
         $stmt = $this->db->prepare("SELECT distinct s.idsalida,
-                       concat(coalesce(chofer.nombre,''),' ',coalesce(chofer.apellidos,''),' - ',v.placa)
-                FROM salida as s inner join empleado as chofer on chofer.idempleado = s.idchofer
-                        inner join vehiculo as v on v.idvehiculo = s.idvehiculo
-                        inner join destino as d on d.iddestino = s.iddestino
-                        inner join empleado as e on e.idempleado = s.idempleado
-                where s.idoficina = ".$_SESSION['idoficina']." 
-                        and s.iddestino = :idd
-                        and s.fecha = '".$fecha."'
-                        and s.estado in (1,2,3)
-                order by concat(coalesce(chofer.nombre,''),' ',coalesce(chofer.apellidos,''),' - ',v.placa)");
+                                        concat(coalesce(chofer.nombre,''),' ',coalesce(chofer.apellidos,''),' - ',v.placa)
+                                    FROM salida as s inner join empleado as chofer on chofer.idempleado = s.idchofer
+                                            inner join vehiculo as v on v.idvehiculo = s.idvehiculo
+                                            inner join destino as d on d.iddestino = s.iddestino
+                                            inner join empleado as e on e.idempleado = s.idempleado
+                                    where s.idoficina = ".$_SESSION['idoficina']." 
+                                            and s.iddestino = :idd
+                                            and s.fecha = '".$fecha."'
+                                            and s.estado in (1,2,3)
+                                    ORDER BY s.idsalida desc
+                                    -- order by concat(coalesce(chofer.nombre,''),' ',coalesce(chofer.apellidos,''),' - ',v.placa)");
         
         $stmt->bindParam(':idd',$idd,PDO::PARAM_INT);
         $stmt->execute();
