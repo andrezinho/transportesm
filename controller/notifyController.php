@@ -1,6 +1,5 @@
 <?php
 require_once '../lib/controller.php';
-require_once '../lib/view.php';
 require_once '../model/notify.php';
 class notifyController extends Controller
 {

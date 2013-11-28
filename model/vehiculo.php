@@ -57,11 +57,27 @@ class vehiculo extends Main
     }
     function insert($_P ) {
         //die($_P['fecha_inscripcion']);
-
+        
+        $fecha1 = $this->fdate($_P['fec_ven_soat'],'EN');
+        
+        if($_P['fec_ven_rev']!="")
+            $fecha2 = $this->fdate($_P['fec_ven_rev'],'EN');
+        else
+            $fecha2 = NULL;
+        
+        $fecha3 = $this->fdate($_P['fecha_ingreso'],'EN');
+        $fecha0 = $this->fdate($_P['fecha_inscripcion'],'EN');
+        
+        if($_P['fecha_egreso']!="")
+            $fecha4 = $this->fdate($_P['fecha_egreso'],'EN');
+        else
+            $fecha4 = NULL;
+        
+        
         $stmt = $this->db->prepare("insert into vehiculo (marca, modelo, placa, serie_motor,
                                     anio_fabricacion, serie_chasis, color, fecha_inscripcion, idestado, idpropietario,
-                                    fec_ven_soat, fec_ven_rev)
-                                    values(:p1, :p2, :p3, :p4, :p5, :p6, :p7, :p8, :p9, :p10, :p11, :p12)");
+                                    fec_ven_soat, fec_ven_rev, fecha_ingreso, fecha_egreso)
+                                    values(:p1, :p2, :p3, :p4, :p5, :p6, :p7, :p8, :p9, :p10, :p11, :p12, :p13, :p14)");
         $stmt->bindParam(':p1', $_P['marca'] , PDO::PARAM_STR);
         $stmt->bindParam(':p2', $_P['modelo'], PDO::PARAM_STR);
         $stmt->bindParam(':p3', $_P['placa'], PDO::PARAM_STR);
@@ -69,11 +85,13 @@ class vehiculo extends Main
         $stmt->bindParam(':p5', $_P['anio_fabricacion'], PDO::PARAM_INT);
         $stmt->bindParam(':p6', $_P['serie_chasis'], PDO::PARAM_STR);
         $stmt->bindParam(':p7', $_P['color'], PDO::PARAM_STR);
-        $stmt->bindParam(':p8', $this->fdate($_P['fecha_inscripcion'],'EN'), PDO::PARAM_STR);
+        $stmt->bindParam(':p8', $fecha0, PDO::PARAM_STR);
         $stmt->bindParam(':p9', $_P['idestado'], PDO::PARAM_INT);
         $stmt->bindParam(':p10', $_P['idempleado'], PDO::PARAM_STR);
-        $stmt->bindParam(':p11', $this->fdate($_P['fec_ven_soat'],'EN'), PDO::PARAM_STR);
-        $stmt->bindParam(':p12', $this->fdate($_P['fec_ven_rev'],'EN'), PDO::PARAM_STR);
+        $stmt->bindParam(':p11', $fecha1, PDO::PARAM_STR);
+        $stmt->bindParam(':p12', $fecha2, PDO::PARAM_STR);
+        $stmt->bindParam(':p13', $fecha3 , PDO::PARAM_STR);
+        $stmt->bindParam(':p14', $fecha4, PDO::PARAM_STR);
         $p1 = $stmt->execute();
         $p2 = $stmt->errorInfo();
         return array($p1 , $p2[2]);

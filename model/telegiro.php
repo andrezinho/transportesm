@@ -35,7 +35,8 @@ class telegiro extends Main{
                         ELSE '&nbsp;' END as opcion 
                         from telegiro as t inner join pasajero as remitente on remitente.idpasajero = t.idremitente ";
                 }
-                if($op == "0"){
+                if($op == "0")
+                {
                     $sql = $sql."where ".$c." like :query and (t.idoficina = ".$_SESSION['idoficina'].") 
                                 order by t.idtelegiro desc ";
                 } 
@@ -44,7 +45,7 @@ class telegiro extends Main{
                     $sql = $sql."where ".$c." like :query and t.iddestino = ".$_SESSION['idoficina']." 
                                 order by t.idtelegiro desc ";
                 }
-                
+        //echo $sql;
         $param = array(array('key'=>':query' , 'value'=>"%$query%" , 'type'=>'STR' ));
         $data['total'] = $this->getTotal( $sql, $param );
         $data['rows'] =  $this->getRow($sql, $param , $p );        

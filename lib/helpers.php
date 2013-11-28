@@ -90,6 +90,9 @@ function select($name,$id,$items,$key)
 }
  function fdate($fecha,$format)
     {
+        if($fecha=="")        
+            $fecha = date('Y-m-d');
+        
         $f = preg_split('/\/|-/', $fecha);        
         $c = count($f);
         if($c==3)

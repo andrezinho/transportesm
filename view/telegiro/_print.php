@@ -5,9 +5,10 @@
  }
 ?>
 <style>
-	body{
-		margin-left:0px;
-	}
+    body
+    {
+        margin-left:0px;
+    }
     .Cabecera{
         font-family:"arial";
 		font-size:24px;
@@ -84,6 +85,22 @@ function printThis() {
   <tr>
     <td align="left" class="Cabecera" colspan="3">
         Monto :   <?php echo Separar(number_format($head->monto,2)); ?> 
+    </td>
+  </tr>  
+   <tr>
+    <td align="left" class="Cabecera" colspan="3">
+        &nbsp; 
+    </td>
+  </tr>
+  <tr>
+    <td align="left" class="Cabecera" colspan="3">
+        &nbsp; 
+    </td>
+  </tr>
+  
+  <tr>
+    <td align="center" class="Cabecera" colspan="3">
+        .......................................
     </td>
   </tr>
   <tr>

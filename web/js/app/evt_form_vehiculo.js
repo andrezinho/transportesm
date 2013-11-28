@@ -1,5 +1,5 @@
 $(function() {
-    $("#fecha_inscripcion,#fec_ven_soat,#fec_ven_rev").datepicker({
+    $("#fecha_inscripcion,#fec_ven_soat,#fec_ven_rev,#fecha_ingreso,#fecha_egreso").datepicker({
                             'dateFormat':'dd/mm/yy',
                              showOn: 'both',                                         
                              buttonImageOnly: true,
@@ -7,7 +7,7 @@ $(function() {
                              changeMonth:true,
                              changeYear:true
                             });    
-                            
+    $("#idestado").css("width","205px");
     $( "#marca" ).focus();
     $( "#idempleado" ).autocomplete({
             minLength: 0,
@@ -49,7 +49,13 @@ $(function() {
         };
     $( "#save" ).click(function(){
         bval = true;
+        bval = bval && $( "#marca" ).required();
+        bval = bval && $( "#modelo" ).required();
         bval = bval && $( "#placa" ).required();
+        bval = bval && $( "#color" ).required();
+        bval = bval && $( "#idestado" ).required();       
+        bval = bval && $( "#idempleado" ).required();       
+        
         if ( bval ) {
             $("#frm").submit();
         }
