@@ -474,7 +474,7 @@ function calcTotales()
     var t2 = precioc*cant;
     $("#stt").val(t1.toFixed(2));
     $("#sttc").val(t2.toFixed(2));
-    alert(precioc);
+    
     $("#precioc").val(precioc.toFixed(2));
 }
 function validarPriceCaja()
