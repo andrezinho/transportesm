@@ -38,14 +38,9 @@
                     CAJA (<?php echo $_SESSION['name_turno'] ?>): <?php echo $_SESSION['fecha_caja'] ?> 
                </li>            
             </ul>
-            <a href="#" class="box-item-notification notification-car-empty" title="Llegada de Vehiculos">
-            </a>            
-            <a href="#" class="box-item-notification notification-encomienda-empty" title="Encomiendas Pendientes">
-                <!-- <span class="indicator-notification">0</span> -->
-            </a>
-            <a href="#" class="box-item-notification notification-telegiro-empty">
-                <!-- <span class="indicator-notification">0</span> -->
-            </a>
+            <a id="notify-entrada" href="#" class="box-item-notification" title="Llegada de Vehiculos"></a>            
+            <a id="notify-encomienda" href="#" class="box-item-notification" title="Encomiendas en camino..."></a>
+            <a id="notify-telegiro" href="#" class="box-item-notification" title="Telegiros Pendientes"></a>
             <div id="barra-user">                   
                 <a href="#" class="login"><?php echo strtoupper($_SESSION['user']); ?></a>
                 <a href="index.php?controller=user&action=logout" class="logout">SALIR</a>                

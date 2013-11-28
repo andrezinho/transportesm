@@ -208,11 +208,11 @@ a.login { color : #E4F5F6;}
     background-repeat: no-repeat;    
 }
 
-.notification-car { background-position: -2px -65px; }
+.notification-entrada { background-position: -2px -65px; }
 .notification-encomienda { background-position: -2px -93px; }
 .notification-telegiro { background-position: -54px -65px; width: 21px; }
 
-.notification-car-empty { background-position: -28px -65px; }
+.notification-entrada-empty { background-position: -28px -65px; }
 .notification-encomienda-empty { background-position: -29px -93px; }
 .notification-telegiro-empty { background-position: -73px -65px; width: 21px; }
 

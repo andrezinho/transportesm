@@ -21,6 +21,7 @@
                 <input type="text" id="idmovimiento" name="idmovimiento" class="text ui-widget-content ui-corner-all" style=" text-align: center;" value="<?php if($obj->idmovimiento!=""){ echo str_pad($obj->idmovimiento,8,'0',0); }?>" readonly="" size="10"  />
                 <label for="tipoingreso" class="labels" style="width:130px">Tipo de Ingreso:</label>
                 <?php 
+                $s1 = "selected"; $s2 = ""; $d2 = "none"; $d1 = "block";
                 if($obj->tipo_ingreso==1) {$s1 = "selected"; $s2 = ""; $d2 = "none"; $d1 = "block";}
                 if($obj->tipo_ingreso==2) {$s1 = ""; $s2 = "selected"; $d2 = "block"; $d1 = "none";}
                 ?>

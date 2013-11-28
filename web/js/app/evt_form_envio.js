@@ -110,7 +110,7 @@ $(function() {
         add();
     });
     $( "#save" ).click(function()
-    {            
+    {
         var ht = $(this).html();
         if(ht=="GRABAR")
         {
@@ -462,6 +462,11 @@ function calcTotales()
     var cant = $("#cantidad").val(),
         precio = $("#precio").val(),
         precioc = $("#precioc").val();
+        
+    if(isNaN(precioc)) presioc = 0;
+    if(isNaN(precio)) precio = 0;
+    if(isNaN(cant)) cant = 0;
+    
     cant = parseFloat(cant);
     precio = parseFloat(precio);
     precioc = parseFloat(precioc);
@@ -469,6 +474,8 @@ function calcTotales()
     var t2 = precioc*cant;
     $("#stt").val(t1.toFixed(2));
     $("#sttc").val(t2.toFixed(2));
+    alert(precioc);
+    $("#precioc").val(precioc.toFixed(2));
 }
 function validarPriceCaja()
 {
