@@ -1,9 +1,10 @@
-       $(document).ready(function() {           
+$(document).ready(function() {           
            str = 'controller=config&action=get';
            $("#title-banner").css("display","none");
            $("#title-banner").show("slide",750);    
            maxwindow();
            getNotify();
+           setBoxAlert();
            $(window).resize(function(){maxwindow();});
            $.get('index.php','controller=index&action=Menu',function(menu){
                 $("#menu").empty();                    
@@ -48,8 +49,15 @@
   
 function maxwindow()
 {
-  var h = $(window).height();    
-  $(".div_container").css('minHeight',(h-135));  
+  var h = $(window).height();
+  $("#content").css('minHeight',(h-135));  
+}
+function setBoxAlert()
+{
+  var h = $(window).height(),
+      w = $(window).width();
+  $("#box-alerts").css('top',(h-110));    
+  $("#box-alerts").css('left',(w-250));
 }
 function getNotify()
 {

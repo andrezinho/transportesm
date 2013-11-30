@@ -16,6 +16,8 @@
     <script type="text/javascript" src="js/validateradiobutton.js"></script>
     <script type="text/javascript" src="js/utiles.js"></script>
     <script type="text/javascript" src="js/js-layout.js"></script>
+    <link href='http://fonts.googleapis.com/css?family=Poiret+One' rel='stylesheet' type='text/css'>    
+    <link href='http://fonts.googleapis.com/css?family=Buda:300' rel='stylesheet' type='text/css'>
 </head>
 <body>
     <?php 
@@ -66,5 +68,10 @@
         </div>
     </div>
     <div id="dialog"></div>
+    <div id="box-alerts" class="ui-corner-all" style="display:none">
+        <div class="ui-corner-all" style="">
+            Vencimientos de SOAT: <b>2</b> Vehiculos los proximos 7 días
+        </div>
+    </div>
 </body>
 </html>
