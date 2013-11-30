@@ -62,7 +62,9 @@
                 <label for="fecha_v_dni" class="labels">F. Vencimiento DNI:</label>
                 <input type="text" id="fecha_v_dni" maxlength="10" name="fecha_v_dni" class="text ui-widget-content ui-corner-all" style=" width: 100px; text-align: left;" value="<?php if($obj->fecha_v_dni!="") {echo fdate($obj->fecha_v_dni,'ES');} else {echo date('d/m/Y');} ?>" />
                 <label for="fecha_v_licencia" class="labels">F. Venc. Licencia:</label>
-                <input type="text" id="fecha_v_licencia" maxlength="10" name="fecha_v_licencia" class="text ui-widget-content ui-corner-all" style=" width: 100px; text-align: left;" value="<?php if($obj->fecha_v_dni!="") {echo fdate($obj->fecha_v_dni,'ES');} else {echo date('d/m/Y');} ?>" />
+                <input type="text" id="fecha_v_licencia" maxlength="10" name="fecha_v_licencia" class="text ui-widget-content ui-corner-all" style=" width: 100px; text-align: left;" value="<?php if($obj->fecha_v_licencia!="") {echo fdate($obj->fecha_v_licencia,'ES');} else {echo date('d/m/Y');} ?>" />
+                <label for="fecha_v_capacitacion" class="labels">F. Venc. Capacit.:</label>
+                <input type="text" id="fecha_v_capacitacion" maxlength="10" name="fecha_v_capacitacion" class="text ui-widget-content ui-corner-all" style=" width: 100px; text-align: left;" value="<?php if($obj->fecha_v_capacitacion!="") {echo fdate($obj->fecha_v_capacitacion,'ES');} else {echo '';} ?>" />
                 <br/>  <br/>
                 <hr/>
                 <br/>

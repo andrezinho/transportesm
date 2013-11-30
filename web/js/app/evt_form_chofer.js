@@ -1,6 +1,6 @@
 $(function() {    
     $("#div_activo").buttonset();
-    $("#fecha_registro,#fecha_nacimiento,#fecha_egreso,#fecha_v_dni,#fecha_v_licencia").datepicker({dateFormat:'dd/mm/yy',changeYear:true,changeMonth:true});
+    $("#fecha_registro,#fecha_nacimiento,#fecha_egreso,#fecha_v_dni,#fecha_v_licencia,#fecha_v_capacitacion").datepicker({dateFormat:'dd/mm/yy',changeYear:true,changeMonth:true});
     $("#idoficina","#idgrupo").css("width","auto");
     $( "#save" ).click(function(){
         bval = true;
