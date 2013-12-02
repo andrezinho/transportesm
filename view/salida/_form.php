@@ -45,7 +45,7 @@
                 <?php echo $destino; ?>
                 <br/>
                 <label for="precio" class="labels" style="width:130px">Precio:</label>
-                <input type="text" name="precio" id="precio" class="ui-widget-content ui-corner-all text" value="<?php if($obj->monto!=""){echo $obj->monto;} else {echo "0.00";} ?>" />
+                <input type="text" name="precio" id="precio" class="ui-widget-content ui-corner-all text" value="<?php if($obj->monto!=""){echo $obj->monto;} else {echo "0.00";} ?>" style="text-align: right" /> S/.
                 <?php 
                     if($obj->tipo!="") { if($obj->tipo==1){ echo "(Ida y Vuelta)"; } else {echo "(Solo Ida)";} } 
                     else {

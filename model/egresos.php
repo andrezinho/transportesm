@@ -33,7 +33,7 @@ class egresos extends Main
                             p.razonsocial,
                             m.fecha,
                             m.estado
-                       order by m.idmovimiento asc";
+                       order by m.idmovimiento desc";
         $param = array(array('key'=>':query' , 'value'=>"%$query%" , 'type'=>'STR' ));
         $data['total'] = $this->getTotal( $sql, $param );
         $data['rows'] =  $this->getRow($sql, $param , $p );
@@ -80,7 +80,9 @@ class egresos extends Main
         $hora = date('h:i:s');
         $gr = '';//$_P['guia_remision'];
         //die($idoficina);
-        $stmt = $this->db->prepare("select f_insert_movimiento (:p1, :p2, :p3, :p4,:p5, :p6, :p7, :p8, :p9,'','',:p12,:p13)");
+        $_P['recibi']="";
+        $_P['tipoi']=0;
+        $stmt = $this->db->prepare("select f_insert_movimiento (:p1, :p2, :p3, :p4,:p5, :p6, :p7, :p8, :p9,'','',:p12,:p13,:p14,:p15)");
         try 
         { 
             $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -101,6 +103,8 @@ class egresos extends Main
                 //$stmt->bindParam(':p11', $_P['placa'] , PDO::PARAM_STR); //
                 $stmt->bindParam(':p12', $_P['razonsocial'] , PDO::PARAM_STR); //
                 $stmt->bindParam(':p13', $_P['ruc'] , PDO::PARAM_STR); //
+                 $stmt->bindParam(':p14', $_P['tipoi'] , PDO::PARAM_INT);
+                $stmt->bindParam(':p15', $_P['recibi'] , PDO::PARAM_STR);
                 
                 $stmt->execute();
                 $row = $stmt->fetchAll();

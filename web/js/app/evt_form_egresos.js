@@ -84,7 +84,7 @@ $(function() {
         bval = bval && $( "#fecha" ).required();                
         bval = bval && $( "#ruc" ).required();                
         bval = bval && $( "#razonsocial" ).required();                
-        bval = bval && $( "#fecha" ).required();                
+        
         if ( bval ) {
             $("#frm").submit();
         }
@@ -157,6 +157,7 @@ $(function() {
         $("#idconcepto_movimiento").val('');
         $("#cantidad").val('1');
         $("#monto").val('0.00');
+        $("#concepto").val('');
         $("#idconcepto_movimiento").focus();
     }
     function quit(item)

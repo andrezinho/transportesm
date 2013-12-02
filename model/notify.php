@@ -5,7 +5,7 @@ class notify extends Main
     function getData()
     {
         //Buscamos si hay vehiculos que vienen
-        $s = $this->db->prepare("SELECT count(s.idsalida) as n
+        $s = $this->db->prepare("SELECT count(DISTINCT s.idsalida) as n
                                  FROM salida as s inner join empleado as chofer on chofer.idempleado = s.idchofer
                                             inner join vehiculo as v on v.idvehiculo = s.idvehiculo
                                             inner join destino as d on d.iddestino = s.iddestino
@@ -15,7 +15,7 @@ class notify extends Main
                                  where chofer.idtipo_empleado = 2 
                                         and s.iddestino = ".$_SESSION['idsucursal']."
                                          and s.estado = 3
-                                        and s.fecha = now()
+                                        and s.fecha = CURDATE()
                                     order by s.idsalida desc");
         $s->execute();
         $row = $s->fetchObject();
@@ -36,7 +36,7 @@ class notify extends Main
         //Buscamos si tenemos telegiros pendientes
         $s = $this->db->prepare("SELECT count(t.idtelegiro) as n
                                 from telegiro as t inner join pasajero as remitente on remitente.idpasajero = t.idremitente 
-                                where  t.iddestino = ".$_SESSION['idsucursal']." and t.estado = 2
+                                where  t.iddestino = ".$_SESSION['idoficina']." and t.estado = 1
                                 order by t.idtelegiro desc");
         $s->execute();
         $row = $s->fetchObject();

@@ -81,7 +81,7 @@ class EgresoController extends Controller
             $p = $obj->insert($_POST);
             if ($p['res']=='1')
             {
-                header('Location: index.php?controller=egreso&action=result&im='.$p['idm']);                
+                header('Location: index.php?controller=egreso');                
             } 
             else 
             {

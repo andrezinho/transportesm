@@ -18,13 +18,13 @@ class entrada extends Main
                             end as estado,
                         e.login,
                         case s.estado when 3 then 
-                        concat('<a class=\"confirm box-boton boton-hand\" id=\"cf-',s.idsalida,'\" href=\"#\" title=\"Confirmar Salida\"></a>')
+                        concat('<a class=\"confirm box-boton boton-hand\" id=\"cf-',s.idsalida,'\" href=\"#\" title=\"Confirmar Llegada\"></a>')
                         when 4 then SUBSTRING(s.hora_llegada,1,5)
                         else '&nbsp;' end                        
                 FROM salida as s inner join empleado as chofer on chofer.idempleado = s.idchofer
                         inner join vehiculo as v on v.idvehiculo = s.idvehiculo
                         inner join destino as d on d.iddestino = s.iddestino
-                        inner join empleado as e on e.idempleado = s.idempleado
+                        inner join empleado as e on e.idempleado = s.idempleado and e.idtipo_empleado=1
                         inner join oficina as o on s.idoficina = o.idoficina 
                         inner join destino as do on do.iddestino = o.idsucursal
                 where ".$c." like :query 

@@ -9,7 +9,7 @@ class telegiro extends Main{
                 remitente.nombre,
                 t.consignado,
                 t.numero,
-                t.monto_telegiro,
+                cast(t.monto_telegiro as decimal(18,2)),
                 case t.estado when 1 then 'REGISTRADO'
                                 when 2 then 'ENTREGADO'
                                 WHEN 3 THEN 'REEMBOLSADO'
@@ -18,7 +18,7 @@ class telegiro extends Main{
                 case t.estado when 1 then 
                                 concat('<a target=\"_PARENT\" href=\"index.php?controller=telegiro&action=printer&id=',t.idtelegiro,'\" title=\"Imprimir\" class=\"box-boton boton-print\"></a>')
                               when 2 then 
-                                concat('<a target=\"_PARENT\" href=\"index.php?controller=telegiro&action=printer&id=',t.idtelegiro,'\" title=\"Imprimir\" class=\"box-boton boton-new\"></a>')
+                                concat('<a target=\"_PARENT\" href=\"index.php?controller=telegiro&action=printer&id=',t.idtelegiro,'\" title=\"Imprimir\" class=\"box-boton boton-print\"></a>')
                               else    
                                 concat('<a target=\"_PARENT\" href=\"index.php?controller=telegiro&action=printer&id=',t.idtelegiro,'\" title=\"Imprimir\" class=\"box-boton boton-print\"></a>')
                 end, ";
@@ -101,7 +101,7 @@ class telegiro extends Main{
                 
             $this->db->commit();
             //unset($_SESSION['telegiros']);
-            return array('res'=>"1",'msg'=>'Bien!','idv'=>$idtelegiro);
+            return array('res'=>"1",'msg'=>'Bien!','id'=>$idtelegiro);
         }
         catch(PDOException $e) 
         {

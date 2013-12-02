@@ -1,6 +1,7 @@
 var source = "index.php?controller=pasajero&action=search_autocomplete&tipo=1t=0";
 $(function() {    
-    $("#iddestino").css("width","160px");
+    $("#iddestino").css("width","160px").attr("title","Seleccione el destino");
+    //$("#iddestino").attr("")
     $("#idchofer,#idvehiculo").css("width","430px");
     $("#iddestino").focus();
     load_sernum(5);
@@ -17,11 +18,11 @@ $(function() {
                 $( "#nrodocumentor" ).val( ui.item.nrodocumento );
                 $( "#remitente" ).val( ui.item.nombre );
                 habilitarr(1);
-                $("#consignado").focus();
+                $("#idconsignado").focus();
                 return false;
             },
             change: function(event, ui) { 
-                clear_remitente();
+                //clear_remitente();
                 habilitarr(0);
             }
         }).data( "autocomplete" )._renderItem = function( ul, item ) {            
@@ -71,18 +72,35 @@ $(function() {
         } else{
         if($("#idestado01").val() == '' || $("#idestado01").val() == '1'){
         var ht = $(this).html();
+        
         if(ht=="GRABAR")
         {
              bval = true;
+             bval = bval && $("#iddestino").required();
+             bval = bval && $("#nrodocumentor").required();
+             bval = bval && $("#nrodocumentoc").required();
+             bval = bval && $("#consignado").required();
+             bval = bval && $("#monto_telegiro").required();
+             bval = bval && $("#monto_caja").required();
+             
+             var mt = parseFloat($("#monto_telegiro").val());             
+             if(mt<=0)
+                 {
+                     bval = false;
+                     alert("El monto del telegiro debe ser mayor a cero");
+                     $("#monto_telegiro").focus();
+                 }
+                 
+             
             if ( bval ) {
                 $("#save").empty().append("Grabando...");
-                showboxmsg('Registrando Envio...',3);
+                showboxmsg('Registrando Telegiro...',3);
                 var str = $("#frm").serialize();
                 $.post('index.php',str,function(result){
                     var html_printer = "";
                     if(result[0]==1)
                         {
-                        html_printer = '<a class="lnk-results" target="_blank" href="index.php?controller=telegiro&action=printer&idt="+'+result[2]+'>Imprimir</a>';                       
+                        html_printer = '<a class="lnk-results" target="_blank" href="index.php?controller=telegiro&action=printer&id='+result[2]+'">Imprimir</a>';                       
                         html_printer += '<a class="lnk-results" href="javascript:" id="re-new">Registrar Nuevo</a>';
                         $("#save").empty().append("Telegiro Guardado.");
                         $("#idenvio").val(result[2]);

@@ -62,7 +62,7 @@ class salida extends Main
                 FROM salida as s inner join empleado as chofer on chofer.idempleado = s.idchofer
                         inner join vehiculo as v on v.idvehiculo = s.idvehiculo
                         inner join destino as d on d.iddestino = s.iddestino
-                        inner join empleado as e on e.idempleado = s.idempleado
+                        inner join empleado as e on e.idempleado = s.idempleado and e.idtipo_empleado=1
                 where ".$c." like :query and chofer.idtipo_empleado = 2 
                         and s.idoficina = ".$_SESSION['idoficina']."
                 order by s.idsalida desc";

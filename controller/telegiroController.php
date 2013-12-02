@@ -9,7 +9,7 @@ class telegiroController extends Controller
    {
         if (!isset($_GET['p'])){$_GET['p']=1;}
         if(!isset($_GET['q'])){$_GET['q']="";} 
-        if(!isset($_GET['op'])){$_GET['op']="1";}
+        if(!isset($_GET['op'])){$_GET['op']="0";}
         if(!isset($_GET['criterio'])){$_GET['criterio']="remitente.nombre";} 
         $obj = new telegiro();
         $data = array();
@@ -205,7 +205,7 @@ class telegiroController extends Controller
             
             if ($p['res']=='1')
             {
-                $result = array(1,'SE HA REGISTRADO CORRECTAMENTE EL TELEGIRO',$p['idv']);
+                $result = array(1,'SE HA REGISTRADO CORRECTAMENTE EL TELEGIRO',$p['id']);
             } 
             else 
             {

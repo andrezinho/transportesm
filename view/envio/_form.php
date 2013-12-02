@@ -84,20 +84,21 @@
                                
                 <label for="idremitente" class="labels" style="width:130px">Remitente:</label>
                 <input type="hidden" name="idremitente" id="idremitente" value="<?php echo $obj->idremitente; ?>" />
-                <input type="text" name="nrodocumentor" id="nrodocumentor" value="<?php echo $obj->nrodocumentor; ?>" class="ui-widget-content ui-corner-all text" size="13" title="Nro de Documento" onkeypress="return permite(event,'num')" maxlength="11" />
-                <input type="text" name="remitente" id="remitente" value="<?php echo $obj->remitente; ?>" class="ui-widget-content ui-corner-all text" title="Nombre del Remitente" style="width:394px" />
+                <input type="text" name="nrodocumentor" id="nrodocumentor" value="<?php echo $obj->nrodocumentor; ?>" class="ui-widget-content ui-corner-all text" size="13" title="Nro de Documento" onkeypress="return permite(event,'num')" maxlength="11" placeholder="Nro Documento" />
+                <input type="text" name="remitente" id="remitente" value="<?php echo $obj->remitente; ?>" class="ui-widget-content ui-corner-all text" title="Nombre del Remitente" style="width:394px" placeholder="Nombres y/o Razon Social" />
                 <br/>
                 <label for="idconsignado" class="labels" style="width:130px">Consignado a:</label>
                 <input type="hidden" name="idconsignado" id="idconsignado" value="<?php echo $obj->idconsignado; ?>" />
                 <input type="hidden" name="nrodocumentoc" id="nrodocumentoc" value="<?php echo $obj->nrodocumentoc; ?>" class="ui-widget-content ui-corner-all text" size="13" title="Nro de Documento" onkeypress="return permite(event,'num')" />
-                <input type="text" name="consignado" id="consignado" value="<?php echo $obj->consignado; ?>" class="ui-widget-content ui-corner-all text" title="Nombre del Consignado" style="width:502px;" />
+                <input type="text" name="consignado" id="consignado" value="<?php echo $obj->consignado; ?>" class="ui-widget-content ui-corner-all text" title="Nombre del Consignado" style="width:502px;" placeholder="Nombres del Consignado" />
                 <br/>
                 <label for="idconsignado" class="labels" style="width:130px">Atentamente :</label>
-                <input type="text" name="atentamente" id="atentamente" value="<?php echo $obj->atentamente; ?>" class="ui-widget-content ui-corner-all text" title="Atentamente" style="width:502px;" />
+                <input type="text" name="atentamente" id="atentamente" value="<?php echo $obj->atentamente; ?>" class="ui-widget-content ui-corner-all text" title="Atentamente" style="width:502px;" placeholder="Nombres del Representante" /> (* Opcional)
                 <br/>
                 
                 <label for="direccion" class="labels" style="width: 130px;">Direccion: </label>
-                <input type="text" name="direccion" id="direccion" value="<?php echo $obj->direccion; ?>" class="ui-widget-content ui-corner-all text" title="Direccion" style="width:502px;" />
+                <input type="text" name="direccion" id="direccion" value="<?php echo $obj->direccion; ?>" class="ui-widget-content ui-corner-all text" title="Direccion" style="width:502px;" placeholder="Direccion de domicilio del consignado" />
+                (Solo si la entrega es a Domicilio)
                 <br/>
                 <label for="precio_encomienda" class="labels" style="width:130px">Contra-Entrega:</label>
                 <?php $ck=""; if($obj->cpago==1) { $ck ="checked"; } ?>
@@ -114,19 +115,19 @@
             <fieldset class="ui-corner-all" style="background: #fafafa;">
                 <legend>Detalle de envio</legend>             
                 <label for="descripcion" class="labels" style="width:100px">Descripcion:</label>
-                <input type="text" name="descripcion" id="descripcion" value="" class="ui-widget-content ui-corner-all text" maxlength="300" style="width:85%" />
+                <input type="text" name="descripcion" id="descripcion" value="" class="ui-widget-content ui-corner-all text" maxlength="300" style="width:85%" placeholder="Descripcion del objeto a enviar..." />
                 <br/>
                 <label for="cantidad" class="labels" style="width:100px">Cantidad:</label>
                 <input type="text" name="cantidad" id="cantidad" value="1" class="ui-widget-content ui-corner-all text" maxlength="1" style="width:15px;" onkeypress="return permite(event,'num')" />                 
                 <label for="precio" class="labels" style="width:80px">Monto Envio:</label>
-                <input type="text" name="precio" id="precio" value="5.00" class="ui-widget-content ui-corner-all text money" onkeypress="return permite(event,'num')" style="width:40px" />                                    
+                <input type="text" name="precio" id="precio" value="5.00" class="ui-widget-content ui-corner-all text money" onkeypress="return permite(event,'num')" style="width:40px" /> S/.
                 <label for="subtt" class="labels" style="width:70px">Sub total:</label>
-                <input type="text" name="stt" id="stt" value="5.00" class="ui-widget-content ui-corner-all text money" onkeypress="return permite(event,'num')" style="width:40px" readonly="readonly" />                        
+                <input type="text" name="stt" id="stt" value="5.00" class="ui-widget-content ui-corner-all text money" onkeypress="return permite(event,'num')" style="width:40px" readonly="readonly" /> S/.
                 <span style="background:#dadada; padding:4px 3px 3px 3px">
                     <label for="precioc" class="labels" style="width:90px">Monto Caja:</label>
-                    <input type="text" name="precioc" id="precioc" value="0.00" class="ui-widget-content ui-corner-all text money" onkeypress="return permite(event,'num')" style="width:40px;" />
+                    <input type="text" name="precioc" id="precioc" value="0.00" class="ui-widget-content ui-corner-all text money" onkeypress="return permite(event,'num')" style="width:40px;" /> S/.
                     <label for="precio" class="labels" style="width:90px">Sub total Caja:</label>
-                    <input type="text" name="sttc" id="sttc" value="0.00" class="ui-widget-content ui-corner-all text money" onkeypress="return permite(event,'num')" style="width:40px;" readonly="readonly" />
+                    <input type="text" name="sttc" id="sttc" value="0.00" class="ui-widget-content ui-corner-all text money" onkeypress="return permite(event,'num')" style="width:40px;" readonly="readonly" />S/.
                 </span>
                 <a href="javascript:" id="adddetalle"  class="button">
                     Agregar 

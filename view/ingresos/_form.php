@@ -33,16 +33,16 @@
                 <br/>
                 <div id="tipo-2" style="display: <?php echo $d2; ?>;">
                     <label for="recibi" class="labels" style="width:130px">Recibi de:</label>               
-                    <input type="text" name="recibi" id="recibi" value="<?php echo $obj->recibi; ?>" class="ui-widget-content ui-corner-all text" title="Recibi de.." style="width:510px" />
+                    <input type="text" name="recibi" id="recibi" value="<?php echo $obj->recibi; ?>" class="ui-widget-content ui-corner-all text" title="Recibi de.." style="width:510px" placeholder="Nombres Apellidos y/o Razon Social" />
                     <br/>
                 </div>
                 <div id="tipo-1" style="display: <?php echo $d1; ?>;">
                 <label for="idempleado" class="labels" style="width:130px">Propietario:</label>
-                <input type="text" name="idempleado" id="idempleado" maxlength="8" value="<?php echo $obj->idempleado; ?>" class="ui-widget-content ui-corner-all text" onkeypress="return permite(event,'num')" />                
-                <input type="text" name="nombre" id="nombre" value="<?php echo $obj->nombre; ?>" class="ui-widget-content ui-corner-all text" title="Nombre del Propietario" style="width:400px" />
+                <input type="text" name="idempleado" id="idempleado" maxlength="8" value="<?php echo $obj->idempleado; ?>" class="ui-widget-content ui-corner-all text" onkeypress="return permite(event,'num')" placeholder="Nro Documento" />                
+                <input type="text" name="nombre" id="nombre" value="<?php echo $obj->nombre; ?>" class="ui-widget-content ui-corner-all text" title="Nombre del Propietario" style="width:400px" placeholder="Nombres y Apellidos" />
                 <br/>
                 <label for="chofer" class="labels" style="width:130px">Chofer:</label>
-                <input type="text" name="chofer" id="chofer" value="<?php echo $obj->nombre; ?>" class="ui-widget-content ui-corner-all text" title="Nombre del Chofer" style="width:350px" />
+                <input type="text" name="chofer" id="chofer" value="<?php echo $obj->nombre; ?>" class="ui-widget-content ui-corner-all text" title="Nombre del Chofer" style="width:350px" placeholder="Nombres y Apellidos"/>
                 <label for="placa" class="labels" style="width:53px">Placa:</label>
                 <?php if($_GET['action']!="show"){ ?>
                 <select name="placa" id="placa" class="ui-widget-content ui-corner-all text">
@@ -58,7 +58,7 @@
                 <input type="text" name="fecha" id="fecha" maxlength="10" value="<?php if($obj->fecha!=""){echo fdate($obj->fecha,"ES");} else {echo date('d/m/Y');} ?>" class="ui-widget-content ui-corner-all text" size="10" style="text-align: center" title="Fecha del Ingreso" />                
                 <br/>                
                 <label for="observacion" class="labels" style="width:130px">Ref/Obs:</label>
-                <input type="text" id="observacion" name="observacion" value="<?php echo $obj->observacion; ?>" style="width:500px" class="ui-widget-content ui-corner-all text" title="Referencia y/o Observacion del Ingreso" />                                
+                <input type="text" id="observacion" name="observacion" value="<?php echo $obj->observacion; ?>" style="width:500px" class="ui-widget-content ui-corner-all text" title="Referencia y/o Observacion del Ingreso" placeholder="Observaciones.." /> (* Opcional)
                 <br/>
                 <br/>
           </fieldset>
@@ -66,16 +66,15 @@
           <fieldset class="ui-corner-all">
             <legend>Conceptos</legend>             
             <label for="idconcepto_movimiento" class="labels" style="width:60px">Concepto</label>
-            <input type="text" name="idconcepto_movimiento" id="idconcepto_movimiento" value="" class="ui-widget-content ui-corner-all text" title="Codigo del Concepto" style="width:50px" />
-            <input type="text" name="concepto" id="concepto" value="" class="ui-widget-content ui-corner-all text" title="Descripcion del Concepto" style="width:300px" />
+            <input type="text" name="idconcepto_movimiento" id="idconcepto_movimiento" value="" class="ui-widget-content ui-corner-all text" title="Codigo del Concepto" style="width:50px" placeholder="Codigo" />
+            <input type="text" name="concepto" id="concepto" value="" class="ui-widget-content ui-corner-all text" title="Descripcion del Concepto" style="width:350px" placeholder="Descripcion del concepto" />
             <!-- <a href="javascript:popup('index.php?controller=Concepto_Movimiento&action=search',500,400)" id="buscarconcepto" style="border:0" title="Buscar Conceptos"><img src="images/lupa.gif" style="border:0" /></a> -->
             <label for="cantidad" class="labels" style="width:45px">Cant.</label>
             <input type="text" name="cantidad" id="cantidad" value="1" class="ui-widget-content ui-corner-all text" onkeypress="return permite(event,'num')" title="Cantidad del Concepto de ingreso" style="width:20px" />
-            <label for="monto" class="labels" style="width:40px">Monto</label>
-            <input type="text" name="monto" id="monto" value="" class="ui-widget-content ui-corner-all text" onkeypress="return permite(event,'num')" title="Monto del Concepto de ingreso" style="width:50px" />
+            <label for="monto" class="labels" style="width:110px">Monto Unitario</label>
+            <input type="text" name="monto" id="monto" class="ui-widget-content ui-corner-all text" onkeypress="return permite(event,'num')" title="Monto del Concepto de ingreso" style="width:50px;text-align:right" value="0.00" /> S/.
             <a href="javascript:" id="adddetalle" style="border:0" title="Agregar Conceptos" class="box-boton boton-new"></a>
-              Agregar 
-            </a> 
+               &nbsp;&nbsp;Agregar            
           </fieldset>
           <?php } ?>
           <div id="div-detalle">

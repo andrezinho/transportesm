@@ -117,23 +117,27 @@ $(function() {
             bval = true;
             bval = bval && $( "#iddestino" ).required();
             bval = bval && $( "#nrodocumentor" ).required();
-            var nrodoc = $("#nrodocumentor").val();
-            if(nrodoc.length==8||nrodoc.length==11)
+            if(bval)
             {
-                if(nrodoc.length==11)
+                var nrodoc = $("#nrodocumentor").val();
+                if(nrodoc.length==8||nrodoc.length==11)
                 {
-                    if(!esrucok(nrodoc))
+                    if(nrodoc.length==11)
                     {
-                        alert("Por favor, ingrese numero de RUC valido del remitente");
-                        bval=false;
+                        if(!esrucok(nrodoc))
+                        {
+                            alert("Por favor, ingrese numero de RUC valido del remitente");
+                            bval=false;
+                        }
                     }
                 }
+                else 
+                {
+                    alert("Ingrese un nro de documento valido del remitente");
+                    bval = false;
+                }
             }
-            else 
-            {
-                alert("Ingrese un nro de documento valido del remitente");
-                bval = false;
-            }
+            bval = bval && $("#consignado").required();
             if ( bval )
             {
                 $("#save").empty().append("Grabando...");

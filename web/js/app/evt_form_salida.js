@@ -8,6 +8,7 @@ $(function() {
         if(i!="")
         {
             $.get('index.php','controller=itinerario&action=getPricet&idd='+i,function(price){
+                
                 $("#precio").val(price);
                 $("#precio").focus();
             })            

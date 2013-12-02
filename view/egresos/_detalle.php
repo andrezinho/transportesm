@@ -30,7 +30,7 @@
                     <?php echo number_format($obj->monto[$i],2); ?>
                     </td>
                     <td align="right" ><?php echo number_format($obj->monto[$i]*$obj->cantidad[$i],2); ?></td>                    
-                    <td width="20px" align="center"><a class="quit" title="Eliminar item <?php echo ($c); ?>" href="javascript:"><img src="images/delete.png"/></a></td>
+                    <td width="20px" align="center"><a class="quit box-boton boton-delete" title="Eliminar item <?php echo ($c); ?>" href="javascript:"></a></td>
                     </tr>
                     <?php
                     }

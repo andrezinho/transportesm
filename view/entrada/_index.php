@@ -5,7 +5,7 @@ $(document).ready(function() {
         var i = $(this).attr("id");
         var $tr = $(this).parent();        
         i = i.split("-");                
-        if(confirm("Estas seguro de Confirmar la salida de este ticket ?"))
+        if(confirm("Estas seguro de Confirmar la llegada de este auto?"))
         {
             $.post('index.php','ctl=entrada&act=llegada&i='+i[1],function(r)
             {
@@ -26,10 +26,6 @@ $(document).ready(function() {
 <div class="div_container">
 <h6 class="ui-widget-header">ENTRADA DE VEHICULOS</h6>
 <div id="addbotones">
-	<!-- <a class="anular" href="javascript:" title="Anular Envio">
-            <span class="box-boton">Anular</span>
-            <span class="box-boton"><img src="images/delete.png"/></span>        
-    </a> -->
 </div>
 <?php echo $grilla;?>
 </div>

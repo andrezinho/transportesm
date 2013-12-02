@@ -2,19 +2,28 @@
        include("../view/header_form.php");
 ?>
 <script type="text/javascript" src="js/app/evt_form_telegiro.js" ></script>
-<!--<script type="text/javascript" src="js/validateradiobutton.js"></script>-->
 <div class="div_container">
 <h6 class="ui-widget-header">&nbsp;</h6>
 <?php echo $more_options; ?>
 <div class="contain2" >
 <?php header_form('TELEGIROS'); ?>  
-<div class="box-msg"></div>
+
 <form id="frm" action="index.php" method="POST">
     <input type="hidden" name="controller" value="telegiro" />
     <input type="hidden" name="action" value="save" />
-    <div id="div-msg" class="div-msg ui-widget-overlay" style="display: none">
-        <div id="div-text-msg" class="ui-dialog-content ui-widget-content">MENSAJE</div>
-    </div>                
+    <?php if($obj->estado!=1&&$obj->idenvio!="") 
+    {
+        ?>
+        <div class="box-msg ui-state-error-adz" style="width:inherit"><?php echo $msg; ?></div>
+        <?php
+    } 
+    else 
+    {
+        ?>
+        <div class="box-msg" style="display:none"></div>
+        <?php
+    }
+    ?>               
     <div class="contFrm">    
          <br/>
         <div class="contenido" >                            
@@ -31,23 +40,23 @@
                 <label for="nrooc" class="labels" style="width:130px">Serie-Numero:</label>
                 <input type="text" name="serie" id="serie" value="<?php echo $obj->serie;?>" class="ui-widget-content ui-corner-all text" size="4" title="Serie del Documento" readonly="" />                                
                 <input type="text" name="numero" id="numero" value="<?php echo $obj->numero;?>" class="ui-widget-content ui-corner-all text" size="8" title="Numero del Documento" onkeypress="" readonly="" />
-                <label for="iddestino" class="labels" style="width:80px">Destino:</label>
+                <label for="iddestino" class="labels" style="width:150px">Destino (Oficina):</label>
                 <?php echo $destino; ?>
                 <br/>                                
                 <label for="idremitente" class="labels" style="width:130px">Remitente:</label>
                 <input type="hidden" name="idremitente" id="idremitente" value="<?php echo $obj->idremitente; ?>" />
-                <input type="text" name="nrodocumentor" id="nrodocumentor" value="<?php echo $obj->nrodocumentor; ?>" class="ui-widget-content ui-corner-all text" size="13" title="Nro de Documento" onkeypress="return permite(event,'num')" />
-                <input type="text" name="remitente" id="remitente" value="<?php echo $obj->remitente; ?>" class="ui-widget-content ui-corner-all text" style="width:350px" title="Nombre del Remitente" />
+                <input type="text" name="nrodocumentor" id="nrodocumentor" value="<?php echo $obj->nrodocumentor; ?>" class="ui-widget-content ui-corner-all text" size="13" title="Nro de Documento" onkeypress="return permite(event,'num')" placeholder="Nro Documento" />
+                <input type="text" name="remitente" id="remitente" value="<?php echo $obj->remitente; ?>" class="ui-widget-content ui-corner-all text" style="width:350px" title="Nombre del Remitente" placeholder="Nombre del Remitente" />
                 <br/>
                 <label for="idconsignado" class="labels" style="width:130px">Consignado a:</label>
                 <!--<input type="hidden" name="idconsignado" id="idremitente" value="<?php echo $obj->idconsignado; ?>" />-->
-                <input type="text" name="idconsignado" id="nrodocumentoc" value="<?php echo $obj->idconsignado; ?>" class="ui-widget-content ui-corner-all text" size="13" title="Nro de Documento" onkeypress="return permite(event,'num')" />
-                <input type="text" name="consignado" id="consignado" value="<?php echo $obj->consignado; ?>" class="ui-widget-content ui-corner-all text" style="width:350px"  title="Nombre del Consignado" />
+                <input type="text" name="idconsignado" id="nrodocumentoc" value="<?php echo $obj->idconsignado; ?>" class="ui-widget-content ui-corner-all text" size="13" title="Nro de Documento" onkeypress="return permite(event,'num')" placeholder="Nro Documento" />
+                <input type="text" name="consignado" id="consignado" value="<?php echo $obj->consignado; ?>" class="ui-widget-content ui-corner-all text" style="width:350px"  title="Nombre del Consignado" placeholder="Nombre del Consignado" />
                 <br/>
                 <label for="monto_telegiro" class="labels" style="width:130px">Mont. Teleg.:</label>
-                <input type="text" name="monto_telegiro" id="monto_telegiro" value="<?php echo $obj->monto_telegiro; ?>" class="ui-widget-content ui-corner-all text" size="13" title="Monto del Telegiro" onkeypress="return permite(event,'num')" />
+                <input type="text" name="monto_telegiro" id="monto_telegiro" value="<?php if($obj->monto_telegiro!="") echo number_format($obj->monto_telegiro,2); else echo "0.00"; ?>" class="ui-widget-content ui-corner-all text" size="13" title="Monto del Telegiro" onkeypress="return permite(event,'num')" style="text-align: right" /> S/.
                 <label for="monto_caja" class="labels" style="width:130px">Mont. Caja.:</label>
-                <input type="text" name="monto_caja" id="monto_caja" value="<?php echo $obj->monto_caja; ?>" class="ui-widget-content ui-corner-all text" size="13" title="Monto de Caja" onkeypress="return permite(event,'num')" />
+                <input type="text" name="monto_caja" id="monto_caja" value="<?php if($obj->monto_caja!="") echo number_format($obj->monto_caja,2); else echo "0.00"; ?>" class="ui-widget-content ui-corner-all text" size="13" title="Monto de Caja" onkeypress="return permite(event,'num')" style="text-align: right" /> S/.
           </fieldset>
           <div id="div-detalle">
             <?php echo $detalle; ?>
