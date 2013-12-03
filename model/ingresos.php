@@ -8,7 +8,7 @@ class ingresos extends Main
         $sql = "select distinct 
                         m.idmovimiento,
                         case tipo_ingreso when 1 then concat(coalesce(e.nombre,' '),' ',coalesce(e.apellidos,' '))
-                            else m.recibi end as recibi,                        
+                            else pro.razonsocial end as recibi,                        
                         m.chofer,
                         m.fecha,                        
                         m.observacion,
@@ -32,14 +32,15 @@ class ingresos extends Main
                     else 
                     concat('<a target=\"_blank\" href=\"index.php?controller=ingresos&action=printer&iv=',m.idmovimiento,'\" title=\"Imprimir\" class=\"box-boton boton-print\" ></a>')
                     end
-                from movimiento as m 
-                left outer join empleado as e on e.idempleado = m.idpropietario  and e.idtipo_empleado = 3
+                from movimiento as m                 
                 inner join empleado as users on users.idempleado = m.idempleado
+                left outer join empleado as e on e.idempleado = m.idpropietario  and e.idtipo_empleado = 3
+                left outer join proveedor as pro on pro.idproveedor = m.idproveedor
                 where case tipo_ingreso when 1 then concat(coalesce(e.nombre,' '),' ',coalesce(e.apellidos,' '))
-                            else m.recibi end like :query and  m.idoficina = ".$_SESSION['idoficina']." and m.tipo=1 and users.idtipo_empleado = 1
+                            else pro.razonsocial end like :query and  m.idoficina = ".$_SESSION['idoficina']." and m.tipo=1 and users.idtipo_empleado = 1
                     and 
                     case tipo_ingreso when 1 then concat(coalesce(e.nombre,' '),' ',coalesce(e.apellidos,' '))
-                            else m.recibi end <> ''
+                            else pro.razonsocial end <> ''
                 order by idmovimiento desc";
         //echo $sql;
         $param = array(array('key'=>':query' , 'value'=>"%$query%" , 'type'=>'STR' ));
@@ -54,9 +55,13 @@ class ingresos extends Main
         $stmt = $this->db->prepare("SELECT distinct m.*,
                                            e.idempleado,
                                            concat(coalesce(e.nombre,' '),' ',coalesce(e.apellidos,' ')) as nombre,                                           
-                                           m.placa
+                                           m.placa,
+                                           pro.razonsocial,
+                                           pro.ruc,
+                                           pro.idproveedor
                                     from movimiento as m 
                                     inner join empleado as users on users.idempleado = m.idempleado
+                                    left outer join proveedor as pro on pro.idproveedor = m.idproveedor
                                     left outer join empleado as e on e.idempleado = m.idpropietario  and e.idtipo_empleado = 3                                    
                                     where m.idmovimiento = :id ");
         $stmt->bindParam(':id', $id , PDO::PARAM_INT);
@@ -91,7 +96,7 @@ class ingresos extends Main
         $estado = 1;
         $hora = date('h:i:s');
         $gr = '';//$_P['guia_remision'];        
-        $stmt = $this->db->prepare("select f_insert_movimiento (:p1, :p2, :p3, :p4,:p5, :p6, :p7, :p8, :p9, :p10, :p11, '','',:p12,:p13)");
+        $stmt = $this->db->prepare("select f_insert_movimiento (:p1, :p2, :p3, :p4,:p5, :p6, :p7, :p8, :p9, :p10, :p11, :rs,:ruc,:p12,:p13)");
         try 
         { 
             $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -108,6 +113,8 @@ class ingresos extends Main
                 $stmt->bindParam(':p9', $_P['idempleado'] , PDO::PARAM_STR); //empleado que representa al propietario
                 $stmt->bindParam(':p10', $_P['chofer'] , PDO::PARAM_STR); //empleado que representa al chofer
                 $stmt->bindParam(':p11', $_P['placa'] , PDO::PARAM_STR); //                
+                $stmt->bindParam(':rs', $_P['razonsocial'] , PDO::PARAM_STR); //
+                $stmt->bindParam(':ruc', $_P['ruc'] , PDO::PARAM_STR); //
                 $stmt->bindParam(':p12', $_P['tipoi'] , PDO::PARAM_INT);
                 $stmt->bindParam(':p13', $_P['recibi'] , PDO::PARAM_STR);
                 $stmt->execute();
@@ -181,15 +188,17 @@ class ingresos extends Main
     function getdata($ide)
     {
         $stmt = $this->db->prepare("SELECT distinct  case tipo_ingreso when 1 then concat(coalesce(e.nombre,' '),' ',coalesce(e.apellidos,' '))
-                                            else m.recibi end as remitente,                                            
+                                            else pro.razonsocial end as remitente,                                            
                                             m.fecha, 
                                             o.descripcion as oficina,
                                             o.direccion,
-                                            o.telefono
-                                   from movimiento as m 
-                                        left outer join empleado as e on e.idempleado = m.idpropietario  and e.idtipo_empleado = 3
+                                            o.telefono,
+                                            m.observacion
+                                   from movimiento as m                                         
                                         inner join empleado as users on users.idempleado = m.idempleado                                             
                                             inner join oficina as o on m.idoficina = o.idoficina                                            
+                                            left outer join empleado as e on e.idempleado = m.idpropietario  and e.idtipo_empleado = 3
+                                        left outer join proveedor as pro on pro.idproveedor = m.idproveedor
                                     where m.estado <> 0  and m.idmovimiento= :id");
         $stmt->bindParam(':id',$ide,PDO::PARAM_INT);
         $stmt->execute();

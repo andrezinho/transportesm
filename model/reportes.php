@@ -54,17 +54,20 @@ class reportes extends Main
     function data_ingresos($g)
     {
         $sql = "SELECT cm.descripcion as concepto,        
-				        concat(propietario.nombre,' ',propietario.apellidos) as recibi,
+				        case tipo_ingreso when 1 then concat(coalesce(propietario.nombre,' '),' ',coalesce(propietario.apellidos,' '))
+                                            else pro.razonsocial end   as recibi,
 				        m.chofer,
 				        m.placa,
 				        m.fecha,
 				        m.observacion,
 				        md.cantidad*md.monto as total
 				FROM movimiento as m inner join movimiento_detalle as md on m.idmovimiento = md.idmovimiento
-				        inner join concepto_movimiento as cm on cm.idconcepto_movimiento = md.idconcepto_movimiento
+				        inner join concepto_movimiento as cm on cm.idconcepto_movimiento = md.idconcepto_movimiento                                        
+                                        left outer join proveedor as pro on pro.idproveedor = m.idproveedor
 				        left join empleado as propietario on propietario.idempleado = m.idpropietario and propietario.idtipo_empleado = 3
+                                        
 				WHERE m.tipo = 1 AND m.estado = 1 and m.fecha between :f1 and :f2 and m.idoficina = ".$_SESSION['idoficina']."
-				ORDER by m.fecha";
+				ORDER by m.idmovimiento desc";
 
         $fechai = $this->fdate($g['fechai'],'EN');
         $fechaf = $this->fdate($g['fechaf'],'EN');

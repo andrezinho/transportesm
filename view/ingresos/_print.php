@@ -71,6 +71,13 @@ function printThis() {
         Recibi de :   <?php echo Separar($head->remitente); ?> 
     </td>
   </tr>  
+  <?php if($head->observacion!=""){ ?>
+  <tr>
+    <td align="left" class="Cabecera" colspan="3">
+        Obs. :   <?php echo Separar($head->observacion); ?> 
+    </td>
+  </tr>  
+  <?php } ?>
   <tr>
   <td colspan="3" valign="top">
     <table width="100%" border="0" cellspacing="0" cellpadding="0">

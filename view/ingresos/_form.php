@@ -31,10 +31,11 @@
                     </option>
                 </select>
                 <br/>
-                <div id="tipo-2" style="display: <?php echo $d2; ?>;">
+                <div id="tipo-2" style="display: <?php echo $d2; ?>;">                    
                     <label for="recibi" class="labels" style="width:130px">Recibi de:</label>               
-                    <input type="text" name="recibi" id="recibi" value="<?php echo $obj->recibi; ?>" class="ui-widget-content ui-corner-all text" title="Recibi de.." style="width:510px" placeholder="Nombres Apellidos y/o Razon Social" />
-                    <br/>
+                    <input type="hidden" name="idproveedor" id="idproveedor" value="" class="ui-widget-content ui-corner-all text" />
+                    <input type="text" name="ruc" id="ruc" value="<?php echo $obj->ruc; ?>" maxlength="11" class="ui-widget-content ui-corner-all text" onkeypress="return permite(event,'num')" size="10" title="Ruc o Dni del Proveedor" placeholder="DNI y/o RUC" />
+                    <input type="text" name="razonsocial" id="razonsocial" maxlength="100" value="<?php echo $obj->razonsocial; ?>" class="ui-widget-content ui-corner-all text" title="Razon Social del Proveedor" style="width:400px" placeholder="Nombres y/o Razon Social"  />
                 </div>
                 <div id="tipo-1" style="display: <?php echo $d1; ?>;">
                 <label for="idempleado" class="labels" style="width:130px">Propietario:</label>
@@ -88,7 +89,7 @@
                 if($obj->estado=="1")
                 {
                 ?>
-                <a href="index.php?controller=ingreso&action=anular&id=<?php echo $_GET['id']; ?>" class="button">ANULAR</a>
+                <a href="index.php?controller=ingresos&action=anular&id=<?php echo $_GET['id']; ?>" class="button">ANULAR</a>
                 <?php
             }
             }

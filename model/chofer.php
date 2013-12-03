@@ -79,8 +79,8 @@ class chofer extends Main {
                                                             direccion,
                                                             fecha_v_licencia,
                                                             categoria,
-                                                            fecha_v_capacitacion)
-                                    values(:p1,:p2,:p3,:p4,:p5,:p6,:p7,:p8,:p9,:p10,:p11,:p12,:p13,:p14,:p15,:p16,:p17,:p18)');
+                                                            fecha_v_capacitacion,record)
+                                    values(:p1,:p2,:p3,:p4,:p5,:p6,:p7,:p8,:p9,:p10,:p11,:p12,:p13,:p14,:p15,:p16,:p17,:p18,:p19)');
         $stmt->bindParam(':p1', $_P['idempleado'] , PDO::PARAM_STR);
         $stmt->bindParam(':p2', $idtipo_empleado , PDO::PARAM_INT);
         $stmt->bindParam(':p3', $_P['idoficina'] , PDO::PARAM_INT);
@@ -99,6 +99,7 @@ class chofer extends Main {
         $stmt->bindParam(':p16', $fechal , PDO::PARAM_STR);
         $stmt->bindParam(':p17', $_P['categoria'] , PDO::PARAM_STR);
         $stmt->bindParam(':p18', $fechac , PDO::PARAM_STR);
+        $stmt->bindParam(':p19', $_P['record'] , PDO::PARAM_STR);
         $p1 = $stmt->execute();
         $p2 = $stmt->errorInfo();
         return array($p1 , $p2[2]);
@@ -111,6 +112,9 @@ class chofer extends Main {
         $fechan = $this->fdate($_P['fecha_nacimiento'],'EN');
         $fechar = $this->fdate($_P['fecha_registro'],'EN');
         $fechal = $this->fdate($_P['fecha_v_licencia'],'EN');
+        
+        $record = $_POST['record'];
+        //echo $record;
         if($_P['fecha_v_capacitacion']!="")
             $fechac = $this->fdate($_P['fecha_v_capacitacion'],'EN');
         else
@@ -131,7 +135,8 @@ class chofer extends Main {
                                         direccion=:p13,
                                         fecha_v_licencia=:p14,
                                         categoria=:p15,
-                                        fecha_v_capacitacion=:p16
+                                        fecha_v_capacitacion=:p16,
+                                        record=:p17
                                  WHERE idempleado = :idempleado');       
         $stmt->bindParam(':p1', $_P['idoficina'] , PDO::PARAM_INT);
         $stmt->bindParam(':p2', $_P['nombre'] , PDO::PARAM_STR);
@@ -150,6 +155,7 @@ class chofer extends Main {
         $stmt->bindParam(':p14', $fechal , PDO::PARAM_STR);
         $stmt->bindParam(':p15', $_P['categoria'] , PDO::PARAM_STR);
         $stmt->bindParam(':p16', $fechac , PDO::PARAM_STR);
+        $stmt->bindParam(':p17', $record , PDO::PARAM_STR);
         $p1 = $stmt->execute();
         $p2 = $stmt->errorInfo();
         return array($p1 , $p2[2]);

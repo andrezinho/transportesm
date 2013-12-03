@@ -24,7 +24,13 @@
     <input type="hidden" name="controller" value="chofer" />
     <input type="hidden" name="action" value="save" />
     <div class="contFrm" style="background: #fff;">
-        <div style="margin:0 auto; ">                
+        <div style="margin:0 auto; ">  
+            <div id="tabs">
+                <ul>
+                    <li><a href="#tabs-1">Datos Personales</a></li>
+                    <li><a href="#tabs-2">Record de Chofer</a></li>                    
+                </ul>
+                <div id="tabs-1">
                 <label for="idchofer" class="labels">DNI:</label>
                 <input type="text" id="idempleado" name="idempleado" maxlength="8" class="text ui-widget-content ui-corner-all" onkeypress="return permite(event,'num')" style=" width: 100px; text-align: left;" value="<?php echo $obj->idempleado; ?>" <?php echo $readonly; ?> title="Ingrese su DNI o su codigo de chofer" />
                 <br/>
@@ -83,11 +89,18 @@
                      else {$rep = 1;}                    
                      activo('activo',$rep);
                 ?>
-                <div style="clear: both; padding: 10px; width: auto;text-align: center">
+                
+                </div>
+                <div id="tabs-2">
+                    <label for="record" class="labels" style="width:200px;">Ingresa el historial de Records:</label>
+                    <br/>
+                    <textarea name="record" id="record" rows="15" cols="120" style="width:100%" placeholder="Escriba el historial de records para este chofer." class="ui-widget-content ui-corner-all"><?php echo $obj->record; ?></textarea>
+                </div>
+        </div>
+            <div style="clear: both; padding: 10px; width: auto;text-align: center">
                     <a href="#" id="save" class="button">GRABAR</a>
                     <a href="index.php?controller=chofer" class="button">ATRAS</a>
                 </div>
-            </div>
         </div>
     </form>
 </div>    

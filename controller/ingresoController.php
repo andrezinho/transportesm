@@ -4,7 +4,8 @@ require_once '../lib/view.php';
 require_once '../model/ingresos.php';
 class ingresoController extends Controller
 {
-   public function index() {
+   public function index() 
+   {
         if (!isset($_GET['p'])){$_GET['p']=1;}
         if(!isset($_GET['q'])){$_GET['q']="";}        
         if(!isset($_GET['criterio'])){$_GET['criterio']="remitente.nombre";} 
@@ -44,8 +45,7 @@ class ingresoController extends Controller
     {
         $data = array();
         $view = new View();   
-        $data['more_options'] = $this->more_options('ingreso');
-        
+        $data['more_options'] = $this->more_options('ingreso');        
         $data['detalle'] = $this->viewDetalle();
          $view->setData($data);
         $view->setTemplate( '../view/ingresos/_form.php' );

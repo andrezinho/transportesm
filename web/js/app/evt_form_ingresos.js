@@ -7,6 +7,15 @@ $(function() {
             $("#tipo-1").hide("slow");
         
         $("#tipo-"+$(this).val()).show("slow");
+        
+        $( "#idproveedor" ).val("");
+        $( "#razonsocial" ).val( "" );
+        $( "#ruc" ).val( "" );
+        
+        $( "#nombre" ).val("");
+        $( "#idempleado" ).val( "" );
+        $( "#chofer" ).val( "" );
+        
     });
     $("#fecha").datepicker({
                             'dateFormat':'dd/mm/yy',
@@ -15,6 +24,54 @@ $(function() {
                              buttonImage: "images/calendar.png"
                             });
     $( "#nombre" ).focus();
+     $( "#razonsocial" ).autocomplete({
+            minLength: 0,
+            source: "index.php?controller=Proveedor&action=search_autocomplete&tipo=2",
+            focus: function( event, ui ) {
+                $( "#ruc" ).val( ui.item.ruc );
+                return false;
+            },
+            select: function( event, ui ) {
+                $( "#idproveedor" ).val(ui.item.id);
+                $( "#razonsocial" ).val( ui.item.name );
+                $( "#ruc" ).val( ui.item.ruc );                
+                $("#observacion").focus();
+                return false;
+            },
+            change: function(event, ui) 
+            {                
+                return false;
+            }
+        }).data( "autocomplete" )._renderItem = function( ul, item ) {
+            return $( "<li></li>" )
+                .data( "item.autocomplete", item )
+                .append( "<a>" + item.name + "</a>" )
+                .appendTo( ul );
+        };
+    $( "#ruc" ).autocomplete({
+            minLength: 0,
+            source: "index.php?controller=Proveedor&action=search_autocomplete&tipo=1",
+            focus: function( event, ui ) {
+                $( "#ruc" ).val( ui.item.ruc );
+                return false;
+            },
+            select: function( event, ui ) {
+                $( "#idproveedor" ).val(ui.item.id);
+                $( "#razonsocial" ).val( ui.item.name );
+                $( "#ruc" ).val( ui.item.ruc );                
+                $("#observacion").focus();
+                return false;
+            },
+            change: function(event, ui) 
+            {                
+                return false;
+            }
+        }).data( "autocomplete" )._renderItem = function( ul, item ) {
+            return $( "<li></li>" )
+                .data( "item.autocomplete", item )
+                .append( "<a>"+ item.ruc +"-" + item.name + "</a>" )
+                .appendTo( ul );
+        };
     $( "#idempleado" ).autocomplete({
             minLength: 0,
             source: "index.php?controller=propietario&action=search_autocomplete&tipo=1",
@@ -130,7 +187,18 @@ $(function() {
     );
     $( "#save" ).click(function(){
         bval = true;                
-        bval = bval && $( "#fecha" ).required();                
+        bval = bval && $( "#fecha" ).required();    
+         var ti = $("#tipoi").val();
+         if(ti==1)
+             {
+                 bval = bval && $("#idempleado").required();
+                 bval = bval && $("#nombre").required();                 
+             }
+         else
+             {
+                 bval = bval && $("#ruc").required();
+                 bval = bval && $("#razonsocial").required();
+             }
         //bval = bval && $( "#idempleado" ).required();                
         //bval = bval && $( "#chofer" ).required();                
         //bval = bval && $( "#placa" ).required();                        
@@ -145,7 +213,7 @@ $(function() {
                     var html_printer = "";                    
                     if(result[0]=='1')
                     {
-                        html_printer = '<a class="lnk-results" target="_blank" href="index.php?controller=ingreso&action=printer&iv='+result[2]+'">Imprimir</a>';                       
+                        html_printer = '<a class="lnk-results" target="_blank" href="index.php?controller=ingresos&action=printer&iv='+result[2]+'">Imprimir</a>';                       
                         html_printer += '<a class="lnk-results" href="javascript:" id="re-new">Registrar Nuevo</a>';
                         if(result[3]=="1")
                         {
@@ -205,7 +273,7 @@ $(function() {
                 
                 var str = jQuery.param(parametros);
                 
-                $.post('index.php','controller=ingreso&action=add&'+str,function(resp)
+                $.post('index.php','controller=ingresos&action=add&'+str,function(resp)
                 {                
                     
                     if(resp.resp=="1")
@@ -244,7 +312,7 @@ $(function() {
        
         if(confirm("Realmente deseas quitar este Item?"))
         {
-            $.post('index.php','controller=ingreso&action=quit&i='+item,function(resp){                     
+            $.post('index.php','controller=ingresos&action=quit&i='+item,function(resp){                     
                  $("#div-detalle").empty().append(resp);
         });
     }    
