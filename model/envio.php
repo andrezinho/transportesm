@@ -6,7 +6,7 @@ class envio extends Main{
     {
         $sql = "SELECT e.idenvio,
                        concat(substring(e.fecha,9,2),'/',substring(e.fecha,6,2),'/',substring(e.fecha,1,4)),
-                       remitente.nombre,
+                       case remitente.nrodocumento when '00000000' then e.remitente else remitente.nombre end,
                        e.consignado,
                        e.numero,
                        d.descripcion,

@@ -141,23 +141,21 @@ class reportes extends Main
    
       function data_envio($g)
       {
-       $sql = "SELECT
-				envio.fecha,
-				envio.hora,
-				concat(empleado.nombre ,' ', empleado.apellidos),
-				vehiculo.marca,
-				remitente.nombre,
-				remitente.nombre,
-				envio.numero
-			  FROM
-				envio
-				Inner Join envio_detalle ON envio.idenvio = envio_detalle.idenvio
-				Inner Join empleado ON empleado.idempleado = envio.idchofer
-				Inner Join pasajero as remitente ON remitente.idpasajero = envio.idremitente
-				Inner Join pasajero as consignado on consignado.idpasajero = envio.idconsignado
-				Inner Join tipo_documento ON tipo_documento.idtipo_documento = envio.idtipo_documento
-				Inner Join vehiculo ON vehiculo.idvehiculo = envio.idvehiculo
-			  WHERE envio.fecha between :p2 and :p3 and envio.idoficina = ".$_SESSION['idoficina'];
+       $sql = "SELECT   concat(substring(e.fecha,9,2),'/',substring(e.fecha,6,2),'/',substring(e.fecha,1,4)) as fecha,
+                        e.hora,
+                        chofer.nombre as chofer,
+                        v.placa as vechiulos,
+                        case remitente.nrodocumento when '00000000' then e.remitente else remitente.nombre end,
+                        e.consignado,
+                        e.numero                        
+                        from envio as e inner join pasajero as remitente on remitente.idpasajero = e.idremitente                  
+                            inner join empleado as em on e.idempleado = em.idempleado and em.idtipo_empleado = 1
+                            INNER JOIN destino as d on d.iddestino = e.iddestino
+                            left outer join salida as s on s.idsalida = e.idsalida
+                            left outer join vehiculo as v on v.idvehiculo = s.idvehiculo
+                            left outer join empleado as chofer on chofer.idempleado = s.idchofer and chofer.idtipo_empleado = 2 
+                            
+			  WHERE e.fecha between :p2 and :p3 and e.idoficina = ".$_SESSION['idoficina'];
        $stmt = $this->db->prepare($sql);
        $fechai = $this->fdate($g['fechai'],'EN');
        $fechaf = $this->fdate($g['fechaf'],'EN');

@@ -86,6 +86,10 @@
                 <input type="hidden" name="idremitente" id="idremitente" value="<?php echo $obj->idremitente; ?>" />
                 <input type="text" name="nrodocumentor" id="nrodocumentor" value="<?php echo $obj->nrodocumentor; ?>" class="ui-widget-content ui-corner-all text" size="13" title="Nro de Documento" onkeypress="return permite(event,'num')" maxlength="11" placeholder="Nro Documento" />
                 <input type="text" name="remitente" id="remitente" value="<?php echo $obj->remitente; ?>" class="ui-widget-content ui-corner-all text" title="Nombre del Remitente" style="width:394px" placeholder="Nombres y/o Razon Social" />
+                <span style="margin-left: 10px; padding: 2px 5px; background: #dadada;">
+                    <input type="checkbox" name="sdni" id="sdni" value="1" />
+                    <label for="sdni" style="color:blue; cursor: pointer">Sin DNI</label>
+                </span>
                 <br/>
                 <label for="idconsignado" class="labels" style="width:130px">Consignado a:</label>
                 <input type="hidden" name="idconsignado" id="idconsignado" value="<?php echo $obj->idconsignado; ?>" />

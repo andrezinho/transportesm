@@ -11,7 +11,7 @@ class genn_doc extends Main
                        g.numf,
                        g.current
                        from genn_doc as g inner join tipo_documento as td on g.idtipo_documento = td.idtipo_documento
-                       inner join oficina as o on g.idoficina = o.idoficina inner join sucursal as s on o.idsucursal = s.idsucursal
+                       inner join oficina as o on g.idoficina = o.idoficina inner join destino as s on o.idsucursal = s.iddestino
                        where td.descripcion like :query
                        order by g.idgenn_doc asc";
         $param = array(array('key'=>':query' , 'value'=>"%$query%" , 'type'=>'STR' ));

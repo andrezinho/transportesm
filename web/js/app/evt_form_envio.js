@@ -2,6 +2,27 @@ var idventa = '';
 var source = "index.php?controller=pasajero&action=search_autocomplete&tipo=1&t=0";
 var source2 = "index.php?controller=pasajero&action=search_autocomplete&tipo=1&t=1";
 $(function() {    
+    $("#sdni").click(function(){
+        var ck = $(this).attr("checked");
+        if(ck=='checked')
+            {
+                $("#nrodocumentor").hide();
+                $("#remitente").animate({
+                    width:'502px'
+                }, 100, function(){
+                    $("#nrodocumentor").val('00000000');
+                });
+            }
+        else
+            {
+                $("#nrodocumentor").show();
+                $("#remitente").animate({
+                    width:'394px'
+                }, 100, function(){
+                    $("#nrodocumentor,#idremitente").val('');                    
+                });
+            }
+    });
     $("#iddestino").css("width","160px");
     $("#salidas").css("width","260px");
     calcTotales();
@@ -99,7 +120,7 @@ $(function() {
     $("#reload-salidas").click(function(){
         var idd = $("#iddestino").val();        
         if(idd!="")        
-         { loadSalidas(idd);  }
+         {loadSalidas(idd);}
         else 
         {
             alert("Primero seleccione un destino");
@@ -116,27 +137,38 @@ $(function() {
         {
             bval = true;
             bval = bval && $( "#iddestino" ).required();
-            bval = bval && $( "#nrodocumentor" ).required();
-            if(bval)
+            
+            var ck = $("#sdni").attr("checked");
+            if(ck!='checked')
             {
-                var nrodoc = $("#nrodocumentor").val();
-                if(nrodoc.length==8||nrodoc.length==11)
-                {
-                    if(nrodoc.length==11)
+                bval = bval && $( "#nrodocumentor" ).required();
+                if(bval)
+                {                    
+                    var nrodoc = $("#nrodocumentor").val();
+                    if(nrodoc.length==8||nrodoc.length==11)
                     {
-                        if(!esrucok(nrodoc))
+                        if(nrodoc.length==11)
                         {
-                            alert("Por favor, ingrese numero de RUC valido del remitente");
-                            bval=false;
+                            if(!esrucok(nrodoc))
+                            {
+                                alert("Por favor, ingrese numero de RUC valido del remitente");
+                                bval=false;
+                            }
                         }
                     }
-                }
-                else 
-                {
-                    alert("Ingrese un nro de documento valido del remitente");
-                    bval = false;
+                    else 
+                    {
+                        alert("Ingrese un nro de documento valido del remitente");
+                        bval = false;
+                    }
                 }
             }
+            else
+            {                
+                bval = bval && $("#remitente").required();
+            }
+            
+            
             bval = bval && $("#consignado").required();
             if ( bval )
             {
