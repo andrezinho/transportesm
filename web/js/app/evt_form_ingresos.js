@@ -1,4 +1,26 @@
-$(function() {   
+$(function() { 
+       $("#sdni").click(function(){
+        var ck = $(this).attr("checked");
+        if(ck=='checked')
+            {
+                $("#ruc").hide();
+                $("#razonsocial").animate({
+                    width:'502px'
+                }, 100, function(){
+                    $("#ruc").val('00000000');
+                });
+            }
+        else
+            {
+                $("#ruc").show();
+                $("#razonsocial").animate({
+                    width:'394px'
+                }, 100, function(){
+                    $("#ruc,#idproveedor").val('');                    
+                });
+            }
+    });
+    
     $("#tipoi").change(function()
     {
         if($(this).val()==1)
@@ -196,7 +218,10 @@ $(function() {
              }
          else
              {
-                 bval = bval && $("#ruc").required();
+                  var ck = $("#sdni").attr("checked");
+                  if(ck!='checked')             
+                     bval = bval && $("#ruc").required();
+                 
                  bval = bval && $("#razonsocial").required();
              }
         //bval = bval && $( "#idempleado" ).required();                

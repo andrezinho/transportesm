@@ -8,7 +8,11 @@ class ingresos extends Main
         $sql = "select distinct 
                         m.idmovimiento,
                         case tipo_ingreso when 1 then concat(coalesce(e.nombre,' '),' ',coalesce(e.apellidos,' '))
-                            else pro.razonsocial end as recibi,                        
+                                            else 
+                                                case pro.ruc 
+                                                when '00000000' then m.recibi 
+                                                else pro.razonsocial  end                                                
+                                            end as remitente,
                         m.chofer,
                         m.fecha,                        
                         m.observacion,
@@ -117,7 +121,7 @@ class ingresos extends Main
                 $stmt->bindParam(':rs', $_P['razonsocial'] , PDO::PARAM_STR); //
                 $stmt->bindParam(':ruc', $_P['ruc'] , PDO::PARAM_STR); //
                 $stmt->bindParam(':p12', $_P['tipoi'] , PDO::PARAM_INT);
-                $stmt->bindParam(':p13', $_P['recibi'] , PDO::PARAM_STR);
+                $stmt->bindParam(':p13', $_P['razonsocial'] , PDO::PARAM_STR);
                 $stmt->execute();
                 $row = $stmt->fetchAll();
                 $idmovimiento = $row[0][0];
@@ -188,8 +192,13 @@ class ingresos extends Main
     }
     function getdata($ide)
     {
-        $stmt = $this->db->prepare("SELECT distinct  case tipo_ingreso when 1 then concat(coalesce(e.nombre,' '),' ',coalesce(e.apellidos,' '))
-                                            else pro.razonsocial end as remitente,                                            
+        $stmt = $this->db->prepare("SELECT distinct  
+                                            case tipo_ingreso when 1 then concat(coalesce(e.nombre,' '),' ',coalesce(e.apellidos,' '))
+                                            else 
+                                                case pro.ruc 
+                                                when '00000000' then m.recibi 
+                                                else pro.razonsocial  end                                                
+                                            end as remitente,                                            
                                             m.fecha, 
                                             o.descripcion as oficina,
                                             o.direccion,
