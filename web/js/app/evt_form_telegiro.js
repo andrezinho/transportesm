@@ -1,7 +1,52 @@
 var source = "index.php?controller=pasajero&action=search_autocomplete&tipo=1t=0";
 $(function() {    
-    $("#iddestino").css("width","160px").attr("title","Seleccione el destino");
-    //$("#iddestino").attr("")
+    
+    $("#sdni").click(function(){
+        var ck = $(this).attr("checked");
+        if(ck=='checked')
+            {
+                $("#nrodocumentor").hide();
+                $("#remitente").animate({
+                    width:'502px'
+                }, 100, function(){
+                    $("#nrodocumentor").val('00000000');
+                });
+            }
+        else
+            {
+                $("#nrodocumentor").show();
+                $("#remitente").animate({
+                    width:'394px'
+                }, 100, function(){
+                    $("#nrodocumentor,#idremitente").val('');                    
+                });
+            }
+    });
+    
+    
+    $("#sdni2").click(function(){
+        var ck = $(this).attr("checked");
+        if(ck=='checked')
+            {
+                $("#nrodocumentoc").hide();
+                $("#consignado").animate({
+                    width:'502px'
+                }, 100, function(){
+                    $("#nrodocumentoc").val('00000000');
+                });
+            }
+        else
+            {
+                $("#nrodocumentoc").show();
+                $("#consignado").animate({
+                    width:'394px'
+                }, 100, function(){
+                    $("#nrodocumentoc").val('');                    
+                });
+            }
+    });
+    
+    $("#iddestino").css("width","160px").attr("title","Seleccione el destino");    
     $("#idchofer,#idvehiculo").css("width","430px");
     $("#iddestino").focus();
     load_sernum(5);
@@ -78,13 +123,17 @@ $(function() {
              bval = true;
              bval = bval && $("#iddestino").required();
              bval = bval && $("#nrodocumentor").required();
+             var ck = $("#sdni").attr("checked");
+             if(ck=='checked')             
+                 bval = bval && $("#remitente").required();
              bval = bval && $("#nrodocumentoc").required();
              bval = bval && $("#consignado").required();
              bval = bval && $("#monto_telegiro").required();
              bval = bval && $("#monto_caja").required();
              
+                          
              var mt = parseFloat($("#monto_telegiro").val());             
-             if(mt<=0)
+             if(mt<=0&&bval==true)
                  {
                      bval = false;
                      alert("El monto del telegiro debe ser mayor a cero");

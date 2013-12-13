@@ -6,7 +6,9 @@ class telegiro extends Main{
     {
         $sql = "SELECT t.idtelegiro,
                 concat(substring(t.fecha,9,2),'/',substring(t.fecha,6,2),'/',substring(t.fecha,1,4)),
-                remitente.nombre,
+                case remitente.nrodocumento 
+                when '00000000' then t.remitente                                                 
+                else remitente.nombre end AS remitente,
                 t.consignado,
                 t.numero,
                 cast(t.monto_telegiro as decimal(18,2)),
@@ -235,7 +237,9 @@ class telegiro extends Main{
     {
         $stmt = $this->db->prepare("SELECT t.idtelegiro,
                                             concat(substring(t.fecha,9,2),'/',substring(t.fecha,6,2),'/',substring(t.fecha,1,4)) as fecha,
-                                            remitente.nombre as remitente,
+                                            case remitente.nrodocumento 
+                                                when '00000000' then t.remitente                                                 
+                                                else remitente.nombre end AS remitente,
                                             t.consignado,
                                             t.numero,
                                             t.monto_telegiro as monto,

@@ -516,7 +516,9 @@ class envio extends Main{
                                             e.hora,
                                             concat(coalesce(chofer.nombre,''),' ',coalesce(chofer.apellidos,'')) as chofer,
                                             '' as campo,
-                                            remitente.nombre as remitente,
+                                            case remitente.nrodocumento 
+                                                when '00000000' then e.remitente                                                 
+                                                else remitente.nombre end AS remitente,
                                             e.consignado,
                                             e.direccion,
                                             v.placa,

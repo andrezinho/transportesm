@@ -87,7 +87,8 @@ class ingresos extends Main
         return $row;
         
     }
-     function insert($_P ) {
+     function insert($_P ) 
+    {
          
         $idperiodo = $_SESSION['idperiodo'];
         $idempleado = $_SESSION['idempleado'];  

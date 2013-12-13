@@ -47,11 +47,19 @@
                 <input type="hidden" name="idremitente" id="idremitente" value="<?php echo $obj->idremitente; ?>" />
                 <input type="text" name="nrodocumentor" id="nrodocumentor" value="<?php echo $obj->nrodocumentor; ?>" class="ui-widget-content ui-corner-all text" size="13" title="Nro de Documento" onkeypress="return permite(event,'num')" placeholder="Nro Documento" />
                 <input type="text" name="remitente" id="remitente" value="<?php echo $obj->remitente; ?>" class="ui-widget-content ui-corner-all text" style="width:350px" title="Nombre del Remitente" placeholder="Nombre del Remitente" />
+                <span style="margin-left: 10px; padding: 2px 5px; background: #dadada;">
+                    <input type="checkbox" name="sdni" id="sdni" value="1" />
+                    <label for="sdni" style="color:blue; cursor: pointer">Sin DNI</label>
+                </span>
                 <br/>
                 <label for="idconsignado" class="labels" style="width:130px">Consignado a:</label>
                 <!--<input type="hidden" name="idconsignado" id="idremitente" value="<?php echo $obj->idconsignado; ?>" />-->
                 <input type="text" name="idconsignado" id="nrodocumentoc" value="<?php echo $obj->idconsignado; ?>" class="ui-widget-content ui-corner-all text" size="13" title="Nro de Documento" onkeypress="return permite(event,'num')" placeholder="Nro Documento" />
                 <input type="text" name="consignado" id="consignado" value="<?php echo $obj->consignado; ?>" class="ui-widget-content ui-corner-all text" style="width:350px"  title="Nombre del Consignado" placeholder="Nombre del Consignado" />
+                <span style="margin-left: 10px; padding: 2px 5px; background: #dadada;">
+                    <input type="checkbox" name="sdni2" id="sdni2" value="1" />
+                    <label for="sdni2" style="color:blue; cursor: pointer">Sin DNI</label>
+                </span>
                 <br/>
                 <label for="monto_telegiro" class="labels" style="width:130px">Mont. Teleg.:</label>
                 <input type="text" name="monto_telegiro" id="monto_telegiro" value="<?php if($obj->monto_telegiro!="") echo number_format($obj->monto_telegiro,2); else echo "0.00"; ?>" class="ui-widget-content ui-corner-all text" size="13" title="Monto del Telegiro" onkeypress="return permite(event,'num')" style="text-align: right" /> S/.
