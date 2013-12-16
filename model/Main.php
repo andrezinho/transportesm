@@ -48,12 +48,13 @@ class Main extends Spdo {
                         else { $sql .= " AND cast({$f} as nchar) like '%{$v}%'"; }
                     $c ++;
                 }              
-            $sth = $this->db->prepare($sql);
+            $sth = $this->db->prepare($sql." order by 2");
         }
         else 
         {
-            $sth = $this->db->prepare("SELECT * FROM {$this->table}");
+            $sth = $this->db->prepare("SELECT * FROM {$this->table} order by 2");
         }
+       
         $sth->execute();
         return $sth->fetchAll();
     }

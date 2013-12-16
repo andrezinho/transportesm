@@ -77,7 +77,7 @@ class telegiro extends Main{
         $estado = 1;
         $hora = date('h:i:s');
       
-        $stmt = $this->db->prepare("SELECT f_insert_telegiro (:p1,:p2,:p3,:p4,:p5,:p6,:p7,:p8,:p9,:p10,:p11,:p12,:p13,:p14,:p15); ");
+        $stmt = $this->db->prepare("SELECT f_insert_telegiro (:p1,:p2,:p3,:p4,:p5,:p6,:p7,:p8,:p9,:p10,:p11,:p12,:p13,:p14,:p15,:p16); ");
         try 
         {
             $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -88,7 +88,7 @@ class telegiro extends Main{
                 $stmt->bindParam(':p4',$_P['idremitente'],PDO::PARAM_STR);
                 $stmt->bindParam(':p5',$_P['nrodocumentor'],PDO::PARAM_STR);
                 $stmt->bindParam(':p6',$_P['remitente'],PDO::PARAM_STR);
-                $stmt->bindParam(':p7',$_P['idconsignado'],PDO::PARAM_INT);
+                $stmt->bindParam(':p7',$_P['idconsignado'],PDO::PARAM_STR);
                 $stmt->bindParam(':p8',$_P['consignado'],PDO::PARAM_STR);
                 $stmt->bindParam(':p9',$this->fdate($_P['fecha'],'EN'),PDO::PARAM_STR);
                 $stmt->bindParam(':p10',$hora,PDO::PARAM_STR);
@@ -97,6 +97,7 @@ class telegiro extends Main{
                 $stmt->bindParam(':p13',$this->tipo_documento,PDO::PARAM_INT);
                 $stmt->bindParam(':p14',$estado,PDO::PARAM_INT);
                 $stmt->bindParam(':p15',$idoficina,PDO::PARAM_INT);
+                $stmt->bindParam(':p16',$_P['observacion'],PDO::PARAM_STR);
                 $stmt->execute();
                 $row = $stmt->fetchAll();
                 $idtelegiro = $row[0][0];
@@ -119,7 +120,7 @@ class telegiro extends Main{
         $idoficina = $_SESSION['idoficina'];
         $estado = 1;
         $idtelegiro = (int) $_P['idtelegiro'];
-        $stmt = $this->db->prepare("SELECT f_update_telegiro (:p0,:p1,:p2,:p3,:p4,:p5,:p6,:p7,:p8,:p11,:p12,:p13,:p14,:p15); ");
+        $stmt = $this->db->prepare("SELECT f_update_telegiro (:p0,:p1,:p2,:p3,:p4,:p5,:p6,:p7,:p8,:p11,:p12,:p13,:p14,:p15,:p16); ");
         try 
         { 
             $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -131,22 +132,24 @@ class telegiro extends Main{
                 $stmt->bindParam(':p4',$_P['idremitente'],PDO::PARAM_STR);
                 $stmt->bindParam(':p5',$_P['nrodocumentor'],PDO::PARAM_STR);
                 $stmt->bindParam(':p6',$_P['remitente'],PDO::PARAM_STR);
-                $stmt->bindParam(':p7',$_P['idconsignado'],PDO::PARAM_INT);
+                $stmt->bindParam(':p7',$_P['idconsignado'],PDO::PARAM_STR);
                 $stmt->bindParam(':p8',$_P['consignado'],PDO::PARAM_STR);
                 $stmt->bindParam(':p11',$_P['monto_telegiro'],PDO::PARAM_INT);
                 $stmt->bindParam(':p12',$_P['monto_caja'],PDO::PARAM_INT);
                 $stmt->bindParam(':p13',$this->tipo_documento,PDO::PARAM_INT);
                 $stmt->bindParam(':p14',$estado,PDO::PARAM_INT);
                 $stmt->bindParam(':p15',$idoficina,PDO::PARAM_INT);
+                $stmt->bindParam(':p16',$_P['observacion'],PDO::PARAM_STR);
                 $stmt->execute();
                 $row = $stmt->fetchAll();
-                $idtelegiro = $row[0][0];
+                //$idtelegiro = $row[0][0];
                 
                 
                 
             $this->db->commit();
             //unset($_SESSION['telegiros']);
-            return array('res'=>"1",'msg'=>'Bien!','idv'=>$idtelegiro);
+            return array('res'=>"1",'msg'=>'Bien!','id'=>$idtelegiro);
+            
             //return array('res'=>"1",'msg'=>$consulta,'idv'=>$idtelegiro);
         }
         catch(PDOException $e) 
@@ -246,10 +249,13 @@ class telegiro extends Main{
                                             o.descripcion as oficina,
                                             o.direccion,
                                             o.telefono,
-                                            d.descripcion as destino
+                                            d.descripcion as destino,
+                                            t.observacion,
+                                            t.monto_caja,
+                                            t.idconsignado
                                     from telegiro as t inner join pasajero as remitente on remitente.idpasajero = t.idremitente
                                           inner join oficina as o on t.idoficina = o.idoficina
-                                          INNER JOIN destino as d on d.iddestino = t.iddestino
+                                          INNER JOIN oficina as d on d.idoficina = t.iddestino
                                         where t.idtelegiro = :id and t.estado <> 3;");
         $stmt->bindParam(':id',$idv,PDO::PARAM_INT);
         $stmt->execute();

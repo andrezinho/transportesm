@@ -60,7 +60,9 @@ class ingresos extends Main
                                            e.idempleado,
                                            concat(coalesce(e.nombre,' '),' ',coalesce(e.apellidos,' ')) as nombre,                                           
                                            m.placa,
-                                           pro.razonsocial,
+                                           case pro.ruc 
+                                                when '00000000' then m.recibi 
+                                                else pro.razonsocial  end as razonsocial,
                                            pro.ruc,
                                            pro.idproveedor
                                     from movimiento as m 
@@ -203,7 +205,8 @@ class ingresos extends Main
                                             o.descripcion as oficina,
                                             o.direccion,
                                             o.telefono,
-                                            m.observacion
+                                            m.observacion,
+                                            m.placa
                                    from movimiento as m                                         
                                         inner join empleado as users on users.idempleado = m.idempleado                                             
                                             inner join oficina as o on m.idoficina = o.idoficina                                            

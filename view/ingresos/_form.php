@@ -31,13 +31,17 @@
                     </option>
                 </select>
                 <br/>
+                <?php if($obj->ruc!="00000000") 
+                        { $display = "inline"; $ck = ""; } 
+                       else {$display = "none"; $ck = "checked"; }
+                ?>
                 <div id="tipo-2" style="display: <?php echo $d2; ?>;">                    
                     <label for="recibi" class="labels" style="width:130px">Recibi de:</label>               
                     <input type="hidden" name="idproveedor" id="idproveedor" value="" class="ui-widget-content ui-corner-all text" />
-                    <input type="text" name="ruc" id="ruc" value="<?php echo $obj->ruc; ?>" maxlength="11" class="ui-widget-content ui-corner-all text" onkeypress="return permite(event,'num')" size="10" title="Ruc o Dni del Proveedor" placeholder="DNI y/o RUC" />
+                    <input type="text" name="ruc" id="ruc" value="<?php echo $obj->ruc; ?>" maxlength="11" class="ui-widget-content ui-corner-all text" onkeypress="return permite(event,'num')" size="10" title="Ruc o Dni del Proveedor" placeholder="DNI y/o RUC" style="display:<?php echo $display; ?>" />
                     <input type="text" name="razonsocial" id="razonsocial" maxlength="100" value="<?php echo $obj->razonsocial; ?>" class="ui-widget-content ui-corner-all text" title="Razon Social del Proveedor" style="width:400px" placeholder="Nombres y/o Razon Social"  />
                     <span style="margin-left: 10px; padding: 2px 5px; background: #dadada;">
-                        <input type="checkbox" name="sdni" id="sdni" value="1" />
+                        <input type="checkbox" name="sdni" id="sdni" value="1" <?php echo $ck; ?> />
                         <label for="sdni" style="color:blue; cursor: pointer">Sin DNI/RUC</label>
                     </span>
                 </div>

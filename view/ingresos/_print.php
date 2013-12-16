@@ -78,6 +78,13 @@ function printThis() {
     </td>
   </tr>  
   <?php } ?>
+  <?php if($head->placa!=""){ ?>
+  <tr>
+    <td align="left" class="Cabecera" colspan="3">
+        Vehiculo (Placa):   <?php echo Separar($head->placa); ?> 
+    </td>
+  </tr>  
+  <?php } ?>
   <tr>
   <td colspan="3" valign="top">
     <table width="100%" border="0" cellspacing="0" cellpadding="0">

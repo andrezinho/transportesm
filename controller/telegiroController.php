@@ -218,7 +218,7 @@ class telegiroController extends Controller
             if ($p['res']=='1')
             {
                 //$result = array(1,'SE HA MODIFICADO CORRECTAMENTE EL TELEGIRO',$p['idv']);
-                $result = array(1,$p['msg'],$p['idv']);
+                $result = array(1,$p['msg'],$p['id']);
             } 
             else 
             {

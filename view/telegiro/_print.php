@@ -74,7 +74,7 @@ function printThis() {
   </tr>
   <tr>
     <td align="left" class="Cabecera" colspan="3">
-        Consignado :   <?php echo Separar($head->consignado); ?> 
+        Consignado :   <?php echo $head->idconsignado." - ".Separar($head->consignado); ?> 
     </td>
   </tr>
   <tr>
@@ -84,9 +84,21 @@ function printThis() {
   </tr>
   <tr>
     <td align="left" class="Cabecera" colspan="3">
-        Monto :   <?php echo Separar(number_format($head->monto,2)); ?> 
+        Monto Tel. (S/.):   <?php echo Separar(number_format($head->monto,2)); ?>  
     </td>
-  </tr>  
+  </tr> 
+  <tr>
+    <td align="left" class="Cabecera" colspan="3">
+        Precio (S/.):   <?php echo Separar(number_format($head->monto_caja,2)); ?>
+    </td>
+  </tr>
+  <?php if($head->observacion!="") { ?>
+  <tr>
+    <td align="left" class="Cabecera" colspan="3">
+        Observacion:   <?php echo Separar($head->observacion); ?>
+    </td>
+  </tr>
+  <?php } ?>
    <tr>
     <td align="left" class="Cabecera" colspan="3">
         &nbsp; 
