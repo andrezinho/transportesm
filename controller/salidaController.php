@@ -88,7 +88,7 @@ class salidaController extends Controller
         $id = (int)$_POST['i'];
         $r = $obj->payticket($id);
         if($r['res']=="1")
-        {            
+        {
             print_r(json_encode(array('1',$r['msg'])));
         }
         else 
@@ -234,11 +234,11 @@ class salidaController extends Controller
         $result = $obj->getdata((int)$_GET['ie']);
         if($result[0])
         {
-            $data['head'] = $result[1];             
+            $data['head'] = $result[1];
             $view->setData($data);
             $view->setTemplate( '../view/salida/_print.php');
             $view->setlayout( '../template/empty.php' );
-            $view->render();        
+            $view->render();
         }
          else 
         {

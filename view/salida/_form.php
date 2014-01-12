@@ -33,7 +33,9 @@
                 <input type="text" name="hora" id="hora" value="<?php if($obj->hora!=""){echo $obj->hora;} else {echo date('H:i');} ?>" class="ui-widget-content ui-corner-all text" size="6" style="text-align: center" readonly="" />                                                
                 <br/>
                 <label for="idchofer" class="labels" style="width:130px">Chofer:</label>
+                <div class="ui-widget" style="display:inline-block">
                 <?php echo $chofer; ?>
+                </div>
                 <br/>
                 <label for="idvehiculo" class="labels" style="width:130px">Vehiculo:</label>
                 <?php echo $vehiculo; ?>
