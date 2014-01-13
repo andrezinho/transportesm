@@ -56,7 +56,10 @@ function printThis() {
   </tr>
   <tr><td colspan="4"><hr></td></tr>
     <tr>
-    <td colspan="3" align="center" class="Cabecera">INGRESO:&nbsp;<?php echo $head->numero?>&nbsp;</td>
+    <td colspan="3" align="center" class="Cabecera">INGRESO</td>
+  </tr>
+  <tr>
+      <td colspan="3" align="center" class="Cabecera"><?php echo $head->serie." - ".$head->numero?></td>
   </tr>  
    <tr>
     <td align="left" class="Cabecera" colspan="2">

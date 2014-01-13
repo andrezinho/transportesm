@@ -30,6 +30,7 @@ class egresos extends Main
                             on cm.idconcepto_movimiento = md.idconcepto_movimiento
                             inner join empleado as user on user.idempleado = m.idempleado
                        where p.razonsocial like :query and m.idoficina = ".$_SESSION['idoficina']."
+                            and m.serie is not null
                        group by m.idmovimiento,
                             p.razonsocial,
                             m.fecha,

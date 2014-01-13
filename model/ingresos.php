@@ -46,6 +46,7 @@ class ingresos extends Main
                     and 
                     case tipo_ingreso when 1 then concat(coalesce(e.nombre,' '),' ',coalesce(e.apellidos,' '))
                             else pro.razonsocial end <> ''
+                    and m.serie is not null
                 order by idmovimiento desc";
         //echo $sql;
         $param = array(array('key'=>':query' , 'value'=>"%$query%" , 'type'=>'STR' ));
@@ -208,7 +209,9 @@ class ingresos extends Main
                                             o.direccion,
                                             o.telefono,
                                             m.observacion,
-                                            m.placa
+                                            m.placa,
+                                            m.serie,
+                                            m.numero
                                    from movimiento as m                                         
                                         inner join empleado as users on users.idempleado = m.idempleado                                             
                                             inner join oficina as o on m.idoficina = o.idoficina                                            
