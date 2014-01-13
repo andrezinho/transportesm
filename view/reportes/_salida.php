@@ -30,7 +30,7 @@ $("#gen").click(function(){
 
 </script>
 <div class="div_container">
-<h6 class="ui-widget-header">Reporte de Envios</h6>
+<h6 class="ui-widget-header">Reporte de Salidas</h6>
   
 
 <div style="padding: 20px; background: #EBECEC">

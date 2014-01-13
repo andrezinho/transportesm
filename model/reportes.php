@@ -179,15 +179,16 @@ class reportes extends Main
                   distinct 
           				salida.fecha_pay,
           				salida.hora_pay,
-          				concat(empleado.nombre,' ',empleado.apellidos) as nombre,
+          				concat(chofer.nombre,' ',chofer.apellidos) as nombre,
           				concat(vehiculo.marca,' - ',vehiculo.placa),
           				salida.numero,
                   salida.monto
           				FROM
-          				salida
-          				Inner Join empleado ON empleado.idempleado = salida.idempleado
+          				salida inner join empleado as chofer on chofer.idempleado = salida.idchofer
+          				Inner Join empleado ON empleado.idempleado = salida.idempleado and empleado.idtipo_empleado=1                  
           				Inner Join vehiculo ON vehiculo.idvehiculo = salida.idvehiculo
-          			  WHERE salida.fecha_pay between :p2 and :p3 and salida.idoficina = ".$_SESSION['idoficina'];
+          			  WHERE salida.fecha_pay between :p2 and :p3 and salida.idoficina = ".$_SESSION['idoficina']." 
+                        and chofer.idtipo_empleado = 2 ";
        $stmt = $this->db->prepare($sql);
        $fechai = $this->fdate($g['fechai'],'EN');
        $fechaf = $this->fdate($g['fechaf'],'EN');
