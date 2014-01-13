@@ -67,6 +67,7 @@ class reportes extends Main
 				        left join empleado as propietario on propietario.idempleado = m.idpropietario and propietario.idtipo_empleado = 3
                                         
 				WHERE m.tipo = 1 AND m.estado = 1 and m.fecha between :f1 and :f2 and m.idoficina = ".$_SESSION['idoficina']."
+              and m.serie is not null
 				ORDER by m.idmovimiento desc";
 
         $fechai = $this->fdate($g['fechai'],'EN');
@@ -89,6 +90,7 @@ class reportes extends Main
                     on cm.idconcepto_movimiento = md.idconcepto_movimiento 
                WHERE m.tipo = 2 and m.estado = 1 and m.fecha between :f1 and :f2
                 and m.idoficina = ".$_SESSION['idoficina']."
+                and m.serie is not null
                ORDER BY m.fecha";
        $stmt = $this->db->prepare($sql);
        $fechai = $this->fdate($g['fechai'],'EN');
@@ -147,8 +149,12 @@ class reportes extends Main
                         v.placa as vechiulos,
                         case remitente.nrodocumento when '00000000' then e.remitente else remitente.nombre end,
                         e.consignado,
-                        e.numero                        
+                        e.numero ,
+                        t.total                      
                         from envio as e inner join pasajero as remitente on remitente.idpasajero = e.idremitente                  
+                            inner join (select idenvio, sum(precio*cantidad) as total
+                                        from envio_detalle
+                                        group by idenvio) as t on t.idenvio = e.idenvio
                             inner join empleado as em on e.idempleado = em.idempleado and em.idtipo_empleado = 1
                             INNER JOIN destino as d on d.iddestino = e.iddestino
                             left outer join salida as s on s.idsalida = e.idsalida
@@ -170,16 +176,18 @@ class reportes extends Main
     function data_salida($g)
    {
        $sql = "SELECT
-				salida.fecha_pay,
-				salida.hora_pay,
-				concat(empleado.nombre,' ',empleado.apellidos) as nombre,
-				vehiculo.marca,
-				salida.numero
-				FROM
-				salida
-				Inner Join empleado ON empleado.idempleado = salida.idempleado
-				Inner Join vehiculo ON vehiculo.idvehiculo = salida.idvehiculo
-			  WHERE salida.fecha_pay between :p2 and :p3 and salida.idoficina = ".$_SESSION['idoficina'];
+                  distinct 
+          				salida.fecha_pay,
+          				salida.hora_pay,
+          				concat(empleado.nombre,' ',empleado.apellidos) as nombre,
+          				concat(vehiculo.marca,' - ',vehiculo.placa),
+          				salida.numero,
+                  salida.monto
+          				FROM
+          				salida
+          				Inner Join empleado ON empleado.idempleado = salida.idempleado
+          				Inner Join vehiculo ON vehiculo.idvehiculo = salida.idvehiculo
+          			  WHERE salida.fecha_pay between :p2 and :p3 and salida.idoficina = ".$_SESSION['idoficina'];
        $stmt = $this->db->prepare($sql);
        $fechai = $this->fdate($g['fechai'],'EN');
        $fechaf = $this->fdate($g['fechaf'],'EN');

@@ -39,9 +39,9 @@ $("#gen").click(function(){
         <input type="text" name="idarticulo" id="idarticulo" value="" class="ui-widget-content ui-corner-all text" size="8" />
         <input type="text" name="descripcion" id="descripcion" value="" class="ui-widget-content ui-corner-all text" size="45" />-->
         <label class="labels" for="periodoi">Fecha Inicial: </label>
-        <input type="text" name="fechai" id="fechai" value="" class="ui-widget-content ui-corner-all text" size="8" />
+        <input type="text" name="fechai" id="fechai" value="<?php echo date('d/m/Y'); ?>" class="ui-widget-content ui-corner-all text" size="8" />
         <label class="labels" for="periodof">Fecha Final: </label>
-        <input type="text" name="fechaf" id="fechaf" value="" class="ui-widget-content ui-corner-all text" size="8" />
+        <input type="text" name="fechaf" id="fechaf" value="<?php echo date('d/m/Y'); ?>" class="ui-widget-content ui-corner-all text" size="8" />
 
     </form>
     <div  style="clear: both; padding: 5px; width: auto;text-align: center">

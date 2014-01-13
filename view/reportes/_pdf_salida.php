@@ -38,8 +38,8 @@ class PDF extends FPDF
                 $this->Write(0,$fecha);
                 $this->Ln(8);		
                 
-		$this->SetFont('Times','B',7);		
-		$this->SetFillColor(245, 245, 245);
+        		$this->SetFont('Times','B',7);		
+        		$this->SetFillColor(245, 245, 245);
                 $this->SetTextColor(0,0,0); 
                 $this->SetDrawColor(0,0,0);
                 $fill = true;
@@ -52,6 +52,7 @@ class PDF extends FPDF
                 $this->Cell($this->widths[3], $h, 'CHOFER', $border, 0, 'C',$fill);
                 $this->Cell($this->widths[4], $h, 'VEHICULO', $border, 0, 'C',$fill);
 				$this->Cell($this->widths[5], $h, 'NUMERO', $border, 0, 'C',$fill);
+                $this->Cell($this->widths[6], $h, 'MONTO S/.', $border, 0, 'C',$fill);
                 $this->Ln();
                 
 	}
@@ -88,49 +89,31 @@ class PDF extends FPDF
             $h = 4;
             $w = $this->widths;
             $border = 'BLRT';
-            $this->SetFont('Times','',5);	
+            $this->SetFont('Times','',7);	
             $this->SetLineWidth(0.1);   
-//            foreach ($rowsi as $r) 
-//            {            
-//                $i += 1;
-//                $this->Cell($w[0], $h,str_pad($i, 3, '0', 0), $border, 0, 'C', false);
-//                $this->Cell($w[1], $h,$r['f'], $border, 0, 'C', false);                
-//                $this->Cell($w[2]+$w[3]+$w[4], $h,"*** SALDO INICIAL ***", $border, 0, 'C', false);                
-//                $this->Cell($w[5], $h,$r['cantidad'], $border, 0, 'R', false);                
-//                $this->Cell($w[6], $h,"", $border, 1, 'L', false);                                
-//            }
 
+            $t = 0;
             foreach($rowsi as $r)
             {
                 $i += 1;
                 $this->background(1);
-                /*if($r['tipo']==1)
-                {
-                    $ingreso = $r['cant'];
-                    $egreso = '';
-                    $tingreso += $ingreso;
-                }
-                else
-                {
-                    $ingreso = '';
-                    $egreso = $r['cant'];
-                    $tegreso += $egreso;
-                }*/
+
                 $fill = true;
                 $this->Cell($w[0], $h,str_pad($i, 3, '0', 0), $border, 0, 'C', $fill);
-                $this->Cell($w[1], $h,$this->ffecha($r[0]), $border, 0, 'C', $fill);  
-                //$nh = $this->nLineaBreak($w[2], $h, utf8_decode($r['doc']), 'L');
+                $this->Cell($w[1], $h,$this->ffecha($r[0]), $border, 0, 'C', $fill);                  
                 $this->MultiCell($w[2], $h, $r[1], $border, 'C', $fill);                
-                $this->Cell($w[3], $h,$r[2], $border, 0, 'C', $fill);
+                $this->Cell($w[3], $h,$r[2], $border, 0, 'L', $fill);
                 $this->Cell($w[4], $h,$r[3], $border, 0, 'C', $fill);
                 $this->Cell($w[5], $h,$r[4], $border, 0, 'C', $fill);
-				
-                //$nh = $this->nLineaBreak($w[6], $h, utf8_decode($r['obs']), 'L');
-                //$this->MultiCell($w[6], $h/$nh, utf8_decode($r['obs']), $border, 'L', $fill);
+                $this->Cell($w[6], $h,number_format($r[5],2), $border, 0, 'R', $fill);
+                $t += $r[5];
                 $y = $this->GetY();
                 $this->SetXY(10,$y+$h);
-                
             }
+
+            
+            $this->Cell(array_sum($w)-$w[6], $h,'TOTAL', $border, 0, 'R', $fill);            
+            $this->Cell($w[6], $h,number_format($t,2), $border, 0, 'R', $fill);            
 			
 	}
 }
@@ -138,7 +121,7 @@ class PDF extends FPDF
 $pdf=new PDF();
 
 $maxw=200;
-$w = array(15,30,30,40,40,30);
+$w = array(10,20,20,50,40,15,20);
 $pdf->setValues($rowsi[0]['fecha'], $rowsi[0]['hora'], $maxw,$w);
 $orientacion = 'P';
 $pdf->AddPage($orientacion);
