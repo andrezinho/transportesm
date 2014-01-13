@@ -2,10 +2,11 @@
 include_once("Main.php");
 class ingresos extends Main
 {
+   protected $tipo_documento = 6;
    function index($query , $p ) 
    {
        
-        $sql = "select distinct 
+        $sql = "SELECT  distinct 
                         m.idmovimiento,
                         case tipo_ingreso when 1 then concat(coalesce(e.nombre,' '),' ',coalesce(e.apellidos,' '))
                                             else 
@@ -90,10 +91,10 @@ class ingresos extends Main
         {
             $r = $_SESSION['conceptos']->add($rows['idmovimiento'],$rows[1],$rows['cantidad'],$rows['monto']);
         }
-        return $row;
-        
+        return $row;        
     }
-     function insert($_P ) 
+
+    function insert($_P ) 
     {
          
         $idperiodo = $_SESSION['idperiodo'];
@@ -102,8 +103,8 @@ class ingresos extends Main
         $tipo = 1;
         $estado = 1;
         $hora = date('h:i:s');
-        $gr = '';//$_P['guia_remision'];        
-        $stmt = $this->db->prepare("select f_insert_movimiento (:p1, :p2, :p3, :p4,:p5, :p6, :p7, :p8, :p9, :p10, :p11, :rs,:ruc,:p12,:p13)");
+        $gr = '';
+        $stmt = $this->db->prepare("SELECT f_insert_movimiento (:p1, :p2, :p3, :p4,:p5, :p6, :p7, :p8, :p9, :p10, :p11, :rs,:ruc,:p12,:p13,:p14)");
         try 
         { 
             $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -124,6 +125,7 @@ class ingresos extends Main
                 $stmt->bindParam(':ruc', $_P['ruc'] , PDO::PARAM_STR); //
                 $stmt->bindParam(':p12', $_P['tipoi'] , PDO::PARAM_INT);
                 $stmt->bindParam(':p13', $_P['razonsocial'] , PDO::PARAM_STR);
+                $stmt->bindParam(':p14', $this->tipo_documento,PDO::PARAM_INT);
                 $stmt->execute();
                 $row = $stmt->fetchAll();
                 $idmovimiento = $row[0][0];

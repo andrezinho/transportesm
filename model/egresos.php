@@ -2,6 +2,7 @@
 include_once("Main.php");
 class egresos extends Main
 {
+   protected $tipo_documento = 7;
    function index($query , $p ) {
         $sql = "SELECT m.idmovimiento,
                        p.razonsocial,
@@ -82,7 +83,7 @@ class egresos extends Main
         //die($idoficina);
         $_P['recibi']="";
         $_P['tipoi']=0;
-        $stmt = $this->db->prepare("select f_insert_movimiento (:p1, :p2, :p3, :p4,:p5, :p6, :p7, :p8, :p9,'','',:p12,:p13,:p14,:p15)");
+        $stmt = $this->db->prepare("select f_insert_movimiento (:p1, :p2, :p3, :p4,:p5, :p6, :p7, :p8, :p9,'','',:p12,:p13,:p14,:p15,:p16)");
         try 
         { 
             $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -105,6 +106,7 @@ class egresos extends Main
                 $stmt->bindParam(':p13', $_P['ruc'] , PDO::PARAM_STR); //
                  $stmt->bindParam(':p14', $_P['tipoi'] , PDO::PARAM_INT);
                 $stmt->bindParam(':p15', $_P['recibi'] , PDO::PARAM_STR);
+                $stmt->bindParam(':p16', $this->tipo_documento,PDO::PARAM_INT);
                 
                 $stmt->execute();
                 $row = $stmt->fetchAll();
@@ -165,7 +167,8 @@ class egresos extends Main
         $p2 = $stmt->errorInfo();
         return array($p1 , $p2[2]);
     }
-    function delete($_P ) {
+    function delete($_P ) 
+    {
         $stmt = $this->db->prepare("DELETE FROM movimiento WHERE idmovimiento = :p1");
         $stmt->bindParam(':p1', $_P , PDO::PARAM_INT);
         $p1 = $stmt->execute();

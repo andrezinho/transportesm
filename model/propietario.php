@@ -66,9 +66,9 @@ class propietario extends Main {
         {
            return false;
         }
-    }
-    
-    function index($query , $p ,$c) {
+    }    
+    function index($query , $p ,$c) 
+    {
         $sql = "SELECT empleado.idempleado,                        
                        concat(empleado.nombre,' ',empleado.apellidos) as nombres,
                        concat(o.descripcion,' (',s.descripcion,') '),

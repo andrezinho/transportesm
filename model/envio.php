@@ -1,7 +1,7 @@
 <?php
 include_once("Main.php");
 class envio extends Main{    
-    protected $tipo_documento = 3;    
+    protected $tipo_documento = 3;
     function index($query,$p,$c) 
     {
         $sql = "SELECT e.idenvio,
