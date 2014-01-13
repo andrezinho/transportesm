@@ -4,7 +4,8 @@
  * and open the template in the editor.
  */
 include_once("Main.php");
-class chofer extends Main {
+class chofer extends Main 
+{
 
     function Verichofer($pw,$id)
     {

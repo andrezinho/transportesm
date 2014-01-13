@@ -75,7 +75,7 @@ class propietario extends Main {
                        case empleado.estado when 1 then '<p style=\"color:green\">ACTIVO</p>' else '<p style=\"color:red\">INACTIVO</p>' end                       
                     FROM tipo_empleado as te inner join empleado on te.idtipo_empleado = empleado.idtipo_empleado
                             inner join oficina as o on o.idoficina = empleado.idoficina
-                            inner join sucursal as s on s.idsucursal = o.idsucursal
+                            inner join destino as s on s.iddestino = o.idsucursal
              where {$c} like :query and empleado.idtipo_empleado = 3
              order by empleado.nombre, empleado.apellidos";
              
