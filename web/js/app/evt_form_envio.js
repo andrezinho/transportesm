@@ -189,7 +189,7 @@ $(function() {
                     if(result[0]=='1')
                     {
                         html_printer = '<a class="lnk-results" target="_blank" href="index.php?controller=envio&action=printer&iv='+result[2]+'">Imprimir</a>';                       
-                        html_printer += '<a class="lnk-results" href="javascript:" id="re-new">Registrar Nuevo</a>';
+                        html_printer += '<a class="lnk-results" href="index.php?controller=envio&action=create" id="">Registrar Nuevo</a>';
                         if(result[3]=="1")
                         {
                             html_printer += '<a class="lnk-results" href="javascript:" id="re-genv">Generar Comprobante</a>';

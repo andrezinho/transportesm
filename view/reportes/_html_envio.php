@@ -15,6 +15,8 @@
             <th >REMITENTE</th>
             <th >CONSIGNADO</th>            
             <th >NUMERO</th>
+            <th> FORMA</th>
+            <th >TIPO</th>
             <th width="90">MONTO (S/.)</th>
          </tr>
    </thead>
@@ -34,7 +36,9 @@
                 <td align="center"><?php echo $r[3]; ?></td>
                 <td align="left"><?php echo $r[4]; ?></td>
                 <td align="left"><?php echo $r[5]; ?></td>
-                <td align="center"><?php echo $r[6]; ?></td>     
+                <td align="center"><?php echo $r[6]; ?></td>  
+                <td align="center"><?php if($r[9]==1) echo "(Recepcionado)"; else echo "(Generado)"; ?></td>      
+                <td align="center"><?php if($r[8]==1) echo "CE"; else echo "."; ?></td>   
                 <td align="right" ><?php echo number_format($r[7],2); ?></td>           
             </tr>
            <?php
@@ -46,7 +50,7 @@
    </tbody>
    <tfood>
     <tr>
-      <td colspan="8" align="right">Total: </td>
+      <td colspan="9" align="right">Total: </td>
       <td align="right"><b><?php echo number_format($t,2); ?></b></td>
     </tr>
    </tfood>

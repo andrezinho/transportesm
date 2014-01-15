@@ -80,7 +80,7 @@ class envio extends Main{
                        else '<span class=\"box-boton boton-ok\"></span>'
                        end
                 from envio as e inner join pasajero as remitente on remitente.idpasajero = e.idremitente                  
-                    inner join empleado as em on e.idempleado = em.idempleado                    
+                    inner join empleado as em on e.idempleado = em.idempleado and em.idtipo_empleado = 1
                     inner join oficina as o on o.idoficina = e.idoficina     
                     INNER JOIN destino as d on d.iddestino = o.idsucursal
                 where ".$c." like :query and e.iddestino = ".$_SESSION['idsucursal']." and e.estado in (2,3)
@@ -229,6 +229,7 @@ class envio extends Main{
                 $stmt2 = $this->db->prepare('CALL insert_envio_detalle(:p1,:p2,:p3,:p4,:p5,:p6,:p7)');
                 
                 $estado = 1;
+                
                 for($i=0;$i<$obj->item;$i++)
                 { 
                     if($obj->estado[$i])

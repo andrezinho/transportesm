@@ -54,6 +54,8 @@ class PDF extends FPDF
                 $this->Cell($this->widths[5], $h, 'REMITENTE', $border, 0, 'C',$fill);
                 $this->Cell($this->widths[6], $h, 'CONSIGNADO', $border, 0, 'C',$fill);
 				$this->Cell($this->widths[7], $h, 'NUMERO', $border, 0, 'C',$fill);
+                $this->Cell($this->widths[10], $h, 'FORMA', $border, 0, 'C',$fill);
+                $this->Cell($this->widths[9], $h, 'TIPO', $border, 0, 'C',$fill);
                 $this->Cell($this->widths[8], $h, 'MONTO S/.', $border, 0, 'C',$fill);
                 $this->Ln();
                 
@@ -106,12 +108,19 @@ class PDF extends FPDF
                 $this->Cell($w[1], $h,$this->ffecha($r['fecha']), $border, 0, 'C', $fill);  
                 //$nh = $this->nLineaBreak($w[2], $h, utf8_decode($r['doc']), 'L');
                 $this->MultiCell($w[2], $h, $r['hora'], $border, 'C', $fill);                
-                $this->Cell($w[3], $h,$r[2], $border, 0, 'C', $fill);
+                $this->Cell($w[3], $h,$r[2], $border, 0, 'L', $fill);
                 $this->Cell($w[4], $h,$r[3], $border, 0, 'C', $fill);
                 $this->Cell($w[5], $h,$r[4], $border, 0, 'L', $fill);
 				$this->Cell($w[6], $h,$r[5], $border, 0, 'L', $fill);
 				$this->Cell($w[7], $h,$r[6], $border, 0, 'C', $fill);
+                $str = "(Generado)";
+                if($r[9]==1) $str = "(Recepcionado)";
+                $this->Cell($w[10], $h,$str, $border, 0, 'C', $fill);
+                $str = "";
+                if($r[8]==1) $str = "CE";
+                $this->Cell($w[9], $h,$str, $border, 0, 'C', $fill);
                 $this->Cell($w[8], $h,number_format($r[7],2), $border, 0, 'R', $fill);
+                
                 $t += $r[7];
 				
                 $y = $this->GetY();
@@ -125,10 +134,10 @@ class PDF extends FPDF
 
 $pdf=new PDF();
 
-$maxw=200;
-$w = array(8,15,10,30,15,40,35,15,20);
+$maxw=260;
+$w = array(8,15,10,55,15,55,55,15,15,10,20);
 $pdf->setValues($rowsi[0]['fecha'], $rowsi[0]['hora'], $maxw,$w);
-$orientacion = 'P';
+$orientacion = 'L';
 $pdf->AddPage($orientacion);
 $pdf->AliasNbPages();
 $pdf->FancyTable($rowsi,$rows);
