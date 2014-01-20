@@ -92,7 +92,9 @@ function printThis() {
         Precio (S/.):   <?php echo Separar(number_format($head->monto_caja,2)); ?>
     </td>
   </tr>
-  <?php if($head->observacion!="") { ?>
+  <?php if($head->observacion!="") 
+  { 
+  ?>
   <tr>
     <td align="left" class="Cabecera" colspan="3">
         Observacion:   <?php echo Separar($head->observacion); ?>
@@ -109,14 +111,30 @@ function printThis() {
         &nbsp; 
     </td>
   </tr>
-  
   <tr>
-    <td align="center" class="Cabecera" colspan="3">
-        .......................................
+    <td align="left" class="Cabecera" colspan="3">
+        &nbsp; 
     </td>
   </tr>
   <tr>
-      
+    <td align="left" class="Cabecera" colspan="3">
+        &nbsp; 
+    </td>
+  </tr>
+  <tr>
+    <td align="center" class="Cabecera" colspan="3">
+        _____________________
+    </td>
+  </tr>
+  <tr>
+    <td align="left" class="Cabecera" colspan="3">
+        &nbsp; 
+    </td>
+  </tr>
+  <tr>
+    <td align="left" class="Cabecera" colspan="3">
+        &nbsp; 
+    </td>
   </tr>
   <tr><td colspan="4"><hr></td></tr>
   <tr>

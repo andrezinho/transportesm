@@ -61,6 +61,22 @@ function printThis() {
   <tr>
       <td colspan="3" align="center" class="Cabecera"><?php echo $head->serie." - ".$head->numero?></td>
   </tr>
+  <tr>
+    <td colspan="4">&nbsp;</td>
+  </tr>
+  <tr>
+      <td colspan="3" align="center" class="Cabecera">
+      <?php 
+        if($head->cpago==1)
+          echo "CONTRA ENTREGA";
+        else 
+          echo "CANCELADO";
+      ?>
+      </td>
+  </tr>
+  <tr>
+    <td colspan="4">&nbsp;</td>
+  </tr>
    <tr>
     <td align="left" class="Cabecera" colspan="2">
         Fecha de Emision :   <?php echo Separar($head->fecha); ?> &nbsp;&nbsp; Hora: <?php echo Separar($head->hora); ?>
@@ -101,6 +117,11 @@ function printThis() {
     </td>
   </tr>
   <tr>
+    <td align="left" class="Cabecera" colspan="3">
+        Direccion :   <?php echo Separar($head->dir); ?> 
+    </td>
+  </tr>
+  <tr>
   <td colspan="3" valign="top">
     <table width="100%" border="0" cellspacing="0" cellpadding="0">
       <tr>
@@ -131,6 +152,42 @@ function printThis() {
   <tr>
     <td colspan="3" align="center" class="InfoVenta"><?php echo $_SESSION['IdUsuario']; ?></td>
   </tr> 
+
+     <tr>
+    <td align="left" class="Cabecera" colspan="3">
+        &nbsp; 
+    </td>
+  </tr>
+  <tr>
+    <td align="left" class="Cabecera" colspan="3">
+        &nbsp; 
+    </td>
+  </tr>
+  <tr>
+    <td align="left" class="Cabecera" colspan="3">
+        &nbsp; 
+    </td>
+  </tr>
+  <tr>
+    <td align="left" class="Cabecera" colspan="3">
+        &nbsp; 
+    </td>
+  </tr>
+  <tr>
+    <td align="center" class="Cabecera" colspan="3">
+        _______________________
+    </td>
+  </tr>
+  <tr>
+    <td align="left" class="Cabecera" colspan="3">
+        &nbsp; 
+    </td>
+  </tr>
+  <tr>
+    <td align="left" class="Cabecera" colspan="3">
+        &nbsp; 
+    </td>
+  </tr>
   
 </table>
 </body>

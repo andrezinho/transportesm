@@ -521,13 +521,14 @@ class envio extends Main{
                                                 when '00000000' then e.remitente                                                 
                                                 else remitente.nombre end AS remitente,
                                             e.consignado,
-                                            e.direccion,
+                                            e.direccion as dir,
                                             v.placa,
                                             o.descripcion as oficina,
                                             o.direccion,
                                             o.telefono,
                                             d.descripcion as destino,
-                                            e.atentamente
+                                            e.atentamente,
+                                            e.cpago
                                     from envio as e inner join pasajero as remitente on remitente.idpasajero = e.idremitente
                                             left outer join salida as s on s.idsalida = e.idsalida
                                             left outer join empleado as chofer on chofer.idempleado = s.idchofer and chofer.idtipo_empleado = 2        
