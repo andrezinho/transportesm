@@ -105,8 +105,10 @@
                 <br/>
                 
                 <label for="direccion" class="labels" style="width: 130px;">Direccion: </label>
-                <input type="text" name="direccion" id="direccion" value="<?php echo $obj->direccion; ?>" class="ui-widget-content ui-corner-all text" title="Direccion" style="width:502px;" placeholder="Direccion de domicilio del consignado" />
-                (Solo si la entrega es a Domicilio)
+                <input type="text" name="direccion" id="direccion" value="<?php echo $obj->direccion; ?>" class="ui-widget-content ui-corner-all text" title="Direccion" style="width:502px;" placeholder="Direccion de domicilio y/o oficina del consignado" />                
+                <label for="adomicilio" style="font-size:9px; margin-left:15px; color:blue">ENTREGA A DOMICILIO:</label>
+                <?php $ck=""; if($obj->adomicilio==1) { $ck ="checked"; } ?>
+                <input type="checkbox" name="adomicilio" id="adomicilio" value="1" <?php echo $ck; ?> /> 
                 <br/>
                 <label for="precio_encomienda" class="labels" style="width:130px">Contra-Entrega:</label>
                 <?php $ck=""; if($obj->cpago==1) { $ck ="checked"; } ?>

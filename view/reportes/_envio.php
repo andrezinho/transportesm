@@ -34,16 +34,22 @@ $("#gen").click(function(){
     
 
 <div style="padding: 20px; background: #EBECEC">
-    <form name="frm" id="frm" action="" method="get">
-        <!--<label class="labels" for="idarticulo">Articulo: </label>
-        <input type="text" name="idarticulo" id="idarticulo" value="" class="ui-widget-content ui-corner-all text" size="8" />
-        <input type="text" name="descripcion" id="descripcion" value="" class="ui-widget-content ui-corner-all text" size="45" />-->
+    <fieldset class="ui-corner-all">
+    <legend>Parametros del Reporte</legend>
+    <form name="frm" id="frm" action="" method="get">        
         <label class="labels" for="periodoi">Fecha Inicial: </label>
         <input type="text" name="fechai" id="fechai" value="<?php echo date('d/m/Y'); ?>" class="ui-widget-content ui-corner-all text" size="8" />
         <label class="labels" for="periodof">Fecha Final: </label>
         <input type="text" name="fechaf" id="fechaf" value="<?php echo date('d/m/Y'); ?>" class="ui-widget-content ui-corner-all text" size="8" />
+        <label class="labels" style="width:100px">Filtros</label>
+        <select name="filtro" id="filtro">
+            <option value="0">Mostrar todos los registros (TODOS)</option>
+            <option value="1">Mostrar Solo los que son CONTRA-ENTREGA</option>
+            <option value="2">Mostrar solo con ENTREGA A DOMICILIO</option>
+        </select>
 
     </form>
+    </fieldset>
     <div  style="clear: both; padding: 5px; width: auto;text-align: center">
         <a href="index.php" class="button">CERRAR</a>
         <a href="#" id="gen" class="button">GENERAR</a>

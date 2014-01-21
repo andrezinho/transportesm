@@ -167,9 +167,13 @@ $(function() {
             {                
                 bval = bval && $("#remitente").required();
             }
-            
-            
+                        
             bval = bval && $("#consignado").required();
+
+            var ck_ad = $("#adomicilio").attr("checked");
+            if(ck_ad=='checked')
+                bval = bval = $("#direccion").required();
+
             if ( bval )
             {
                 $("#save").empty().append("Grabando...");
@@ -178,7 +182,8 @@ $(function() {
                 {
                     showboxmsg('Registrando Envio...',3);
                 }
-                else {
+                else 
+                {
                     showboxmsg('Actualizando Envio...',3);
                 }
                 

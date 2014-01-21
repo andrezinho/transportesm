@@ -193,9 +193,13 @@ class envio extends Main{
         
         $cp = 0;
         if(isset($_P['cp']))        
-            $cp=1;        
+            $cp=1;
+
+        $ad = 0;
+        if(isset($_P['adomicilio']))
+            $ad=1;
         
-        $stmt = $this->db->prepare("SELECT f_insert_envio (:p1,:p2,:p3,:p4,:p6,:p7,:p8,:p11,:p12,:p13,:p14,:p15,:p18,:p19,:p20,:p21); ");
+        $stmt = $this->db->prepare("SELECT f_insert_envio (:p1,:p2,:p3,:p4,:p6,:p7,:p8,:p11,:p12,:p13,:p14,:p15,:p18,:p19,:p20,:p21,:p22); ");
         try 
         { 
             $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -209,19 +213,19 @@ class envio extends Main{
                 $stmt->bindParam(':p6',$_P['idremitente'],PDO::PARAM_STR);
                 $stmt->bindParam(':p7',$_P['nrodocumentor'],PDO::PARAM_STR);
                 $stmt->bindParam(':p8',$_P['remitente'],PDO::PARAM_STR);
-                //$stmt->bindParam(':p9',$_P['idconsignado'],PDO::PARAM_STR);
-                //$stmt->bindParam(':p10',$_P['nrodocumentoc'],PDO::PARAM_STR);
+                
                 $stmt->bindParam(':p11',$_P['consignado'],PDO::PARAM_STR);
-                $stmt->bindParam(':p21',$_P['atentamente'],PDO::PARAM_STR);
+                
                 $stmt->bindParam(':p12',$_P['direccion'],PDO::PARAM_STR);
                 $stmt->bindParam(':p13',$fecha,PDO::PARAM_STR);
                 $stmt->bindParam(':p14',$hora,PDO::PARAM_STR);      
                 $stmt->bindParam(':p15',$this->tipo_documento,PDO::PARAM_INT);
-                //$stmt->bindParam(':p16',$_P['serie'],PDO::PARAM_STR);
-                //$stmt->bindParam(':p17',$_P['numero'],PDO::PARAM_STR);                
+                               
                 $stmt->bindParam(':p18',$estado,PDO::PARAM_INT);
                 $stmt->bindParam(':p19',$idoficina,PDO::PARAM_INT);
                 $stmt->bindParam(':p20',$cp,PDO::PARAM_INT);
+                $stmt->bindParam(':p21',$_P['atentamente'],PDO::PARAM_STR);
+                $stmt->bindParam(':p22',$ad,PDO::PARAM_INT);
                 $stmt->execute();
                 $row = $stmt->fetchAll();
                 $idenvio = $row[0][0];                

@@ -152,7 +152,8 @@ class reportes extends Main
                         e.numero ,
                         case e.cpago when 0 then t.total else 0 end as total,
                         e.cpago,
-                        0
+                        0 as tipo,
+                        d.descripcion as destino
                         from envio as e inner join pasajero as remitente on remitente.idpasajero = e.idremitente                  
                             inner join (select idenvio, sum(precio*cantidad) as total
                                         from envio_detalle
@@ -162,8 +163,16 @@ class reportes extends Main
                             left outer join salida as s on s.idsalida = e.idsalida
                             left outer join vehiculo as v on v.idvehiculo = s.idvehiculo
                             left outer join empleado as chofer on chofer.idempleado = s.idchofer and chofer.idtipo_empleado = 2                             
-			  WHERE e.fecha between :p2 and :p3 and e.idoficina = ".$_SESSION['idoficina']." 
-        union all
+			  WHERE e.fecha between :p2 and :p3 and e.idoficina = ".$_SESSION['idoficina']; 
+        $sqlw="";
+        switch ($g['filtro']) 
+                {
+                  case 1: $sqlw = " and e.cpago = 1 "; break;                    
+                  case 2: $sqlw = " and e.adomicilio = 1 "; break;
+                  default: break;
+                } 
+        $sql .= $sqlw;
+        $sql .= " UNION ALL
         SELECT   concat(substring(e.fecha,9,2),'/',substring(e.fecha,6,2),'/',substring(e.fecha,1,4)) as fecha,
                                 e.hora,
                                 chofer.nombre as chofer,
@@ -173,7 +182,8 @@ class reportes extends Main
                                 e.numero ,
                                 case e.cpago when 0 then 0 else t.total end as total,
                                 e.cpago,
-                                1
+                                1 as tipo,
+                                d.descripcion as destino
                                 from envio as e inner join pasajero as remitente on remitente.idpasajero = e.idremitente                  
                                     inner join (select idenvio, sum(precio*cantidad) as total
                                                 from envio_detalle
@@ -184,6 +194,7 @@ class reportes extends Main
                                     left outer join vehiculo as v on v.idvehiculo = s.idvehiculo
                                     left outer join empleado as chofer on chofer.idempleado = s.idchofer and chofer.idtipo_empleado = 2                             
                 WHERE e.iddestino = ".$_SESSION['idsucursal']." and e.estado = 3 ";
+       $sql .= $sqlw;       
        $stmt = $this->db->prepare($sql);
        $fechai = $this->fdate($g['fechai'],'EN');
        $fechaf = $this->fdate($g['fechaf'],'EN');
