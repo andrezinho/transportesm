@@ -63,7 +63,7 @@ class salida extends Main
                         inner join vehiculo as v on v.idvehiculo = s.idvehiculo
                         inner join destino as d on d.iddestino = s.iddestino
                         inner join empleado as e on e.idempleado = s.idempleado and e.idtipo_empleado=1
-                where ".$c." like :query and chofer.idtipo_empleado = 2 
+                where cast(".$c." as char) like :query and chofer.idtipo_empleado = 2 
                         and s.idoficina = ".$_SESSION['idoficina']."
                 order by s.idsalida desc";
         $param = array(array('key'=>':query' , 'value'=>"%$query%" , 'type'=>'STR' ));
@@ -231,7 +231,8 @@ class salida extends Main
                                             d.descripcion as destino,
                                             o.descripcion as oficina,
                                             o.direccion,
-                                            o.telefono
+                                            o.telefono,
+                                            s.monto
                                     from salida as s inner join tipo_documento as td on td.idtipo_documento = s.idtipo_documento
                                         inner join vehiculo as v on v.idvehiculo = s.idvehiculo
                                         inner join destino as d on d.iddestino = s.iddestino

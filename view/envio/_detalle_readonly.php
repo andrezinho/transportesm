@@ -51,7 +51,7 @@
             <tr>
                 <td colspan="4" align="right"><b>TOTAL S/.</b></td>
                 <td align="right"><b><?php echo number_format($t, 2); ?></b></td>                
-            </tr>
+            </tr>            
         </tfoot>
 </table>
 </div>

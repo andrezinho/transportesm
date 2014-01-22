@@ -63,9 +63,8 @@ class reportes extends Main
 				        md.cantidad*md.monto as total
 				FROM movimiento as m inner join movimiento_detalle as md on m.idmovimiento = md.idmovimiento
 				        inner join concepto_movimiento as cm on cm.idconcepto_movimiento = md.idconcepto_movimiento                                        
-                                        left outer join proveedor as pro on pro.idproveedor = m.idproveedor
-				        left join empleado as propietario on propietario.idempleado = m.idpropietario and propietario.idtipo_empleado = 3
-                                        
+                left outer join proveedor as pro on pro.idproveedor = m.idproveedor
+				        left join empleado as propietario on propietario.idempleado = m.idpropietario and propietario.idtipo_empleado = 3                                        
 				WHERE m.tipo = 1 AND m.estado = 1 and m.fecha between :f1 and :f2 and m.idoficina = ".$_SESSION['idoficina']."
               and m.serie is not null
 				ORDER by m.idmovimiento desc";
@@ -143,6 +142,7 @@ class reportes extends Main
    
       function data_envio($g)
       {
+
        $sql = "SELECT   concat(substring(e.fecha,9,2),'/',substring(e.fecha,6,2),'/',substring(e.fecha,1,4)) as fecha,
                         e.hora,
                         concat(chofer.nombre,' ',coalesce(chofer.apellidos,'')) as chofer,
@@ -150,51 +150,66 @@ class reportes extends Main
                         case remitente.nrodocumento when '00000000' then e.remitente else remitente.nombre end,
                         e.consignado,
                         e.numero ,
-                        case e.cpago when 0 then t.total else 0 end as total,
+                        case e.cpago when 0 then e.monto_caja else 0 end as total,
                         e.cpago,
                         0 as tipo,
                         d.descripcion as destino
-                        from envio as e inner join pasajero as remitente on remitente.idpasajero = e.idremitente                  
-                            inner join (select idenvio, sum(precio*cantidad) as total
-                                        from envio_detalle
-                                        group by idenvio) as t on t.idenvio = e.idenvio
+                        
+                        from envio as e inner join pasajero as remitente on remitente.idpasajero = e.idremitente                                              
                             inner join empleado as em on e.idempleado = em.idempleado and em.idtipo_empleado = 1
                             INNER JOIN destino as d on d.iddestino = e.iddestino
                             left outer join salida as s on s.idsalida = e.idsalida
                             left outer join vehiculo as v on v.idvehiculo = s.idvehiculo
                             left outer join empleado as chofer on chofer.idempleado = s.idchofer and chofer.idtipo_empleado = 2                             
 			  WHERE e.fecha between :p2 and :p3 and e.idoficina = ".$_SESSION['idoficina']; 
-        $sqlw="";
-        switch ($g['filtro']) 
-                {
-                  case 1: $sqlw = " and e.cpago = 1 "; break;                    
-                  case 2: $sqlw = " and e.adomicilio = 1 "; break;
-                  default: break;
-                } 
-        $sql .= $sqlw;
-        $sql .= " UNION ALL
-        SELECT   concat(substring(e.fecha,9,2),'/',substring(e.fecha,6,2),'/',substring(e.fecha,1,4)) as fecha,
+
+        $sql_2 = "SELECT   concat(substring(e.fecha,9,2),'/',substring(e.fecha,6,2),'/',substring(e.fecha,1,4)) as fecha,
                                 e.hora,
                                 chofer.nombre as chofer,
                                 v.placa as vechiulos,
                                 case remitente.nrodocumento when '00000000' then e.remitente else remitente.nombre end,
                                 e.consignado,
                                 e.numero ,
-                                case e.cpago when 0 then 0 else t.total end as total,
+                                case e.cpago when 0 then 0 else e.monto_caja end as total,
                                 e.cpago,
                                 1 as tipo,
-                                d.descripcion as destino
-                                from envio as e inner join pasajero as remitente on remitente.idpasajero = e.idremitente                  
-                                    inner join (select idenvio, sum(precio*cantidad) as total
-                                                from envio_detalle
-                                                group by idenvio) as t on t.idenvio = e.idenvio
+                                e.direccion as destino
+
+                                from envio as e inner join pasajero as remitente on remitente.idpasajero = e.idremitente                                                      
                                     inner join empleado as em on e.idempleado = em.idempleado and em.idtipo_empleado = 1
                                     INNER JOIN destino as d on d.iddestino = e.iddestino
                                     left outer join salida as s on s.idsalida = e.idsalida
                                     left outer join vehiculo as v on v.idvehiculo = s.idvehiculo
                                     left outer join empleado as chofer on chofer.idempleado = s.idchofer and chofer.idtipo_empleado = 2                             
-                WHERE e.iddestino = ".$_SESSION['idsucursal']." and e.estado = 3 ";
-       $sql .= $sqlw;       
+                WHERE e.fecha between :p2 and :p3 and e.iddestino = ".$_SESSION['idsucursal']." and e.estado = 3 ";
+
+        $sql_union .= " UNION ALL ";
+
+        $sqlw="";        
+        switch ($g['filtro']) 
+                {
+                  case 0: $sql = $sql.$sql_union.$sql_2;
+                          break;
+                  case 1: $sql = $sql;
+                          break;
+                  case 2: $sqlw = " and e.cpago = 1 "; 
+                          $sql = $sql.$sqlw;
+                          break;
+                  case 3: $sqlw = " and e.adomicilio = 1 "; 
+                          $sql = $sql.$sqlw;
+                          break;
+                  case 4: $sql = $sql_2;                           
+                          break;                    
+                  case 5: $sqlw = " and e.cpago = 1 "; 
+                          $sql = $sql_2.$sqlw;
+                          break;                    
+                  case 6: $sqlw = " and e.adomicilio = 1 "; 
+                          $sql = $sql_2.$sqlw;
+                          break;
+                  default: break;
+                } 
+       //$sql .= " ORDER BY e.idenvio ";
+       //echo $sql;
        $stmt = $this->db->prepare($sql);
        $fechai = $this->fdate($g['fechai'],'EN');
        $fechaf = $this->fdate($g['fechaf'],'EN');

@@ -23,6 +23,21 @@ $(function() {
                 });
             }
     });
+
+    $("#cp").click(function()
+    {
+        var ck = $(this).attr("checked");
+        if(ck=='checked')
+        {
+            $("#tr-ce").hide();
+            $("#monto_envio").val('0.00');
+        }
+        else
+        {
+            $("#tr-ce").show();
+        }
+    });
+
     $("#iddestino").css("width","160px");
     $("#salidas").css("width","260px");
     calcTotales();
@@ -170,12 +185,34 @@ $(function() {
                         
             bval = bval && $("#consignado").required();
 
-            var ck_ad = $("#adomicilio").attr("checked");
+            var ck_ad = $("#adomicilio").attr("checked");            
             if(ck_ad=='checked')
                 bval = bval = $("#direccion").required();
 
+            var display_monto_caja = $("#tr-ce").css("display");
+            
+            if(display_monto_caja!="none")
+            {    
+                var ck_cp = $("#cp").attr("checked");            
+                if(ck_cp!='checked')
+                {
+                    bval = bval = $("#monto_caja").required();
+                    var mont_c = $("#monto_caja").val();
+                    mont_c = parseFloat(mont_c);
+                    
+                    if(mont_c<=0)
+                    {
+                        if(!confirm("El monto que ingresará a caja es cero (0), esta seguro de enviar este valor para la caja?"))
+                        {
+                            $("#monto_caja").focus();
+                            bval = false;
+                        }
+                    }
+                }
+            }
             if ( bval )
             {
+               
                 $("#save").empty().append("Grabando...");
                 var idenvio = $("#idenvio").val();
                 if(idenvio=="")
@@ -213,18 +250,34 @@ $(function() {
                     }
                     showboxmsg(result[1]+' '+html_printer,result[0]);
                 },'json');
+                
             }
         }
     });
-    $("#confirmce").live('click',function(){
+    $("#confirmce").live('click',function()
+    {
          bval = true;         
          bval = bval && $( "#idenvio" ).required();
+
+         bval = bval = $("#monto_caja").required();
+         var mont_c = $("#monto_caja").val();
+         mont_c = parseFloat(mont_c);
+        
+         if(mont_c<=0)
+         {
+            if(!confirm("El monto que ingresará a caja es cero (0), esta seguro de enviar este valor para la caja?"))
+            {
+                $("#monto_caja").focus();
+                bval = false;
+            }
+         }
+
          if ( bval )
          {
             $("#confirmce").empty().append("CONFIRMANDO...");
             var idenvio = $("#idenvio").val();
             showboxmsg('Confirmando la entrega de la encomienda...',3);
-            $.post('index.php','controller=envio&action=save_ce&id='+idenvio,function(result)
+            $.post('index.php','controller=envio&action=save_ce&id='+idenvio+'&mont_c='+mont_c,function(result)
             {
                 var html_printer = "";                    
                     if(result[0]=='1')
@@ -239,6 +292,7 @@ $(function() {
                     }
                     showboxmsg(result[1]+' '+html_printer,result[0]);
             },'json');
+
          }
     });
     $("#re-new").live('click',function(){

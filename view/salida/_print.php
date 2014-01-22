@@ -76,11 +76,17 @@ function printThis() {
         Vehiculo :   <?php echo Separar($head->placa); ?> 
     </td>
   </tr>
-  <tr>
-    <td align="left" class="Cabecera" colspan="3">
-        Destino :   <?php echo Separar($head->destino); ?> 
-    </td>
-  </tr>
+    <tr>
+      <td align="left" class="Cabecera" colspan="3">
+          Destino :   <?php echo Separar($head->destino); ?> 
+      </td>
+    </tr>
+
+    <tr>
+      <td align="left" class="Cabecera" colspan="3">
+          Precio :  <?php echo number_format($head->monto,2); ?> 
+      </td>
+    </tr>
   <tr>
       
   </tr>

@@ -4,7 +4,7 @@
         <tr class="ui-widget-header" style="height: 23px">
             <th width="60px">ITEM</th>
             <th >DESCRIPCION</th>            
-            <th width="80px">PRECIO S/.</th>            
+            <th width="80px">PRECsIO S/.</th>            
             <th width="80px">CANTIDAD</th>
             <th width="80px">IMPORTE S/.</th>
             <th width="20px">&nbsp;</th>
@@ -25,7 +25,7 @@
                     <tr id="<?php echo $i; ?>">
                     <td align="center" ><?php echo $c; ?></td>
                     <td><?php echo $obj->descripcion[$i]; ?></td>                    
-                    <td align="center" ><?php echo $obj->precio[$i]; ?> <span style="color:#666; font-size:8px">(<?php echo $obj->precioc[$i] ?>)</span></td>            
+                    <td align="center" ><?php echo $obj->precio[$i]; ?></td>            
                     <td align="center" >
                         <?php echo $obj->cantidad[$i]; ?>
                     </td>
@@ -51,11 +51,11 @@
             ?>
         </tbody>
         <tfoot>
-            <tr style="background:#dadada;">
+            <tr style="background:#fafafa;">
                 <td colspan="4" align="right"><b>TOTAL S/.</b></td>
                 <td align="right"><b><?php echo number_format($t, 2); ?></b></td>
                 <td>&nbsp;</td>
-            </tr>
+            </tr>            
         </tfoot>
 </table>
 </div>

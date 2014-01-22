@@ -43,11 +43,20 @@ $("#gen").click(function(){
         <input type="text" name="fechaf" id="fechaf" value="<?php echo date('d/m/Y'); ?>" class="ui-widget-content ui-corner-all text" size="8" />
         <label class="labels" style="width:100px">Filtros</label>
         <select name="filtro" id="filtro">
-            <option value="0">Mostrar todos los registros (TODOS)</option>
-            <option value="1">Mostrar Solo los que son CONTRA-ENTREGA</option>
-            <option value="2">Mostrar solo con ENTREGA A DOMICILIO</option>
+            <optgroup label="MOSTRAR TODOS LOS ENVIOS">
+                <option value="0">MOSTRAR EMITIDOS Y RECEPCIONADOS</option>    
+            </optgroup>
+            <optgroup label="EMITIDOS">
+                <option value="1">TODOS LOS ENVIOS EMITIDOS</option>            
+                <option value="2">ENVIOS EMITIDOS CON CONTRA-ENTREGA</option>
+                <option value="3">ENVIO EMITIDOS CON ENTREGA A DOMICILIO</option>    
+            </optgroup>
+            <optgroup label="RECIBIDOS">
+                <option value="4">TODOS LOS ENVIOS RECIBIDOS</option>
+                <option value="5">ENVIOS RECIBIDOS CON CONTRA-ENTREGA</option>
+                <option value="6">ENVIO RECIBIDOS CON ENTREGA A DOMICILIO</option>
+            </optgroup>
         </select>
-
     </form>
     </fieldset>
     <div  style="clear: both; padding: 5px; width: auto;text-align: center">

@@ -42,7 +42,8 @@
             }
         }
         });   
-        $( "#q" ).focus();     
+        $( "#q" ).focus();
+        $("#criterio").change(function(){$( "#q" ).focus();});
     });
     function sel(obj)
     {

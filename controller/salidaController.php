@@ -31,7 +31,8 @@ class salidaController extends Controller
                                 "<p style='font-size:5px'>&nbsp;</p>"=>array('ancho'=>3,'align'=>'center','titulo'=>'Anular')
                                 );         
         $this->busqueda = array("chofer.nombre"=>"Chofer",
-                                "vehiculo.placa"=>"Placa de Vehiculo");
+                                "v.placa"=>"Placa de Vehiculo",
+                                "s.numero"=>"Numero de Ticket");
         $this->asignarAccion('eliminar',false);
         $this->asignarAccion('editar',false);
         $this->asignarAccion('ver',true);

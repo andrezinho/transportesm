@@ -294,7 +294,7 @@ class envioController extends Controller
     {
         $obj = new envio();
         $result = array();        
-        $p = $obj->save_ce($_POST['id']);            
+        $p = $obj->save_ce($_POST);            
         if ($p['res']=='1')                
             $result = array(1,'',$p['ide'],$p['ce']);                
         else                 

@@ -15,7 +15,7 @@ class entradaController extends Controller
         $data = array();
         $data['data'] = $obj->index($_GET['q'],$_GET['p'],$_GET['criterio']);
         $data['query'] = $_GET['q'];
-        $data['pag'] = $this->Pagination(array('rows'=>$data['data']['rowspag'],'url'=>'index.php?controller=salida&action=index','query'=>$_GET['q'],'trows'=>$data['data']['total']));
+        $data['pag'] = $this->Pagination(array('rows'=>$data['data']['rowspag'],'url'=>'index.php?controller=entrada&action=index','query'=>$_GET['q'],'trows'=>$data['data']['total']));
         $this->registros = $data['data']['rows'];
         $this->columnas = array("ID"=>array('ancho'=>'5','align'=>'center','titulo'=>'Codigo de salida'),
                                 "<p style='font-size:9px'>FECHA SALIDA</p>"=>array('ancho'=>'8','align'=>'center'),
@@ -30,7 +30,7 @@ class entradaController extends Controller
                                 "<p style='font-size:9px;'>Llegada</p>"=>array('ancho'=>4,'align'=>'center')
                                 );         
         $this->busqueda = array("chofer.nombre"=>"Chofer",
-                                "vehiculo.placa"=>"Placa de Vehiculo");
+                                "v.placa"=>"Placa de Vehiculo");
         $this->asignarAccion('eliminar',false);
         $this->asignarAccion('editar',false);
         $this->asignarAccion('nuevo',false);

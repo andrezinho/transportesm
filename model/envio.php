@@ -199,7 +199,7 @@ class envio extends Main{
         if(isset($_P['adomicilio']))
             $ad=1;
         
-        $stmt = $this->db->prepare("SELECT f_insert_envio (:p1,:p2,:p3,:p4,:p6,:p7,:p8,:p11,:p12,:p13,:p14,:p15,:p18,:p19,:p20,:p21,:p22); ");
+        $stmt = $this->db->prepare("SELECT f_insert_envio (:p1,:p2,:p3,:p4,:p6,:p7,:p8,:p11,:p12,:p13,:p14,:p15,:p18,:p19,:p20,:p21,:p22, :p23); ");
         try 
         { 
             $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -226,6 +226,9 @@ class envio extends Main{
                 $stmt->bindParam(':p20',$cp,PDO::PARAM_INT);
                 $stmt->bindParam(':p21',$_P['atentamente'],PDO::PARAM_STR);
                 $stmt->bindParam(':p22',$ad,PDO::PARAM_INT);
+
+                $stmt->bindParam(':p23',$_P['monto_caja'],PDO::PARAM_INT);
+
                 $stmt->execute();
                 $row = $stmt->fetchAll();
                 $idenvio = $row[0][0];                
@@ -260,8 +263,10 @@ class envio extends Main{
         }
         
     }   
-    function save_ce($id) 
+    function save_ce($p) 
     {
+        $id = $p['id'];
+        $monto_caja = $p['mont_c'];
         $idperiodo  = $_SESSION['idperiodo'];
         $idempleado = $_SESSION['idempleado'];    
         $idoficina = $_SESSION['idoficina'];
@@ -282,8 +287,10 @@ class envio extends Main{
                 if($row['cpago']=="1")
                 {
                     //Cambiando el estado a entregado
-                    $update = $this->db->prepare("UPDATE envio set estado = 3 where idenvio = :id");
+                    $update = $this->db->prepare("UPDATE envio set estado = 3, monto_caja =  :monto
+                                                  where idenvio = :id");
                     $update->bindParam(':id',$idenvio,PDO::PARAM_INT);
+                    $update->bindParam(':monto',$monto_caja,PDO::PARAM_INT);
                     $update->execute();
                     //Generando los ingresos a caja y movimientos
                     $genmov = $this->db->prepare("INSERT INTO movimiento(idempleado, idperiodo, fecha, estado, observacion, idproveedor, idoficina, tipo, idpropietario,num_mov)
@@ -291,7 +298,7 @@ class envio extends Main{
                                                                     ".$idperiodo.", 
                                                                     '".$fecha."', 
                                                                     1 , 
-                                                                    concat('MOVIMIENTO POR NOTA DE ENVIO Nro ','".$row['numero']."'), 
+                                                                    concat('MOVIMIENTO POR LA ENCOMIENDA Nro ','".$row['numero']."'), 
                                                                     null, 
                                                                     ".$idoficina.", 
                                                                     1, 
@@ -306,16 +313,16 @@ class envio extends Main{
                     $movs = $movimiento->fetchObject();
                     $idmov = $movs->idmovimiento;
 
-                    $sql = "SELECT * FROM envio_detalle where idenvio = :id";
-                    $detalle = $this->db->prepare($sql);
-                    $detalle->bindParam(':id',$idenvio,PDO::PARAM_INT);
-                    $detalle->execute();
-                    foreach($detalle->fetchAll() as $r)
-                    {
+                    //$sql = "SELECT * FROM envio_detalle where idenvio = :id";
+                    //$detalle = $this->db->prepare($sql);
+                    //$detalle->bindParam(':id',$idenvio,PDO::PARAM_INT);
+                    //$detalle->execute();
+                    //foreach($detalle->fetchAll() as $r)
+                    //{
                         $detallemov = $this->db->prepare("INSERT INTO movimiento_detalle(idmovimiento,idconcepto_movimiento,monto,cantidad,descripcion) 
-                                                           VALUES(".$idmov.",6,".$r['precio'].",".$r['cantidad'].",'".$r['descripcion']."')");                    
+                                                           VALUES(".$idmov.",6,".$monto_caja.",1,'POR LA ENCOMIENDA ".$row['serie']." - ".$row['numero']."')");
                         $detallemov->execute();
-                    }                
+                    //}                
                 }
             }
             $this->db->commit();
@@ -377,6 +384,9 @@ class envio extends Main{
             $cp=1;
         }
         
+        $ad = 0;
+        if(isset($_P['adomicilio']))
+            $ad=1;
         $bval = true;
 
         $dni_ruc = $_P['nrodocumentor'];
@@ -401,7 +411,9 @@ class envio extends Main{
                                             idremitente = :p3,
                                             consignado = :p4,
                                             direccion = :p5,
-                                            atentamente = :p6
+                                            atentamente = :p6,
+                                            adomicilio = :p7,
+                                            monto_caja = :p8
                                     where idenvio = :idenvio ");
         try 
         { 
@@ -414,6 +426,8 @@ class envio extends Main{
                 $stmt->bindParam(':p4',$_P['consignado'],PDO::PARAM_STR);
                 $stmt->bindParam(':p6',$_P['atentamente'],PDO::PARAM_STR);
                 $stmt->bindParam(':p5',$_P['direccion'],PDO::PARAM_STR);                                
+                $stmt->bindParam(':p7',$ad,PDO::PARAM_INT);
+                $stmt->bindParam(':p8',$_P['monto_caja'],PDO::PARAM_INT);
                 $stmt->bindParam(':idenvio',$_P['idenvio'],PDO::PARAM_INT);                                
                 $stmt->execute();
                 
@@ -421,9 +435,8 @@ class envio extends Main{
                 $stmt3->bindParam(':id',$_P['idenvio'],PDO::PARAM_INT);
                 $stmt3->execute();
                 
-                
-                
                 //Anulamos los movimientos detalle asociados a este envio
+                /*
                 $stmt3 = $this->db->prepare("SELECT num_mov FROM envio WHERE idenvio = :id");
                 $stmt3->bindParam(':id',$_P['idenvio'],PDO::PARAM_INT);
                 $stmt3->execute();
@@ -436,8 +449,23 @@ class envio extends Main{
                 $stmt3 = $this->db->prepare("DELETE FROM movimiento_detalle where idmovimiento = {$idmov}");
                 $stmt3->execute();
                 //fin de anular detalle de movimientos
-                
+                */
 
+                //Actualizamos el monto caja del movimiento
+                $stmt3 = $this->db->prepare("SELECT num_mov FROM envio WHERE idenvio = :id");
+                $stmt3->bindParam(':id',$_P['idenvio'],PDO::PARAM_INT);
+                $stmt3->execute();
+                $row1 = $stmt3->fetchObject();
+                $num_mov = $row1->num_mov;
+                $stmt3 = $this->db->prepare("SELECT idmovimiento from movimiento where num_mov = '{$num_mov}'");
+                $stmt3->execute();
+                $row1 = $stmt3->fetchObject();
+                $idmov = $row1->idmovimiento;
+                $stmt3 = $this->db->prepare("UPDATE movimiento_detalle SET monto = :montox  where idmovimiento = {$idmov}");
+                $stmt3->bindParam(':montox',$_P['monto_caja'],PDO::PARAM_INT);
+                $stmt3->execute();
+
+                //Insertamos de nuevo los detalles
                 $stmt2 = $this->db->prepare('CALL insert_envio_detalle(:p1,:p2,:p3,:p4,:p5,:p6,:p7)');
                 $obj    = $_SESSION['envios'];
                 $estado = 1;
@@ -445,6 +473,7 @@ class envio extends Main{
                 { 
                     if($obj->estado[$i])
                     {
+                        $obj->precioc[$i] = 0;
                         $stmt2->bindParam(':p1',$_P['idenvio'],PDO::PARAM_INT);
                         $stmt2->bindParam(':p2',$obj->descripcion[$i],PDO::PARAM_INT);
                         $stmt2->bindParam(':p3',$obj->precio[$i],PDO::PARAM_INT);

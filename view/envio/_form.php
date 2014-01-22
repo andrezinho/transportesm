@@ -112,7 +112,15 @@
                 <br/>
                 <label for="precio_encomienda" class="labels" style="width:130px">Contra-Entrega:</label>
                 <?php $ck=""; if($obj->cpago==1) { $ck ="checked"; } ?>
+                <?php if($_GET['action']=="create") { ?>
                 <input type="checkbox" name="cp" id="cp" value="1" <?php echo $ck; ?> /> Si
+                <?php } 
+                    else 
+                    {
+                        if($obj->cpago==1)  echo "<b>SI</b>";
+                            else echo "<b>NO</b>";
+                    }
+                ?>
                 <span id="div-conf-salida" style="display:none">
                     <label for="confirma_salida" class="labels" style="width:130px">Confirmar Salida:</label>
                     <input type="checkbox" name="confirma_salida" id="confirma_salida" value="1" /> Si<br/>
@@ -124,16 +132,15 @@
             ?>
             <fieldset class="ui-corner-all" style="background: #fafafa;">
                 <legend>Detalle de envio</legend>             
-                <label for="descripcion" class="labels" style="width:100px">Descripcion:</label>
-                <input type="text" name="descripcion" id="descripcion" value="" class="ui-widget-content ui-corner-all text" maxlength="300" style="width:85%" placeholder="Descripcion del objeto a enviar..." />
-                <br/>
-                <label for="cantidad" class="labels" style="width:100px">Cantidad:</label>
+                <label for="descripcion" class="labels" style="width:10px">&nbsp;</label>
+                <input type="text" name="descripcion" id="descripcion" value="" class="ui-widget-content ui-corner-all text" maxlength="300" style="width:40%" placeholder="Descripcion del objeto a enviar..." />                
+                <label for="cantidad" class="labels" style="width:50px">Cant:</label>
                 <input type="text" name="cantidad" id="cantidad" value="1" class="ui-widget-content ui-corner-all text" maxlength="1" style="width:15px;" onkeypress="return permite(event,'num')" />                 
-                <label for="precio" class="labels" style="width:80px">Monto Envio:</label>
+                <label for="precio" class="labels" style="width:50px">Monto:</label>
                 <input type="text" name="precio" id="precio" value="5.00" class="ui-widget-content ui-corner-all text money" onkeypress="return permite(event,'num')" style="width:40px" /> S/.
                 <label for="subtt" class="labels" style="width:70px">Sub total:</label>
                 <input type="text" name="stt" id="stt" value="5.00" class="ui-widget-content ui-corner-all text money" onkeypress="return permite(event,'num')" style="width:40px" readonly="readonly" /> S/.
-                <span style="background:#dadada; padding:4px 3px 3px 3px">
+                <span style="background:#dadada; padding:4px 3px 3px 3px; display:none">
                     <label for="precioc" class="labels" style="width:90px">Monto Caja:</label>
                     <input type="text" name="precioc" id="precioc" value="0.00" class="ui-widget-content ui-corner-all text money" onkeypress="return permite(event,'num')" style="width:40px;" /> S/.
                     <label for="precio" class="labels" style="width:90px">Sub total Caja:</label>
@@ -147,6 +154,14 @@
             } ?>
           <div id="div-detalle">
             <?php echo $detalle; ?>
+          </div>
+          <?php 
+            $display = "block";
+            if($_GET['action']=='edit' && $obj->cpago==1) { $display = "none"; }
+          ?>
+          <div style="background:#9FD89D; text-align:center; display:<?php echo $display; ?>" id="tr-ce">                
+            <b>MONTO A CAJA S/.</b>
+            <input type="text" name="monto_caja" id="monto_caja"  value = "<?php if($obj->monto_caja>0) echo $obj->monto_caja; else echo "0.00"; ?>" class="ui-widget-content ui-corner-all text" style="font-size:12px; text-align:right; width:80px" onkeypress="return permite(event,'num')" />                
           </div>
           <div  style="clear: both; padding: 5px; width: auto;text-align: center">
             <?php 
