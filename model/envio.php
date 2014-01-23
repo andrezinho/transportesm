@@ -272,7 +272,7 @@ class envio extends Main{
         $idoficina = $_SESSION['idoficina'];
         $fecha = date('Y-m-d');
         $idenvio  = (int)$id;
-
+        
         try 
         { 
             $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -293,7 +293,7 @@ class envio extends Main{
                     $update->bindParam(':monto',$monto_caja,PDO::PARAM_INT);
                     $update->execute();
                     //Generando los ingresos a caja y movimientos
-                    $genmov = $this->db->prepare("INSERT INTO movimiento(idempleado, idperiodo, fecha, estado, observacion, idproveedor, idoficina, tipo, idpropietario,num_mov)
+                    $sql = "INSERT INTO movimiento(idempleado, idperiodo, fecha, estado, observacion, idproveedor, idoficina, tipo, idpropietario,num_mov)
                                                             values ('".$idempleado."',
                                                                     ".$idperiodo.", 
                                                                     '".$fecha."', 
@@ -303,24 +303,21 @@ class envio extends Main{
                                                                     ".$idoficina.", 
                                                                     1, 
                                                                     null, 
-                                                                    '".$row['num_mov']."')");
+                                                                    '".$row['num_mov']."')";
+                    
+                    $genmov = $this->db->prepare($sql);
                     $genmov->execute();
                     $query = $this->db->prepare("call genn_tmov(".$idoficina.",1)");
                     $query->execute();
                     //Generando los movimientos detalles
-                    $movimiento = $this->db->prepare("SELECT idmovimiento FROM movimiento WHERE num_mov = '".$row['num_mov']."'");
+                    $movimiento = $this->db->prepare("SELECT idmovimiento FROM movimiento WHERE num_mov = '".$row['num_mov']."' and idoficina = ".$idoficina);
                     $movimiento->execute();
                     $movs = $movimiento->fetchObject();
                     $idmov = $movs->idmovimiento;
 
-                    //$sql = "SELECT * FROM envio_detalle where idenvio = :id";
-                    //$detalle = $this->db->prepare($sql);
-                    //$detalle->bindParam(':id',$idenvio,PDO::PARAM_INT);
-                    //$detalle->execute();
-                    //foreach($detalle->fetchAll() as $r)
-                    //{
-                        $detallemov = $this->db->prepare("INSERT INTO movimiento_detalle(idmovimiento,idconcepto_movimiento,monto,cantidad,descripcion) 
-                                                           VALUES(".$idmov.",6,".$monto_caja.",1,'POR LA ENCOMIENDA ".$row['serie']." - ".$row['numero']."')");
+                    $sql = "INSERT INTO movimiento_detalle(idmovimiento,idconcepto_movimiento,monto,cantidad,descripcion) 
+                            VALUES(".$idmov.",6,".$monto_caja.",1,'POR LA ENCOMIENDA ".$row['serie']." - ".$row['numero']."')";
+                        $detallemov = $this->db->prepare($sql);
                         $detallemov->execute();
                     //}                
                 }

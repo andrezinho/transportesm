@@ -178,12 +178,28 @@ class caja extends Main
                                     WHERE m.estado = 1 and m.fecha = '{$fecha}' 
                                             and e.turno = {$turno}
                                             and m.idoficina = {$oficina}
-                                         and m.idempleado = '{$idempleado}' ";
+                                         and m.idempleado = '{$idempleado}' and m.tipo=1 ";
        // echo $query;
         $stmt = $this->db->prepare($query);      
         $stmt->execute();
         $r = $stmt->fetchObject();
         $saldo = (double)$r->saldo;
+
+        $query = "SELECT SUM(md.monto*md.cantidad) as saldo
+                                    FROM movimiento as m inner join movimiento_detalle as md on 
+                                        md.idmovimiento = m.idmovimiento inner join empleado as e on
+                                        e.idempleado = m.idempleado
+                                        and e.idtipo_empleado = 1
+                                    WHERE m.estado = 1 and m.fecha = '{$fecha}' 
+                                            and e.turno = {$turno}
+                                            and m.idoficina = {$oficina}
+                                         and m.idempleado = '{$idempleado}' and m.tipo=2 ";
+       // echo $query;
+        $stmt = $this->db->prepare($query);      
+        $stmt->execute();
+        $r = $stmt->fetchObject();
+        $saldo = $saldo - (double)$r->saldo;
+
         return $saldo;
     }
     function getDataCaja($fecha,$turno,$oficina)

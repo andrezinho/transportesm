@@ -2,13 +2,13 @@
     $(document).ready(function(){        
  $("#fechai,#fechaf").datepicker({ dateFormat:'dd/mm/yy' });
 $("#gen").click(function(){      
-             if(valid())
-                {
-                    var str = $("#frm").serialize();
-                    $.get('index.php','controller=reportes&action=html_envio&'+str,function(data){
-                        $("#wcont").empty().append(data);
-                    });
-				}
+     if(valid())
+        {
+            var str = $("#frm").serialize();
+            $.get('index.php','controller=reportes&action=html_envio&'+str,function(data){
+                $("#wcont").empty().append(data);
+            });
+		}
         });
         $("#pdf").click(function(){
                  if(valid())
