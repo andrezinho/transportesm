@@ -161,7 +161,7 @@ class reportes extends Main
                             left outer join salida as s on s.idsalida = e.idsalida
                             left outer join vehiculo as v on v.idvehiculo = s.idvehiculo
                             left outer join empleado as chofer on chofer.idempleado = s.idchofer and chofer.idtipo_empleado = 2                             
-			  WHERE e.fecha between :p2 and :p3 and e.idoficina = ".$_SESSION['idoficina']; 
+			  WHERE e.estado <> 0 and  e.fecha between :p2 and :p3 and e.idoficina = ".$_SESSION['idoficina']; 
 
         $sql_2 = "SELECT   concat(substring(e.fecha,9,2),'/',substring(e.fecha,6,2),'/',substring(e.fecha,1,4)) as fecha,
                                 e.hora,

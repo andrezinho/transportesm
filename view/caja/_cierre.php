@@ -37,7 +37,8 @@
                     }
             }
         });
-        $("#aperturar").live('click',function(){           
+        $("#aperturar").live('click',function()
+        {
            var s = $("#saldo").val();
            if(confirm('Esta realmente seguro que el monto total en caja es S/. '+s+' ?'))
                {
@@ -57,6 +58,7 @@
                                     $("#monto_dep").val(d[2]);
                                     $("#idof").val(d[3]);
                                     $("#idc").val(d[4]);
+                                   
                             }
                         else 
                         {
@@ -66,9 +68,8 @@
                }           
         });
         $("#rdcb").live('click',function(){
-            $("#pop").dialog('open');
-            
-        })
+            $("#pop").dialog('open');            
+        });
     })
 </script>
 <h6 class="ui-widget-header">CIERRE DE CAJA</h6>

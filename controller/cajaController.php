@@ -35,7 +35,7 @@ class cajaController extends Controller
         {
             $_SESSION['fecha_caja'] = $_POST['fecha'];            
             $_SESSION['id_caja'] = $obj->getCaja($_SESSION['turno'],$_POST['fecha']);
-            $_SESSION['caja'] = 1; // Caja aperturada y correcta
+            $_SESSION['caja'] = 1;
             print_r(json_encode(array(1,'OK')));
         }
         else 
@@ -62,7 +62,8 @@ class cajaController extends Controller
             $html = $this->resumenCaja($data['rows']);
             print_r(json_encode(array(1,$html,number_format($data['rows'][2]+$data['rows'][0],2),$data['idoficina'],$data['idcaja'])));
         }
-        else {
+        else 
+        {
             print_r(json_encode(array(0,$data['msg'])));
         }
     }

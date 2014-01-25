@@ -11,15 +11,12 @@ class caja extends Main
                                         and fecha = '{$fecha}' 
                                         and idusuario = '{$idempleado}' 
                                         and idoficina = {$idoficina}
-                                    group by estado,idcaja";
-        //echo $query;
-        $stmt = $this->db->prepare($query);  
-                                        
+                                    group by estado,idcaja";        
+        $stmt = $this->db->prepare($query);                                          
         $stmt->execute();
         $num = $stmt->rowCount();        
         $r = $stmt->fetchObject();
-        $n = $r->numero;
-        
+        $n = $r->numero;        
         if($num==0)
         {
             return array(false,0);
@@ -101,11 +98,10 @@ class caja extends Main
         $sdeclarado = $saldo;
         $fecha = $this->fdate($fecha,'EN');
         
-        $stmt = $this->db->prepare("select idcaja from caja WHERE fecha = '{$fecha}' 
+        $stmt = $this->db->prepare("SELECT idcaja from caja WHERE fecha = '{$fecha}' 
                                             and turno = {$turno}
                                             and idusuario = '{$idempleado}'
-                                            and idoficina = {$idoficina}");
-                                            
+                                            and idoficina = {$idoficina}");                                            
         $stmt->execute();
         $roww = $stmt->fetchObject();
         $idcaja = $roww->idcaja;
@@ -117,10 +113,9 @@ class caja extends Main
                                             and turno = {$turno}
                                             and idusuario = '{$idempleado}'
                                             and idoficina = {$idoficina}";
-        
-        $stmt = $this->db->prepare($query);        
+        $stmt = $this->db->prepare($query);
         try 
-        { 
+        {
             $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $this->db->beginTransaction();                                
                 $stmt->execute();
@@ -150,7 +145,7 @@ class caja extends Main
                                           and idusuario = '{$idempleado}'
                                           and idoficina = {$idoficina}
                                     order by idcaja
-                                    desc limit 1");        
+                                    desc limit 1");
         $stmt->execute();
         $r = $stmt->fetchAll();
         $si = $r[0][0];
@@ -163,8 +158,6 @@ class caja extends Main
            $monto = (float)$r->monto;
            $si -= $monto;
         }
-        
-        
         return $si;
     }
     function getSaldoSistema($turno,$fecha,$oficina,$idempleado)
@@ -178,13 +171,11 @@ class caja extends Main
                                     WHERE m.estado = 1 and m.fecha = '{$fecha}' 
                                             and e.turno = {$turno}
                                             and m.idoficina = {$oficina}
-                                         and m.idempleado = '{$idempleado}' and m.tipo=1 ";
-       // echo $query;
+                                         and m.idempleado = '{$idempleado}' and m.tipo=1 ";       
         $stmt = $this->db->prepare($query);      
         $stmt->execute();
         $r = $stmt->fetchObject();
         $saldo = (double)$r->saldo;
-
         $query = "SELECT SUM(md.monto*md.cantidad) as saldo
                                     FROM movimiento as m inner join movimiento_detalle as md on 
                                         md.idmovimiento = m.idmovimiento inner join empleado as e on
@@ -193,13 +184,11 @@ class caja extends Main
                                     WHERE m.estado = 1 and m.fecha = '{$fecha}' 
                                             and e.turno = {$turno}
                                             and m.idoficina = {$oficina}
-                                         and m.idempleado = '{$idempleado}' and m.tipo=2 ";
-       // echo $query;
+                                         and m.idempleado = '{$idempleado}' and m.tipo=2 ";       
         $stmt = $this->db->prepare($query);      
         $stmt->execute();
         $r = $stmt->fetchObject();
         $saldo = $saldo - (double)$r->saldo;
-
         return $saldo;
     }
     function getDataCaja($fecha,$turno,$oficina)

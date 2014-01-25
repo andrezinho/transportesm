@@ -1,5 +1,5 @@
 <?php
-include_once("../lib/helpers.php");  
+include_once("../lib/helpers.php");
 function turno($t)
 {
     if($t==1)
@@ -21,7 +21,6 @@ function turno($t)
 <h4>FECHA: <?php echo fdate($fecha,'ES'); ?><br/> TURNO: <?php echo turno($turno) ?></h4>
 <h4>USUARIO: <?php echo $idusuario; ?></h4>
 <h4>OFICINA: <?php echo $oficina; ?></h4>
-
 <div style="margin-top:20px;">
     <div class="box-saldos" style="background:#FEF5CE">
         Saldo Inicial <br/>
@@ -79,7 +78,6 @@ function turno($t)
                 <br/>
                 <a id="rdcb" href="#" class="button">Realizar el Deposito en Cuenta Bancaria</a>
             </div>
-        </div>
+    </div>
 </div>
-
-<a href="index.php" style="display: block; width: 100%; text-align: center; margin-top: 10px;">Cerrar</a>
+<a href="index.php?controller=user&action=logout" style="display: block; width: 100%; text-align: center; margin-top: 10px;">Cerrar</a>
