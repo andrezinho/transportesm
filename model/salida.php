@@ -202,7 +202,7 @@ class salida extends Main
             $stmt2 = $this->db->prepare("UPDATE envio set fecha_envio = :fecha, 
                                                          hora_envio = :hora, 
                                                          estado = 2  
-                                        where idsalida = :id ");
+                                        where idsalida = :id and estado = 1");
             $stmt2->bindParam(':fecha',$fecha,PDO::PARAM_STR);
             $stmt2->bindParam(':hora',$hora,PDO::PARAM_STR);
             $stmt2->bindParam(':id',$id,PDO::PARAM_INT);

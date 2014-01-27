@@ -211,7 +211,8 @@ class ingresos extends Main
                                             m.observacion,
                                             m.placa,
                                             m.serie,
-                                            m.numero
+                                            m.numero,
+                                            m.chofer
                                    from movimiento as m                                         
                                         inner join empleado as users on users.idempleado = m.idempleado                                             
                                             inner join oficina as o on m.idoficina = o.idoficina                                            

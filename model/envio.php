@@ -6,6 +6,7 @@ class envio extends Main{
     {
         $sql = "SELECT e.idenvio,
                        concat(substring(e.fecha,9,2),'/',substring(e.fecha,6,2),'/',substring(e.fecha,1,4)),
+                       case e.tipo_pro when 1 then '<span class=\"box-encomienda\">ENCOMIENDA</span>' else '<span class=\"box-telegiro\">TELEGIRO</span>' end,
                        case remitente.nrodocumento when '00000000' then e.remitente else remitente.nombre end,
                        e.consignado,
                        e.numero,
@@ -58,6 +59,7 @@ class envio extends Main{
     {
         $sql = "SELECT e.idenvio,
                        concat(substring(e.fecha,9,2),'/',substring(e.fecha,6,2),'/',substring(e.fecha,1,4)),
+                       case e.tipo_pro when 1 then '<span class=\"box-encomienda\">ENCOMIENDA</span>' else '<span class=\"box-telegiro\">TELEGIRO</span>' end,
                        case remitente.nrodocumento when '00000000' then e.remitente else remitente.nombre end,
                        e.consignado,
                        e.numero,
@@ -199,7 +201,7 @@ class envio extends Main{
         if(isset($_P['adomicilio']))
             $ad=1;
         
-        $stmt = $this->db->prepare("SELECT f_insert_envio (:p1,:p2,:p3,:p4,:p6,:p7,:p8,:p11,:p12,:p13,:p14,:p15,:p18,:p19,:p20,:p21,:p22, :p23); ");
+        $stmt = $this->db->prepare("SELECT f_insert_envio (:p1,:p2,:p3,:p4,:p6,:p7,:p8,:p11,:p12,:p13,:p14,:p15,:p18,:p19,:p20,:p21,:p22, :p23, :p24); ");
         try 
         { 
             $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -228,6 +230,8 @@ class envio extends Main{
                 $stmt->bindParam(':p22',$ad,PDO::PARAM_INT);
 
                 $stmt->bindParam(':p23',$_P['monto_caja'],PDO::PARAM_INT);
+                $stmt->bindParam(':p24',$_P['tipo_pro'],PDO::PARAM_INT);
+                
 
                 $stmt->execute();
                 $row = $stmt->fetchAll();
@@ -282,23 +286,30 @@ class envio extends Main{
             $stmt = $this->db->prepare($sql);
             $stmt->bindParam(':id',$idenvio,PDO::PARAM_INT);
             $stmt->execute();
+            $texto = "";
             foreach($stmt->fetchAll() as $row )
             {
                 if($row['cpago']=="1")
                 {
+                    if($row['tipo_pro']=="1")
+                        $texto = "MOVIMIENTO POR LA ENCOMIENDA ";
+                    else 
+                        $texto = "MOVIMIENTO POR EL TELEGIRO";
                     //Cambiando el estado a entregado
                     $update = $this->db->prepare("UPDATE envio set estado = 3, monto_caja =  :monto
                                                   where idenvio = :id");
                     $update->bindParam(':id',$idenvio,PDO::PARAM_INT);
                     $update->bindParam(':monto',$monto_caja,PDO::PARAM_INT);
                     $update->execute();
+
+
                     //Generando los ingresos a caja y movimientos
                     $sql = "INSERT INTO movimiento(idempleado, idperiodo, fecha, estado, observacion, idproveedor, idoficina, tipo, idpropietario,num_mov)
                                                             values ('".$idempleado."',
                                                                     ".$idperiodo.", 
                                                                     '".$fecha."', 
                                                                     1 , 
-                                                                    concat('MOVIMIENTO POR LA ENCOMIENDA Nro ','".$row['numero']."'), 
+                                                                    concat('".$texto." Nro ','".$row['numero']."'), 
                                                                     null, 
                                                                     ".$idoficina.", 
                                                                     1, 
@@ -316,7 +327,7 @@ class envio extends Main{
                     $idmov = $movs->idmovimiento;
 
                     $sql = "INSERT INTO movimiento_detalle(idmovimiento,idconcepto_movimiento,monto,cantidad,descripcion) 
-                            VALUES(".$idmov.",6,".$monto_caja.",1,'POR LA ENCOMIENDA ".$row['serie']." - ".$row['numero']."')";
+                            VALUES(".$idmov.",6,".$monto_caja.",1,'".$texto." ".$row['serie']." - ".$row['numero']."')";
                         $detallemov = $this->db->prepare($sql);
                         $detallemov->execute();
                     //}                
@@ -432,29 +443,13 @@ class envio extends Main{
                 $stmt3->bindParam(':id',$_P['idenvio'],PDO::PARAM_INT);
                 $stmt3->execute();
                 
-                //Anulamos los movimientos detalle asociados a este envio
-                /*
-                $stmt3 = $this->db->prepare("SELECT num_mov FROM envio WHERE idenvio = :id");
-                $stmt3->bindParam(':id',$_P['idenvio'],PDO::PARAM_INT);
-                $stmt3->execute();
-                $row1 = $stmt3->fetchObject();
-                $num_mov = $row1->num_mov;
-                $stmt3 = $this->db->prepare("SELECT idmovimiento from movimiento where num_mov = '{$num_mov}'");
-                $stmt3->execute();
-                $row1 = $stmt3->fetchObject();
-                $idmov = $row1->idmovimiento;
-                $stmt3 = $this->db->prepare("DELETE FROM movimiento_detalle where idmovimiento = {$idmov}");
-                $stmt3->execute();
-                //fin de anular detalle de movimientos
-                */
-
                 //Actualizamos el monto caja del movimiento
                 $stmt3 = $this->db->prepare("SELECT num_mov FROM envio WHERE idenvio = :id");
                 $stmt3->bindParam(':id',$_P['idenvio'],PDO::PARAM_INT);
                 $stmt3->execute();
                 $row1 = $stmt3->fetchObject();
                 $num_mov = $row1->num_mov;
-                $stmt3 = $this->db->prepare("SELECT idmovimiento from movimiento where num_mov = '{$num_mov}'");
+                $stmt3 = $this->db->prepare("SELECT idmovimiento from movimiento where num_mov = '{$num_mov}' and idoficina = {$idoficina}");
                 $stmt3->execute();
                 $row1 = $stmt3->fetchObject();
                 $idmov = $row1->idmovimiento;
@@ -558,7 +553,8 @@ class envio extends Main{
                                             o.telefono,
                                             d.descripcion as destino,
                                             e.atentamente,
-                                            e.cpago
+                                            e.cpago,
+                                            e.tipo_pro
                                     from envio as e inner join pasajero as remitente on remitente.idpasajero = e.idremitente
                                             left outer join salida as s on s.idsalida = e.idsalida
                                             left outer join empleado as chofer on chofer.idempleado = s.idchofer and chofer.idtipo_empleado = 2        

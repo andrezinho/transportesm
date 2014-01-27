@@ -2,6 +2,16 @@ var idventa = '';
 var source = "index.php?controller=pasajero&action=search_autocomplete&tipo=1&t=0";
 var source2 = "index.php?controller=pasajero&action=search_autocomplete&tipo=1&t=1";
 $(function() {    
+    $("#box-msg-result").dialog({
+        autoOpen:false,
+        title: 'Mensaje',
+        modal: true,
+        resizable: false
+        
+    });
+    $("#tipo_pro").click(function(){
+        changeTipoProceso();
+    });
     $("#sdni").click(function(){
         var ck = $(this).attr("checked");
         if(ck=='checked')
@@ -215,16 +225,10 @@ $(function() {
                
                 $("#save").empty().append("Grabando...");
                 var idenvio = $("#idenvio").val();
-                if(idenvio=="")
-                {
-                    showboxmsg('Registrando Envio...',3);
-                }
-                else 
-                {
-                    showboxmsg('Actualizando Envio...',3);
-                }
+                showMensaje('Procesando....');
                 
-                var str = $("#frm").serialize();                
+                
+                var str = $("#frm").serialize();
                 $.post('index.php',str,function(result)
                 {
                     var html_printer = "";                    
@@ -248,7 +252,7 @@ $(function() {
                     else {
                         $("#save").empty().append("GRABAR");
                     }
-                    showboxmsg(result[1]+' '+html_printer,result[0]);
+                    showMensaje(result[1]+' '+html_printer,result[0]);                    
                 },'json');
                 
             }
@@ -276,7 +280,8 @@ $(function() {
          {
             $("#confirmce").empty().append("CONFIRMANDO...");
             var idenvio = $("#idenvio").val();
-            showboxmsg('Confirmando la entrega de la encomienda...',3);
+
+            showMensaje('Procesando la confirmacion de la entrega...');                                    
             $.post('index.php','controller=envio&action=save_ce&id='+idenvio+'&mont_c='+mont_c,function(result)
             {
                 var html_printer = "";                    
@@ -290,7 +295,7 @@ $(function() {
                     {
                         $("#confirmce").empty().append("CONFIRMAR CONTRAENTREGA");
                     }
-                    showboxmsg(result[1]+' '+html_printer,result[0]);
+                    showMensaje(result[1]+' '+html_printer,result[0]);                    
             },'json');
 
          }
@@ -606,4 +611,28 @@ function loadSalidas(idd)
                 $("#loadsalida").css("display","none");
             },'json')
        }
+}
+function changeTipoProceso()
+{
+    var t = $("#tipo_pro").val();
+    if(t==1)
+    {
+        $("#descripcion").attr("placeholder","Descripcion del objeto a enviar.");
+        $("#legend-detalle").html("Detalle de la Encomienda");
+    }
+    else
+    {
+        $("#descripcion").attr("placeholder","Ingrese la descripcion del Telegiro");
+        $("#legend-detalle").html("Detalle de Telegiro");
+    }
+}
+function showMensaje(text)
+{
+    $("#box-msg-result").empty();
+    var html = '<div style="text-align:center; padding:10px; margin-top:10px;">Ok, se ha procesado correctamente.</div>';
+    html += '<div style="text-align:center">';
+    html += text;
+    html += '</div>';
+    $("#box-msg-result").append(html);
+    $("#box-msg-result").dialog('open');
 }

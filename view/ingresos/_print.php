@@ -71,7 +71,17 @@ function printThis() {
   </tr>
   <tr>
     <td align="left" class="Cabecera" colspan="3">
-        Recibi de :   <?php echo Separar($head->remitente); ?> 
+        Recibi de :   <?php
+          if($head->chofer!="")
+          {
+            echo Separar($head->chofer);
+          }
+          else
+          {
+            echo Separar($head->remitente); 
+          }
+         
+         ?> 
     </td>
   </tr>  
   <?php if($head->observacion!=""){ ?>
@@ -87,6 +97,11 @@ function printThis() {
         Vehiculo (Placa):   <?php echo Separar($head->placa); ?> 
     </td>
   </tr>  
+  <tr>
+    <td align="left" class="Cabecera" colspan="3">
+        Propietario:   <?php echo Separar($head->remitente); ?> 
+    </td>
+  </tr>
   <?php } ?>
   <tr>
   <td colspan="3" valign="top">

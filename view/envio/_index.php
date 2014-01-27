@@ -71,15 +71,21 @@ $(document).ready(function() {
         width:450,
         height:160,
         buttons: {
-                'Actualizar y Enviar':function()
+                'Actualizar':function()
                         {
                             updateSend();
                         },
-                'Cancelar':function()
+                'Cerrar':function()
                         {
                             $(this).dialog('close');
                         }
     }});
+    $("#box-msg-envios").dialog({
+        autoOpen:false,
+        title: 'Dar salida a la encomienda',
+        modal: true,
+        width:400
+    });
     $("#box-recepcion").dialog(
     {
         autoOpen:false,
@@ -138,7 +144,18 @@ function updateSend()
             if(data[0]=='1')
             {
                 $("#box-envios").dialog('close');
-                Sending(data[2],tr);
+                $("#box-msg-envios").empty().append('<p style="text-align:justify; padding:5px;"><b>Se ha actualizado satisfactoriamente los datos de la encomienda, ahora si puede confirmar su respectiva salida.</b></p><br/><p style="font-style:italic; padding:5px;"><b>Nota:</b> Recuerde dar salida tambien al vehiculo que lo est&aacute; llevando.');
+                $("#box-msg-envios").dialog({
+                    buttons: {
+                        'Confirmar salida':function(){
+                            Sending(data[2],tr);
+                        },
+                        'Cerrar': function(){
+                            $(this).dialog('close');
+                        }
+                    }
+                });
+                $("#box-msg-envios").dialog('open');                
             }
             else 
             {
@@ -155,9 +172,10 @@ function Sending(key,tr)
         {
             tr.empty().append("<span class='box-boton boton-ok'></span>");
             tr.parent().find('td:eq(7)').empty().append('<p style="font-size:9px; font-style:italic">ENVIADA</p>');
-             
+            $("#box-msg-envios").dialog('close');
         }        
-        else {
+        else 
+        {
             alert("Ocurrio un error, actualize la pagina (F5) y vuleve a intentarlo");
         }
     },'json');
@@ -212,3 +230,4 @@ function recepcion(key,tr)
 </div>
 <div id="box-envios"></div>
 <div id="box-recepcion"></div>
+<div id="box-msg-envios"></div>

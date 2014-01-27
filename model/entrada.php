@@ -12,9 +12,9 @@ class entrada extends Main
                        v.placa,    
                        do.descripcion,
                        s.numero,     
-                       case s.tipo when 0 then 'I' else 'I&V' end,                       
+                       case s.tipo when 0 then 'I' else 'I&V' end,
                        case s.estado WHEN 3 THEN 'EN CURSO'
-                                     WHEN 4 then 'CONCLUIDO'                            
+                                     WHEN 4 then 'CONCLUIDO'
                             end as estado,
                         e.login,
                         case s.estado when 3 then 
@@ -40,7 +40,7 @@ class entrada extends Main
         return $data;
     }    
     function llegada($id)
-    {        
+    {
         $estado = 4;
         $hora = date('h:i:s');
         $fecha = date('Y-m-d');          

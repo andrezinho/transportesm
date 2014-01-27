@@ -56,7 +56,11 @@ function printThis() {
   </tr>
   <tr><td colspan="4"><hr></td></tr>
     <tr>
+    <?php if($head->tipo_pro==1){ ?>
     <td colspan="3" align="center" class="Cabecera">GUIA DE CORRESPONDENCIA</td>
+    <?php } else { ?>
+    <td colspan="3" align="center" class="Cabecera">TELEGIRO</td>
+    <?php } ?>
   </tr>  
   <tr>
       <td colspan="3" align="center" class="Cabecera"><?php echo $head->serie." - ".$head->numero?></td>

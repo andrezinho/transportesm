@@ -186,6 +186,9 @@ a.login { color : #E4F5F6;}
 		font-size: 11px;
 		margin:1px 3px 1px 3px;
 	}
+.button:hover {
+	background: #4BB148;
+}	
 #mensaje {height: 16px; padding: 2px; text-align: center; border:1px solid transparent; }
 .mensaje_alert { border: 1px solid #FCD208; background:#F1F59C; }
 .box-boton {    
@@ -309,3 +312,6 @@ a.comp-t { background: #EBC513 !important; }
 .list-cumplidos ul li { margin: 4px; padding: 5px; font-weight: normal; }
 
 .link_notify {  font-weight: bold; font-family: 'Buda', cursive; font-size: 13px; color:green;}
+
+.box-encomienda { padding: 1px 3px; text-align: center; background: #4DB849; color: #FFFFFF;}
+.box-telegiro { padding: 1px 13px; text-align: center; background: #2C99D0; color: #FFFFFF;}

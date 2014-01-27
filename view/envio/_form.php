@@ -6,7 +6,7 @@
 <h6 class="ui-widget-header">&nbsp;</h6>
 <?php echo $more_options; ?>
 <div class="contain2">
-<?php header_form('ENCOMIENDAS Y ENVIOS'); ?>  
+<?php header_form('ENCOMIENDAS Y TELEGIROS'); ?>  
 <form id="frm" action="index.php" method="POST">
     <input type="hidden" name="controller" value="envio" />
     <input type="hidden" name="action" value="save" />             
@@ -25,7 +25,30 @@
     ?>    
     <div class="contFrm">    
         <div class="contenido" >                            
-            <h3 class="stitle">GUIA DE CORRESPONDENCIA</h3>
+            
+            <div style="background:#fafafa; border:1px solid #dadada; padding:3px 0; text-align:right" class="ui-corner-all">
+                <label>Tipo de Proceso: </label>
+                <?php 
+                    $readonly = "";
+                    $s = ""; $s1 = "";
+                    switch ($obj->tipo_pro) {
+                        case 1:
+                            $s = "selected"; $s1 = "";
+                            $readonly="disabled='disabled'";
+                            break;
+                        case 2: 
+                            $s = ""; $s1 = "selected";
+                            $readonly="disabled='disabled'";
+                            break;
+                        default:                            
+                            break;
+                    }
+                ?>
+                <select name="tipo_pro" id="tipo_pro" style="background:#2C99D0; color:#FFFFFF;" <?php echo $readonly; ?>>
+                    <option value="1" <?php echo $s; ?>>ENCOMIENDA</option>
+                    <option value="2" <?php echo $s1; ?>>TELEGIRO</option>
+                </select>
+            </div>
             <fieldset class="ui-corner-all">
                 <legend>Datos Basicos</legend>            
                 <label for="idenvio" class="labels" style="width:130px">N°:</label>
@@ -131,12 +154,13 @@
           { 
             ?>
             <fieldset class="ui-corner-all" style="background: #fafafa;">
-                <legend>Detalle de envio</legend>             
+                <legend id="legend-detalle">Detalle de envio</legend>             
                 <label for="descripcion" class="labels" style="width:10px">&nbsp;</label>
-                <input type="text" name="descripcion" id="descripcion" value="" class="ui-widget-content ui-corner-all text" maxlength="300" style="width:40%" placeholder="Descripcion del objeto a enviar..." />                
-                <label for="cantidad" class="labels" style="width:50px">Cant:</label>
+                <textarea type="text" name="descripcion" id="descripcion" class="ui-widget-content ui-corner-all text" style="width:96%" placeholder="Descripcion del objeto a enviar..."></textarea>
+                <br/>
+                <label for="cantidad" class="labels" style="width:80px">Cantidad: </label>
                 <input type="text" name="cantidad" id="cantidad" value="1" class="ui-widget-content ui-corner-all text" maxlength="1" style="width:15px;" onkeypress="return permite(event,'num')" />                 
-                <label for="precio" class="labels" style="width:50px">Monto:</label>
+                <label for="precio" class="labels" style="width:50px">Precio:</label>
                 <input type="text" name="precio" id="precio" value="5.00" class="ui-widget-content ui-corner-all text money" onkeypress="return permite(event,'num')" style="width:40px" /> S/.
                 <label for="subtt" class="labels" style="width:70px">Sub total:</label>
                 <input type="text" name="stt" id="stt" value="5.00" class="ui-widget-content ui-corner-all text money" onkeypress="return permite(event,'num')" style="width:40px" readonly="readonly" /> S/.
@@ -197,3 +221,4 @@
 </div>
 <div id="venta"></div>
 <div id="printv"></div>
+<div id="box-msg-result"></div>

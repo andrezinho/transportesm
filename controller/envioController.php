@@ -22,11 +22,12 @@ class envioController extends Controller
         $this->registros = $data['data']['rows'];
         $this->columnas = array("ID"=>array('ancho'=>'5','align'=>'center','title'=>'Codigo'),
                                 "FECHA"=>array('ancho'=>'7','align'=>'center'),
+                                "TIPO"=>array('ancho'=>10,'align'=>'center'),
                                 "REMITENTE"=>array(),
                                 "CONSIGNADO"=>array(),
                                 "NRO"=>array('ancho'=>7,'align'=>'center'),
                                 "DESTINO"=>array('ancho'=>15),
-                                "TIPO"=>array('ancho'=>3,'align'=>'center'),
+                                "PAGO"=>array('ancho'=>3,'align'=>'center'),                                
                                 "ESTADO"=>array('ancho'=>'7','align'=>'center'),
                                 "USER"=>array('ancho'=>5,'align'=>'center'),
                                 "<p style='font-size:7px;'>&nbsp;</p>"=>array('ancho'=>3,'align'=>'center'),
@@ -62,11 +63,12 @@ class envioController extends Controller
         $this->registros = $data['data']['rows'];
         $this->columnas = array("ID"=>array('ancho'=>'5','align'=>'center','title'=>'Codigo'),
                                 "FECHA"=>array('ancho'=>'7','align'=>'center'),
+                                "TIPO"=>array('ancho'=>10,'align'=>'center'),
                                 "REMITENTE"=>array(),
                                 "CONSIGNADO A"=>array(),
                                 "NRO"=>array('ancho'=>7,'align'=>'center'),
                                 "PROVENIENTE DE"=>array('ancho'=>15),
-                                "TIPO"=>array('ancho'=>5,'align'=>'center'),
+                                "PAGO"=>array('ancho'=>5,'align'=>'center'),
                                 "ESTADO"=>array('ancho'=>'7','align'=>'center'),
                                 "USUARIO"=>array('ancho'=>7,'align'=>'center'),
                                 "<p style='font-size:9px;'>Imprimir</p>"=>array('ancho'=>4,'align'=>'center'),
@@ -135,7 +137,7 @@ class envioController extends Controller
 
         if($estado!=1)
         {
-            $msg = "LA ENCOMIENDA YA NO PUEDE SER EDITADA YA QUE, YA FUE PROCESADA";
+            $msg = "YA NO PUEDE SER EDITADA YA QUE, YA FUE PROCESADA";
             $data['destino'] = $this->Select(
                                             array(
                                                     'id'=>'iddestino',
