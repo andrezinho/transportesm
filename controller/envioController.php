@@ -12,7 +12,7 @@ class envioController extends Controller
    {
         if (!isset($_GET['p'])){$_GET['p']=1;}
         if(!isset($_GET['q'])){$_GET['q']="";} 
-        if(!isset($_GET['criterio'])){$_GET['criterio']="remitente.nombre";} 
+        if(!isset($_GET['criterio'])){$_GET['criterio']="1";} 
         if(!isset($_GET['tipoe'])){$_GET['tipoe']=1;}
         $obj = new envio();
         $data = array();
@@ -34,9 +34,11 @@ class envioController extends Controller
                                 "<p style='font-size:9px;'>&nbsp;</p>"=>array('ancho'=>3,'align'=>'center'),
                                 "<p style='font-size:8px;'>&nbsp;</p>"=>array('ancho'=>3,'align'=>'center')
                                 );         
-        $this->busqueda = array("remitente.nombre"=>"Remitente",
-                                "e.consignado"=>"Consignado",
-                                "d.descripcion"=>"Destino"
+        $this->busqueda = array(
+                                "1"=>"Nro Ticket",
+                                "2"=>"Remitente",
+                                "3"=>"Consignado",
+                                "4"=>"Destino"
                                 );
         $this->asignarAccion('eliminar',false);
         $this->asignarAccion('editar',true);

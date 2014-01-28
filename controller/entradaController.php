@@ -29,13 +29,16 @@ class entradaController extends Controller
                                 "USER"=>array('ancho'=>7,'align'=>'center'),
                                 "<p style='font-size:9px;'>Llegada</p>"=>array('ancho'=>4,'align'=>'center')
                                 );         
-        $this->busqueda = array("chofer.nombre"=>"Chofer",
-                                "v.placa"=>"Placa de Vehiculo");
+        $this->busqueda = array(
+                                "1"=>"Nro Ticket",
+                                "2"=>"Chofer",
+                                "3"=>"Placa (Vehiculo)"
+                                );
         $this->asignarAccion('eliminar',false);
         $this->asignarAccion('editar',false);
         $this->asignarAccion('nuevo',false);
         $this->asignarAccion('ver',false);
-        $data['grilla'] = $this->grilla("salida",$data['pag']);
+        $data['grilla'] = $this->grilla("entrada",$data['pag']);
         $view = new View();
         $view->setData($data);
         $view->setTemplate( '../view/entrada/_index.php' );

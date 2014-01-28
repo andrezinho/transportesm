@@ -44,8 +44,18 @@ class envio extends Main{
                        end
                 from envio as e inner join pasajero as remitente on remitente.idpasajero = e.idremitente                  
                     inner join empleado as em on e.idempleado = em.idempleado and em.idtipo_empleado = 1
-                    INNER JOIN destino as d on d.iddestino = e.iddestino
-                where ".$c." like :query and e.idoficina = ".$_SESSION['idoficina']." 
+                    INNER JOIN destino as d on d.iddestino = e.iddestino";
+
+               switch ($c) 
+               {
+                    case 1: $c="e.numero";break;
+                    case 2: $c="case remitente.nrodocumento when '00000000' then e.remitente else remitente.nombre end";break;
+                    case 3: $c="e.consignado";break;
+                    case 4: $c="d.descripcion";break;
+                    default:break;
+                } 
+                
+                $sql .= " where ".$c." like :query and e.idoficina = ".$_SESSION['idoficina']." 
                 order by e.idenvio desc ";
 
         $param = array(array('key'=>':query' , 'value'=>"%$query%" , 'type'=>'STR' ));

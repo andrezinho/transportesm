@@ -52,6 +52,7 @@ function maxwindow()
   var h = $(window).height();
   $("#content").css('minHeight',(h-135));  
 }
+
 function setBoxAlert()
 {
   var h = $(window).height(),
@@ -59,6 +60,7 @@ function setBoxAlert()
   $("#box-alerts").css('top',(h-110));    
   $("#box-alerts").css('left',(w-250));
 }
+
 function getNotify()
 {
     $.get('index.php','controller=notify&action=getAlerts',function(r)
@@ -78,4 +80,17 @@ function getNotify()
         });        
     },'json');
 }
+
 setInterval(getNotify,15000);
+
+//
+function showMensaje(text)
+{
+    $("#box-msg-result").empty();
+    var html = '<div style="text-align:center; padding:10px; margin-top:10px;">Se a terminado de procesar su solicitud.</div>';
+        html += '<div style="text-align:center">';
+        html += text;
+        html += '</div>';
+    $("#box-msg-result").append(html);
+    $("#box-msg-result").dialog('open');
+}

@@ -43,7 +43,7 @@ class ingresos extends Main
                 left outer join proveedor as pro on pro.idproveedor = m.idproveedor
                 where case tipo_ingreso when 1 then concat(coalesce(e.nombre,' '),' ',coalesce(e.apellidos,' '))
                             else pro.razonsocial end like :query and  m.idoficina = ".$_SESSION['idoficina']." and m.tipo=1 and users.idtipo_empleado = 1
-                    and 
+                        and
                     case tipo_ingreso when 1 then concat(coalesce(e.nombre,' '),' ',coalesce(e.apellidos,' '))
                             else pro.razonsocial end <> ''
                     and m.serie is not null
@@ -56,8 +56,8 @@ class ingresos extends Main
         unset($_SESSION['conceptos']);
         return $data;
     }
-    function edit($id ) {
-        
+    function edit($id ) 
+    {        
         $stmt = $this->db->prepare("SELECT distinct m.*,
                                            e.idempleado,
                                            concat(coalesce(e.nombre,' '),' ',coalesce(e.apellidos,' ')) as nombre,                                           
@@ -96,8 +96,7 @@ class ingresos extends Main
     }
 
     function insert($_P ) 
-    {
-         
+    {         
         $idperiodo = $_SESSION['idperiodo'];
         $idempleado = $_SESSION['idempleado'];  
         $idoficina = $_SESSION['idoficina'];
@@ -105,9 +104,9 @@ class ingresos extends Main
         $estado = 1;
         $hora = date('h:i:s');
         $gr = '';
-        $stmt = $this->db->prepare("SELECT f_insert_movimiento (:p1, :p2, :p3, :p4,:p5, :p6, :p7, :p8, :p9, :p10, :p11, :rs,:ruc,:p12,:p13,:p14)");
-        try 
-        { 
+        $stmt = $this->db->prepare("SELECT f_insert_movimiento(:p1, :p2, :p3, :p4,:p5, :p6, :p7, :p8, :p9, :p10, :p11, :rs,:ruc,:p12,:p13,:p14)");
+        try
+        {
             $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $this->db->beginTransaction();
                 
@@ -155,9 +154,9 @@ class ingresos extends Main
         {
             $this->db->rollBack();
             return array('res'=>"2",'msg'=>'Error : '.$e->getMessage() . $str);
-        }
-           
+        }  
     }
+    
     function anular($p) 
     {
         $stmt = $this->db->prepare("UPDATE movimiento set estado = 0 WHERE idmovimiento = :p1");

@@ -626,13 +626,3 @@ function changeTipoProceso()
         $("#legend-detalle").html("Detalle de Telegiro");
     }
 }
-function showMensaje(text)
-{
-    $("#box-msg-result").empty();
-    var html = '<div style="text-align:center; padding:10px; margin-top:10px;">Ok, se ha procesado correctamente.</div>';
-    html += '<div style="text-align:center">';
-    html += text;
-    html += '</div>';
-    $("#box-msg-result").append(html);
-    $("#box-msg-result").dialog('open');
-}

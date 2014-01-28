@@ -21,7 +21,8 @@ class EgresoController extends Controller
                       "TOTAL"=>array('align'=>'right'),
                       "ESTADO"=>array('align'=>'center'),
                       "USUARIO"=>array('align'=>'center','ancho'=>10),
-                      "-"=>array('align'=>'center','ancho'=>'3')
+                      "-"=>array('align'=>'center','ancho'=>'3'),
+                       "<p style='font-size:8px;'>&nbsp;</p>"=>array('ancho'=>3,'align'=>'center')
                     );         
         $this->busqueda = array("descripcion"=>"CONCEPTO");
         $this->asignarAccion('eliminar',false);
@@ -77,37 +78,24 @@ class EgresoController extends Controller
     public function save()
     {
         $obj = new egresos();
-        if ($_POST['idmovimiento']=='') {
-            $p = $obj->insert($_POST);
-            if ($p['res']=='1')
-            {
-                header('Location: index.php?controller=egreso');                
-            } 
-            else 
-            {
-                $data = array();
-                $view = new View();
-                $data['msg'] = $p['msg'];
-                $data['url'] =  'index.php?controller=egreso';
-                $view->setData($data);
-                $view->setTemplate( '../view/_error_app.php' );
-                $view->setlayout( '../template/layout.php' );
-                $view->render();
-            }
-        } else {
-            $p = $obj->update($_POST);
-            if ($p[0]){
-                header('Location: index.php?controller=egreso');
-            } else {
-            $data = array();
-            $view = new View();
-            $data['msg'] = $p[1];
-            $data['url'] =  'index.php?controller=egreso';
-            $view->setData($data);
-            $view->setTemplate( '../view/_error_app.php' );
-            $view->setlayout( '../template/layout.php' );
-            $view->render();
-            }
+        $result = array();        
+        if ($_POST['idmovimiento']=='') 
+        {
+            $p = $obj->insert($_POST);            
+            if ($p['res']=='1')                
+                $result = array(1,'',$p['idm']);
+            else                 
+                $result = array(2,$p['msg'],'');
+            print_r(json_encode($result));
+        }
+        else 
+        {
+            $p = $obj->update($_POST);            
+            if ($p['res']=='1')                
+                $result = array(1,'',$p['idm']);                
+            else                 
+                $result = array(2,$p['msg'],'');
+            print_r(json_encode($result));    
         }
     }
     public function anular()
@@ -190,6 +178,35 @@ class EgresoController extends Controller
         
         $view->setlayout( '../template/layout.php' );
         return $view->renderPartial();        
+    }
+
+    public function printer()
+    {
+        $data = array();
+        $view = new View();                
+        $obj = new egresos();
+        $result = $obj->getdata((int)$_GET['iv']);
+        if($result[0])
+        {
+            $data['head'] = $result[1];          
+            $data['detalle'] = $result[2];
+            $view->setData($data);
+            $view->setTemplate( '../view/egresos/_print.php');
+            $view->setlayout( '../template/empty.php' );
+            $view->render();  
+        }
+        else 
+        {
+            $data = array();
+            $view = new View();
+            $data['msg'] = 'No se ha podido encontrar el egreso solicitado a imprimir.';
+            $data['url'] =  'index.php?controller=egreso';
+            $view->setData($data);
+            $view->setTemplate( '../view/_error_app.php' );
+            $view->setlayout( '../template/layout.php' );
+            $view->render();
+        }
+        
     }
    
    

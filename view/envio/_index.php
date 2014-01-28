@@ -11,8 +11,8 @@ $(document).ready(function() {
 		{
             if(confirm("Realmente deseas Anular este Envio"))
             {
-                    href = "index.php?controller=envio&action=anular&id="+Id;                    
-                    window.location = href;
+                href = "index.php?controller=envio&action=anular&id="+Id;                    
+                window.location = href;
             }
         }
           else { alert("Seleccione algún Registro para Anularlo"); }
@@ -208,15 +208,15 @@ function recepcion(key,tr)
                     <?php if($tipoe==2) 
                     {
                         ?>
-                        <option value="1" >Encomiendas Salientes</option>
-                        <option value="2" selected="">Encomiendas Entrantes</option>
+                        <option value="1" >Encomiendas-Telegiros Salientes</option>
+                        <option value="2" selected="">Encomiendas-Telegiros Entrantes</option>
                         <?php
                     } 
                     else 
                     {
                         ?>
-                        <option value="1" selected="" >Encomiendas Salientes</option>
-                        <option value="2" >Encomiendas Entrantes</option>
+                        <option value="1" selected="" >Encomiendas-Telegiros Salientes</option>
+                        <option value="2" >Encomiendas-Telegiros Entrantes</option>
                         <?php
                     }
                     ?>

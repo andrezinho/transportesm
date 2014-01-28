@@ -21,6 +21,10 @@ class egresos extends Main
                                 end
                            end
                         else '&nbsp;'
+                        end,
+                        case m.estado when 0 then '&nbsp;'
+                        else 
+                        concat('<a target=\"_blank\" href=\"index.php?controller=egreso&action=printer&iv=',m.idmovimiento,'\" title=\"Imprimir\" class=\"box-boton boton-print\" ></a>')
                         end
                        from movimiento as m inner join proveedor as p on
                             p.idproveedor = m.idproveedor  
@@ -72,7 +76,8 @@ class egresos extends Main
         return $row;
         
     }
-     function insert($_P ) {
+     function insert($_P ) 
+     {
          
         $idperiodo = $_SESSION['idperiodo'];
         $idempleado = $_SESSION['idempleado'];  
@@ -105,7 +110,7 @@ class egresos extends Main
                 //$stmt->bindParam(':p11', $_P['placa'] , PDO::PARAM_STR); //
                 $stmt->bindParam(':p12', $_P['razonsocial'] , PDO::PARAM_STR); //
                 $stmt->bindParam(':p13', $_P['ruc'] , PDO::PARAM_STR); //
-                 $stmt->bindParam(':p14', $_P['tipoi'] , PDO::PARAM_INT);
+                $stmt->bindParam(':p14', $_P['tipoi'] , PDO::PARAM_INT);
                 $stmt->bindParam(':p15', $_P['recibi'] , PDO::PARAM_STR);
                 $stmt->bindParam(':p16', $this->tipo_documento,PDO::PARAM_INT);
                 
@@ -175,6 +180,46 @@ class egresos extends Main
         $p1 = $stmt->execute();
         $p2 = $stmt->errorInfo();
         return array($p1 , $p2[2]);
+    }
+
+    function getdata($ide)
+    {
+        $stmt = $this->db->prepare("SELECT distinct  
+                                            pro.razonsocial as remitente,                                            
+                                            m.fecha, 
+                                            o.descripcion as oficina,
+                                            o.direccion,
+                                            o.telefono,
+                                            m.observacion,                                       
+                                            m.serie,
+                                            m.numero                                       
+                                   from movimiento as m                                         
+                                        inner join empleado as users on users.idempleado = m.idempleado                                             
+                                            inner join oficina as o on m.idoficina = o.idoficina                                            
+                                            left outer join empleado as e on e.idempleado = m.idpropietario  and e.idtipo_empleado = 3
+                                        left outer join proveedor as pro on pro.idproveedor = m.idproveedor
+                                    where m.estado <> 0  and m.idmovimiento= :id");
+        $stmt->bindParam(':id',$ide,PDO::PARAM_INT);
+        $stmt->execute();
+        $n = $stmt->rowCount();
+        if($n>0)
+        {
+            $head = $stmt->fetchObject();
+            $stmt2 = $this->db->prepare("SELECT  md.descripcion,
+                                                monto as precio,
+                                                cantidad
+                                        FROM movimiento_detalle as md inner join concepto_movimiento as cm
+                                        on cm.idconcepto_movimiento = md.idconcepto_movimiento
+                                        WHERE idmovimiento = :id ");
+            $stmt2->bindParam(':id',$ide,PDO::PARAM_INT);
+            $stmt2->execute();
+            $detalle = $stmt2->fetchAll();
+            return array(true,$head,$detalle);
+        }
+        else 
+        {
+            return array(false,'','');
+        }
     }
 }
 ?>

@@ -26,12 +26,21 @@ class entrada extends Main
                         inner join destino as d on d.iddestino = s.iddestino
                         inner join empleado as e on e.idempleado = s.idempleado and e.idtipo_empleado=1
                         inner join oficina as o on s.idoficina = o.idoficina 
-                        inner join destino as do on do.iddestino = o.idsucursal
-                where ".$c." like :query 
+                        inner join destino as do on do.iddestino = o.idsucursal ";
+                        
+                switch ($c) 
+                {
+                    case 1: $c="s.numero";break;
+                    case 2: $c="concat(chofer.nombre,' ',chofer.apellidos)";break;
+                    case 3: $c="v.placa";break;                   
+                    default:break;
+                } 
+
+               $sql .= " where ".$c." like :query 
                         and chofer.idtipo_empleado = 2 
                         and s.iddestino = ".$_SESSION['idsucursal']."
                         and (s.estado = 3 or s.estado = 4)
-                order by s.idsalida desc";
+                order by s.idsalida desc ";
 
         $param = array(array('key'=>':query' , 'value'=>"%$query%" , 'type'=>'STR' ));
         $data['total'] = $this->getTotal( $sql, $param );

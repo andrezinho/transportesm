@@ -274,6 +274,46 @@ public function renvio()
         $view->setlayout('../template/empty.php');
         $view->render();
     }
+
+
+//telegiro
+public function rtelegiro()
+    {
+        $data = array();
+        $view = new View();        
+        $data['more_options'] = $this->more_options('reportes');
+        $view->setData($data);
+        $view->setTemplate( '../view/reportes/_telegiro.php' );        
+        $view->setlayout( '../template/layout.php' );
+        $view->render();
+    }    
+    public function html_telegiro()
+    {
+        //var_dump($_POST);die;
+        $obj = new reportes();
+        $data = array();
+        $result = $obj->data_telegiro($_GET);
+        $data['rowsi'] = $result[0];
+        $data['rows'] = $result[1];
+        $view = new View();
+        $view->setData($data);
+        $view->setTemplate('../view/reportes/_html_telegiro.php');
+        echo $view->renderPartial();
+    }    
+    public function pdf_telegiro()
+    {
+        //var_dump($g['fechai']);die;
+        $obj = new reportes();
+        $data = array();
+        $result = $obj->data_telegiro($_GET);
+        $data['rowsi'] = $result[0];
+        $data['rows'] = $result[1];
+        $view = new View();
+        $view->setData($data);
+        $view->setTemplate('../view/reportes/_pdf_telegiro.php');
+        $view->setlayout('../template/empty.php');
+        $view->render();
+    }    
 //salida
 public function rsalida()
     {

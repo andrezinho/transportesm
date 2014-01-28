@@ -1,4 +1,12 @@
-$(function() {
+$(function() 
+{
+    $("#box-msg-result").dialog({
+        autoOpen:false,
+        title: 'Mensaje',
+        modal: true,
+        resizable: false
+        
+    });
 
     $("#fecha,#fechad").datepicker({
                                         'dateFormat':'dd/mm/yy',
@@ -14,10 +22,11 @@ $(function() {
                 $( "#ruc" ).val( ui.item.ruc );
                 return false;
             },
-            select: function( event, ui ) {
+            select: function( event, ui ) 
+            {
                 $( "#idproveedor" ).val(ui.item.id);
-                $( "#razonsocial" ).val( ui.item.name );
-                $( "#ruc" ).val( ui.item.ruc );
+                $( "#razonsocial" ).val(ui.item.name);
+                $( "#ruc" ).val(ui.item.ruc);
                 $("#observacion").focus();
                 return false;
             },
@@ -32,8 +41,6 @@ $(function() {
                 .append( "<a>"+ item.ruc +"-" + item.name + "</a>" )
                 .appendTo( ul );
         };
-        
-        
         $( "#idconcepto_movimiento" ).autocomplete({
             minLength: 0,
             source: "index.php?controller=Concepto_Movimiento&action=search_autocompletee&tipo=1",
@@ -52,8 +59,6 @@ $(function() {
                 .append( "<a>"+ item.id +"-" + item.name + "</a>" )
                 .appendTo( ul );
         };
-        
-        
         $( "#concepto" ).autocomplete({
             minLength: 0,
             source: "index.php?controller=Concepto_Movimiento&action=search_autocompletee&tipo=2",
@@ -74,19 +79,47 @@ $(function() {
         };
 
     $("#adddetalle").click(function()
-        {        
-                add();
-        }
+    {        
+        add();
+    }
     );
 
-    $( "#save" ).click(function(){
+    $( "#save" ).click(function()
+    {
         bval = true;                
-        bval = bval && $( "#fecha" ).required();                
-        bval = bval && $( "#ruc" ).required();                
-        bval = bval && $( "#razonsocial" ).required();                
-        
-        if ( bval ) {
-            $("#frm").submit();
+        bval = bval && $( "#fecha" ).required();
+        bval = bval && $( "#ruc" ).required();
+        bval = bval && $( "#razonsocial" ).required();
+        if ( bval )
+        {
+            var ht = $(this).html();
+            if(ht=="GRABAR")
+            {
+                var str = $("#frm").serialize(); 
+                showMensaje('Procesando su solicitud...');
+                $.post('index.php',str,function(result)
+                {
+                    var html_printer = "";                    
+                    if(result[0]=='1')
+                    {
+                        html_printer = '<a class="lnk-results" target="_blank" href="index.php?controller=egreso&action=printer&iv='+result[2]+'">Imprimir</a>';                       
+                        html_printer += '<a class="lnk-results" href="index.php?controller=ingresos&action=create" id="">Registrar Nuevo</a>';                       
+                        if(idmovimiento=="")
+                        {
+                            $("#save").empty().append("Egreso Guardado.");
+                        }
+                        else 
+                        {
+                            $("#save").empty().append("Egreso Actualizado.");
+                        }
+                        $("#idmovimiento").val(result[2]);
+                    }
+                    else {
+                        $("#save").empty().append("GRABAR");
+                    }
+                    showMensaje(result[1]+' '+html_printer,result[0]);
+                },'json');
+            }    
         }
         return false;
     });
@@ -105,8 +138,8 @@ $(function() {
     
 });
 
- function add()
-    {
+function add()
+{
         
     
     if(validard())

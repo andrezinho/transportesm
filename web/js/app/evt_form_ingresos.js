@@ -223,10 +223,7 @@ $(function() {
                      bval = bval && $("#ruc").required();
                  
                  bval = bval && $("#razonsocial").required();
-             }
-        //bval = bval && $( "#idempleado" ).required();                
-        //bval = bval && $( "#chofer" ).required();                
-        //bval = bval && $( "#placa" ).required();                        
+             }                     
         if ( bval ) 
         {
             var ht = $(this).html();
