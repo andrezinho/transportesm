@@ -66,6 +66,7 @@ class salida extends Main
                 where cast(".$c." as char) like :query and chofer.idtipo_empleado = 2 
                         and s.idoficina = ".$_SESSION['idoficina']."
                 order by s.idsalida desc";
+        
         $param = array(array('key'=>':query' , 'value'=>"%$query%" , 'type'=>'STR' ));
         $data['total'] = $this->getTotal( $sql, $param );
         $data['rows'] =  $this->getRow($sql, $param , $p );        
@@ -257,17 +258,16 @@ class salida extends Main
     {
         $fecha = $this->fdate($fecha,'EN');
         $stmt = $this->db->prepare("SELECT distinct s.idsalida,
-                                        concat(coalesce(chofer.nombre,''),' ',coalesce(chofer.apellidos,''),' - ',v.placa)
+                                            concat('(A ',d.descripcion,') ',coalesce(chofer.nombre,''),' ',coalesce(chofer.apellidos,''),' - ',v.placa)
                                     FROM salida as s inner join empleado as chofer on chofer.idempleado = s.idchofer
                                             inner join vehiculo as v on v.idvehiculo = s.idvehiculo
                                             inner join destino as d on d.iddestino = s.iddestino
                                             inner join empleado as e on e.idempleado = s.idempleado
                                     where s.idoficina = ".$_SESSION['idoficina']." 
-                                            and s.iddestino = :idd
-                                            and s.fecha = '".$fecha."'
-                                            and s.estado in (1,2,3)
-                                    ORDER BY s.idsalida desc
-                                    -- order by concat(coalesce(chofer.nombre,''),' ',coalesce(chofer.apellidos,''),' - ',v.placa)");
+                                            and s.iddestino <> ".$_SESSION['idsucursal']."
+                                           -- and s.fecha = '".$fecha."'
+                                          --  and s.estado in (1,2,3)
+                                    ORDER BY d.descripcion,s.idsalida desc");
         
         $stmt->bindParam(':idd',$idd,PDO::PARAM_INT);
         $stmt->execute();

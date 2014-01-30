@@ -17,17 +17,41 @@ $(document).ready(function() {
         }
           else { alert("Seleccione algún Registro para Anularlo"); }
 	});
+
+
     $(".conf-envio").live('click',function(){
         var idx = $(this).attr("id");
             idx = idx.split("-");
-        Id = idx[1];
-        var $tr = $(this).parent();
+        Id = idx[1];        
         if(Id!="")
         {
-            Sending(Id,$tr);
+            //1: Para confirmar su salida
+            Sending(Id,tr,1);
         }
     });
-    $(".conp-envio").live('click',function(){
+    $(".conf-envio-llegada").live('click',function(){
+        var idx = $(this).attr("id");
+            idx = idx.split("-");
+        Id = idx[1];        
+        if(Id!="")
+        {
+            //Para confirmar su llegada
+            Sending(Id,tr,2);
+        }
+    });
+
+    $(".get-salidas").live('click',function(){
+        var idx = $(this).attr("id");
+            idx = idx.split("-");
+        Id = idx[1];
+        tr = $(this).parent();
+
+        getlistsalidas(Id);
+        
+    })
+
+    $(".conp-envio").live('click',function()
+    {
         var idx = $(this).attr("id");
             idx = idx.split("-");
         Id = idx[1];
@@ -39,13 +63,14 @@ $(document).ready(function() {
             loadSalidas(idd);
         });
     });
+
     $(".recepcion").live('click',function(){
         var idx = $(this).attr("id");
             idx = idx.split("-");
-        Id = idx[1];
-        $tr = $(this).parent();
-        recepcion(Id,$tr);
+        Id = idx[1];       
+        recepcion(Id,tr);
     });
+
     $(".recepcion-ce").live('click',function(){
         var idx = $(this).attr("id");
             idx = idx.split("-");
@@ -55,7 +80,8 @@ $(document).ready(function() {
          $.get('index.php','controller=envio&action=frmRecepcion&id='+Id,function(data){
              $("#box-recepcion").empty().append(data);
          });
-    })
+    });
+
     $("#tipoe").live('change',function(){
         var ite = $(this).val();
         if(ite==1)
@@ -63,15 +89,16 @@ $(document).ready(function() {
         else 
             window.location = "?controller=envio&action=indexe";        
     });
+
     $("#box-envios").dialog(
     {
         autoOpen:false,
-        title: 'Completar informacion para el envio de la Encomienda ...',
+        title: 'Agregar Salida a la Encomienda-Telegiro',
         modal:true,
         width:450,
         height:160,
         buttons: {
-                'Actualizar':function()
+                'Confirmar':function()
                         {
                             updateSend();
                         },
@@ -85,6 +112,12 @@ $(document).ready(function() {
         title: 'Dar salida a la encomienda',
         modal: true,
         width:400
+    });
+    $("#box-salidas").dialog({
+        autoOpen:false,
+        title: 'Salidas Asignadas a este envio',
+        modal: true,
+        width:580
     });
     $("#box-recepcion").dialog(
     {
@@ -139,40 +172,40 @@ function updateSend()
     bval = bval && $("#salidas").required();    
     if(bval)
     {
-        var str = $("#frm01").serialize();        
+        var str = $("#frm01").serialize(),
+            idenvio = $("#idenvio").val();
          $.post('index.php','controller=envio&action=update&'+str,function(data){
             if(data[0]=='1')
             {
                 $("#box-envios").dialog('close');
-                $("#box-msg-envios").empty().append('<p style="text-align:justify; padding:5px;"><b>Se ha actualizado satisfactoriamente los datos de la encomienda, ahora si puede confirmar su respectiva salida.</b></p><br/><p style="font-style:italic; padding:5px;"><b>Nota:</b> Recuerde dar salida tambien al vehiculo que lo est&aacute; llevando.');
-                $("#box-msg-envios").dialog({
-                    buttons: {
-                        'Confirmar salida':function(){
-                            Sending(data[2],tr);
-                        },
-                        'Cerrar': function(){
-                            $(this).dialog('close');
-                        }
-                    }
-                });
-                $("#box-msg-envios").dialog('open');                
+                getlistsalidas(idenvio);
             }
             else 
             {
                 alert(data[1]);
             }
          },'json');
-    }
-    ll
+    }    
 }
-function Sending(key,tr)
+function getlistsalidas(ide)
 {
-    $.post('index.php','controller=envio&action=sending&id='+key,function(data){        
+    $("#box-salidas").dialog('open');        
+        $.get('index.php','controller=envio&action=getlistsalidas&id='+ide,function(data){
+            $("#box-salidas").empty().append(data);            
+        });
+}
+function Sending(key,tr, tipo)
+{
+    $.post('index.php','controller=envio&action=sending&id='+key+'&tipo='+tipo,function(data){        
         if(data[0]=='1')
-        {
-            tr.empty().append("<span class='box-boton boton-ok'></span>");
-            tr.parent().find('td:eq(7)').empty().append('<p style="font-size:9px; font-style:italic">ENVIADA</p>');
+        {            
+            if(tipo==1)
+                tr.parent().find('td:eq(7)').empty().append('<p style="font-size:9px; font-style:italic">EN PROCESO</p>');
+            else
+                tr.parent().find('td:eq(9)').empty().append('<p style="font-size:9px; font-style:italic">EN ESPERA</p>');
+
             $("#box-msg-envios").dialog('close');
+            getlistsalidas(data[2]);
         }        
         else 
         {
@@ -180,19 +213,20 @@ function Sending(key,tr)
         }
     },'json');
 }   
-function confirmRecepcion()
-{
 
-}
 function recepcion(key,tr)
 {
     $.post('index.php','controller=envio&action=confirmRecepcion&id='+key,function(data){
         if(data[0]=='1')
         {
-            tr.empty().append(data[1]);
-            tr.parent().find('td:eq(7)').empty().append("<span class='box-boton boton-ok'></span>");
+            
+            tr.parent().find('td:eq(9)').empty().append('<p style="font-size:9px; font-style:italic">FINALIZADO</p>');
+
+            $("#box-msg-envios").dialog('close');
+            getlistsalidas(data[2]);
         }
-        else {
+        else 
+        {
             alert("Ocurrio un error, actualize la pagina (F5) y vuleve a intentarlo");
         }
     },'json');
@@ -231,3 +265,4 @@ function recepcion(key,tr)
 <div id="box-envios"></div>
 <div id="box-recepcion"></div>
 <div id="box-msg-envios"></div>
+<div id="box-salidas"></div>

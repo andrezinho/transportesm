@@ -41,7 +41,7 @@ class ingresos extends Main
                 inner join empleado as users on users.idempleado = m.idempleado
                 left outer join empleado as e on e.idempleado = m.idpropietario  and e.idtipo_empleado = 3
                 left outer join proveedor as pro on pro.idproveedor = m.idproveedor
-                where case tipo_ingreso when 1 then concat(coalesce(e.nombre,' '),' ',coalesce(e.apellidos,' '))
+                where m.tipo=1 and case tipo_ingreso when 1 then concat(coalesce(e.nombre,' '),' ',coalesce(e.apellidos,' '))
                             else pro.razonsocial end like :query and  m.idoficina = ".$_SESSION['idoficina']." and m.tipo=1 and users.idtipo_empleado = 1
                         and
                     case tipo_ingreso when 1 then concat(coalesce(e.nombre,' '),' ',coalesce(e.apellidos,' '))

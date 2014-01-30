@@ -22,23 +22,22 @@ class envioController extends Controller
         $this->registros = $data['data']['rows'];
         $this->columnas = array("ID"=>array('ancho'=>'5','align'=>'center','title'=>'Codigo'),
                                 "FECHA"=>array('ancho'=>'7','align'=>'center'),
-                                "TIPO"=>array('ancho'=>10,'align'=>'center'),
+                                "TIPO"=>array('ancho'=>4,'align'=>'center'),
                                 "REMITENTE"=>array(),
                                 "CONSIGNADO"=>array(),
                                 "NRO"=>array('ancho'=>7,'align'=>'center'),
-                                "DESTINO"=>array('ancho'=>15),
+                                "DESTINO FINAL"=>array('ancho'=>15),
                                 "PAGO"=>array('ancho'=>3,'align'=>'center'),                                
                                 "ESTADO"=>array('ancho'=>'7','align'=>'center'),
                                 "USER"=>array('ancho'=>5,'align'=>'center'),
-                                "<p style='font-size:7px;'>&nbsp;</p>"=>array('ancho'=>3,'align'=>'center'),
-                                "<p style='font-size:9px;'>&nbsp;</p>"=>array('ancho'=>3,'align'=>'center'),
-                                "<p style='font-size:8px;'>&nbsp;</p>"=>array('ancho'=>3,'align'=>'center')
+                                "<p style='font-size:7px;'>Enviar</p>"=>array('ancho'=>3,'align'=>'center'),
+                                "<p style='font-size:7px;'>Anular</p>"=>array('ancho'=>3,'align'=>'center'),
+                                "<p style='font-size:7px;'>Print</p>"=>array('ancho'=>3,'align'=>'center')
                                 );         
         $this->busqueda = array(
                                 "1"=>"Nro Ticket",
                                 "2"=>"Remitente",
-                                "3"=>"Consignado",
-                                "4"=>"Destino"
+                                "3"=>"Consignado"
                                 );
         $this->asignarAccion('eliminar',false);
         $this->asignarAccion('editar',true);
@@ -55,7 +54,7 @@ class envioController extends Controller
     {
         if (!isset($_GET['p'])){$_GET['p']=1;}
         if(!isset($_GET['q'])){$_GET['q']="";} 
-        if(!isset($_GET['criterio'])){$_GET['criterio']="remitente.nombre";} 
+        if(!isset($_GET['criterio'])){$_GET['criterio']="1";} 
         if(!isset($_GET['tipoe'])){$_GET['tipoe']=1;}
         $obj = new envio();
         $data = array();
@@ -65,19 +64,22 @@ class envioController extends Controller
         $this->registros = $data['data']['rows'];
         $this->columnas = array("ID"=>array('ancho'=>'5','align'=>'center','title'=>'Codigo'),
                                 "FECHA"=>array('ancho'=>'7','align'=>'center'),
-                                "TIPO"=>array('ancho'=>10,'align'=>'center'),
+                                "TIPO"=>array('ancho'=>4,'align'=>'center'),
                                 "REMITENTE"=>array(),
                                 "CONSIGNADO A"=>array(),
                                 "NRO"=>array('ancho'=>7,'align'=>'center'),
-                                "PROVENIENTE DE"=>array('ancho'=>15),
-                                "PAGO"=>array('ancho'=>5,'align'=>'center'),
+                                "PROVENIENTE DE"=>array('ancho'=>10),
+                                "DESTINO FINAL"=>array('ancho'=>10),
+                                "PAGO"=>array('ancho'=>3,'align'=>'center'),
                                 "ESTADO"=>array('ancho'=>'7','align'=>'center'),
                                 "USUARIO"=>array('ancho'=>7,'align'=>'center'),
-                                "<p style='font-size:9px;'>Imprimir</p>"=>array('ancho'=>4,'align'=>'center'),
-                                "<p style='font-size:9px;'>Entregar</p>"=>array('ancho'=>4,'align'=>'center')
+                                "<p style='font-size:8px;'>Print</p>"=>array('ancho'=>4,'align'=>'center'),
+                                "<p style='font-size:8px;'>&nbsp;</p>"=>array('ancho'=>4,'align'=>'center')
                                 );         
-        $this->busqueda = array("remitente.nombre"=>"Remitente",
-                                "consignado.nombre"=>"Consignado"
+        $this->busqueda = array(
+                                "1"=>"Nro Ticket",
+                                "2"=>"Remitente",
+                                "3"=>"Consignado"
                                 );
         $this->asignarAccion('eliminar',false);
         $this->asignarAccion('editar',false);
@@ -334,10 +336,10 @@ class envioController extends Controller
         $id = (int)$_POST['id'];   
         if ($id!='') 
         {
-            $p = $obj->sending($id);
+            $p = $obj->sending($id,$_POST['tipo']);
             if ($p[0]==1)
             {
-                $result = array("1","<p style='font-size:9px; font-style:italic'>".$p[1]."</p>");
+                $result = array("1","<p style='font-size:9px; font-style:italic'>".$p[1]."</p>",$p[2]);
             } 
             else 
             {
@@ -373,7 +375,7 @@ class envioController extends Controller
             $p = $obj->confirmRecepcion($id);
             if ($p[0]==1)
             {
-                $result = array("1",$p[1]);
+                $result = array("1",$p[1],$p[2]);
             } 
             else 
             {
@@ -523,6 +525,23 @@ class envioController extends Controller
         $view->setlayout('../template/layout.php');
         echo $view->renderPartial();
     }
+
+    public function getlistsalidas()
+    {
+        $view = new View();           
+        $obj = new envio();
+        $obj2 = $obj->getlistsalidas($_GET['id']);  
+        $Permisoadd = $obj->getPermisoAddNewDestino($_GET['id']);
+        $data = array();        
+        $data['idenvio'] = $_GET['id'];
+        $data['rows'] = $obj2;
+        $data['permiso'] = $Permisoadd;
+        $view->setData($data);
+        $view->setTemplate('../view/envio/_frmlistsalidas.php');
+        $view->setlayout('../template/layout.php');
+        echo $view->renderPartial();
+    }
+
     public function getEstado($id)
     {
         $obj = new envio();

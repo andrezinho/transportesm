@@ -49,7 +49,7 @@ $(function() {
     });
 
     $("#iddestino").css("width","160px");
-    $("#salidas").css("width","260px");
+    $("#salidas").css("width","460px");
     calcTotales();
     $("#iddestino").focus();
     load_sernum(3);

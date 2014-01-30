@@ -67,11 +67,15 @@
                 <?php 
                 if($contrae!="1")
                 {    
+                    if($obj->idenvio=="")
+                    {
                     ?>
                     <label for="salidas" class="labels" style="width:130px">Salidas Disponibles:</label>                
                     <?php 
+                    }
                     if($obj->idenvio!="") 
                     { 
+                        /*
                         if($obj->estado==1)
                             {
                                 echo $salidasok;  
@@ -80,9 +84,10 @@
                             {
                                 echo $obj->salida;
                             }                            
+                        */
                     } 
                     else 
-                    {                
+                    {
                         ?>                              
                         <select name="salidas" id="salidas" class="ui-widget-content ui-corner-all text" >
                             <option value="">-No hay disponibles-</option>
@@ -94,12 +99,16 @@
                     <?php 
                     if($obj->estado==1||$obj->estado=="")
                     { 
+                        if($obj->idenvio=="") 
+                        { 
                         ?>
                         <a href="javascript:" class="box-boton boton-refresh" title="Recargar Lista de Salidas" id="reload-salidas"></a>
                         <a href="index.php?controller=salida&action=create" target="_blank" class="box-boton boton-new" title="Registrar Nueva Salida" style="margin-left:10px"></a>                
+                                        
                         <a href="javascript:" style="font-weight:bold">&nbsp;</a>                
                         <span id="loadsalida" style="display:none"><img src="images/loader.gif"/> Buscando Salidas Disponibles ...</span>                
                         <?php 
+                        }
                     } 
                     echo '<br/> ';
                 }
@@ -114,8 +123,8 @@
                 <input type="text" name="nrodocumentor" id="nrodocumentor" value="<?php echo $obj->nrodocumentor; ?>" class="ui-widget-content ui-corner-all text" size="13" title="Nro de Documento" onkeypress="return permite(event,'num')" maxlength="11" placeholder="Nro Documento" style="display:<?php echo $display; ?>" />
                 <input type="text" name="remitente" id="remitente" value="<?php echo $obj->remitente; ?>" class="ui-widget-content ui-corner-all text" title="Nombre del Remitente" style="width:394px" placeholder="Nombres y/o Razon Social" />
                 <span style="margin-left: 10px; padding: 2px 5px; background: #dadada;">
-                    <input type="checkbox" name="sdni" id="sdni" value="1" <?php echo $ck; ?>  />
-                    <label for="sdni" style="color:blue; cursor: pointer">Sin DNI</label>
+                <input type="checkbox" name="sdni" id="sdni" value="1" <?php echo $ck; ?>  />
+                <label for="sdni" style="color:blue; cursor: pointer">Sin DNI</label>
                 </span>
                 <br/>
                 <label for="idconsignado" class="labels" style="width:130px">Consignado a:</label>
@@ -138,11 +147,11 @@
                 <?php if($_GET['action']=="create") { ?>
                 <input type="checkbox" name="cp" id="cp" value="1" <?php echo $ck; ?> /> Si
                 <?php } 
-                    else 
-                    {
-                        if($obj->cpago==1)  echo "<b>SI</b>";
-                            else echo "<b>NO</b>";
-                    }
+                else 
+                {
+                    if($obj->cpago==1)  echo "<b>SI</b>";
+                        else echo "<b>NO</b>";
+                }
                 ?>
                 <span id="div-conf-salida" style="display:none">
                     <label for="confirma_salida" class="labels" style="width:130px">Confirmar Salida:</label>
