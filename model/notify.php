@@ -22,13 +22,9 @@ class notify extends Main
         $n1 = $row->n;
         
         //Buscamos si hay encomiendas que vienen
-        $s = $this->db->prepare("SELECT count(e.idenvio) as n
-                                    from envio as e inner join pasajero as remitente on remitente.idpasajero = e.idremitente                  
-                                        inner join empleado as em on e.idempleado = em.idempleado and em.idtipo_empleado = 1                  
-                                        inner join oficina as o on o.idoficina = e.idoficina     
-                                        INNER JOIN destino as d on d.iddestino = o.idsucursal
-                                    where e.iddestino = ".$_SESSION['idsucursal']." and e.estado in (2)
-                                    order by e.idenvio desc ");        
+        $s = $this->db->prepare("SELECT count(es.idenvio) as n from envio_salidas as es 
+                                        inner join salida as s on s.idsalida = es.idsalida
+                                    where s.iddestino = ".$_SESSION['idsucursal']." and es.estado in (2)");        
         $s->execute();
         $row = $s->fetchObject();
         $n2 = $row->n;

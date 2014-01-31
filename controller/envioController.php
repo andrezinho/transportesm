@@ -30,7 +30,7 @@ class envioController extends Controller
                                 "PAGO"=>array('ancho'=>3,'align'=>'center'),                                
                                 "ESTADO"=>array('ancho'=>'7','align'=>'center'),
                                 "USER"=>array('ancho'=>5,'align'=>'center'),
-                                "<p style='font-size:7px;'>Enviar</p>"=>array('ancho'=>3,'align'=>'center'),
+                                "<p style='font-size:7px;'>&nbsp;</p>"=>array('ancho'=>3,'align'=>'center'),
                                 "<p style='font-size:7px;'>Anular</p>"=>array('ancho'=>3,'align'=>'center'),
                                 "<p style='font-size:7px;'>Print</p>"=>array('ancho'=>3,'align'=>'center')
                                 );         
@@ -340,6 +340,28 @@ class envioController extends Controller
             if ($p[0]==1)
             {
                 $result = array("1","<p style='font-size:9px; font-style:italic'>".$p[1]."</p>",$p[2]);
+            } 
+            else 
+            {
+                $result = array("0","HA OCURRIDO UN ERROR, FAVOR DE ACTUALIZAR LA PAGINA (F5) Y VOLVER A INTENTARLO");
+            }
+            print_r(json_encode($result));
+        }
+        else {
+            $result = array('0','NO PODEMOS PROCESAR SU SOLICITUD, PORFAVOR ACTUALIZAR LA PAGINA (F5) Y VOLVER A INTENTARLO','');
+        }
+    }
+    public function anular_es()
+    {
+        $obj = new envio();
+        $result = array();     
+        $id = (int)$_POST['id'];   
+        if ($id!='') 
+        {
+            $p = $obj->anular_es($id);
+            if ($p[0]==1)
+            {
+                $result = array("1","Ok",$p[2]);
             } 
             else 
             {

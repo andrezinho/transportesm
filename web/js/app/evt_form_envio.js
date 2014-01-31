@@ -7,7 +7,6 @@ $(function() {
         title: 'Mensaje',
         modal: true,
         resizable: false
-        
     });
     $("#tipo_pro").click(function(){
         changeTipoProceso();

@@ -112,7 +112,7 @@ class reportes extends Main
 				venta.numero,
 				pasajero.nombre,
 				sum(venta_detalle.cantidad *  venta_detalle.precio) as total,
-                                venta.idventa
+        venta.idventa
 			   FROM
 				venta
 				Inner Join venta_detalle ON venta.idventa = venta_detalle.idventa
@@ -143,27 +143,27 @@ class reportes extends Main
       function data_envio($g)
       {
 
-       $sql = "SELECT   concat(substring(e.fecha,9,2),'/',substring(e.fecha,6,2),'/',substring(e.fecha,1,4)) as fecha,
+       $sql = "SELECT   distinct concat(substring(e.fecha,9,2),'/',substring(e.fecha,6,2),'/',substring(e.fecha,1,4)) as fecha,
                         e.hora,
                         concat(chofer.nombre,' ',coalesce(chofer.apellidos,'')) as chofer,
                         v.placa as vechiulos,
                         case remitente.nrodocumento when '00000000' then e.remitente else remitente.nombre end,
                         e.consignado,
-                        e.numero ,
+                        e.numero,
                         case e.cpago when 0 then e.monto_caja else 0 end as total,
                         e.cpago,
                         0 as tipo,
                         d.descripcion as destino
-                        
                         from envio as e inner join pasajero as remitente on remitente.idpasajero = e.idremitente                                              
                             inner join empleado as em on e.idempleado = em.idempleado and em.idtipo_empleado = 1
                             INNER JOIN destino as d on d.iddestino = e.iddestino
-                            left outer join salida as s on s.idsalida = e.idsalida
+                            left outer join envio_salidas as es on es.idenvio = e.idenvio and es.idoficina = ".$_SESSION['idoficina']."
+                            left outer join salida as s on s.idsalida = es.idsalida
                             left outer join vehiculo as v on v.idvehiculo = s.idvehiculo
-                            left outer join empleado as chofer on chofer.idempleado = s.idchofer and chofer.idtipo_empleado = 2                             
-			  WHERE e.tipo_pro = 1 and e.estado <> 0 and  e.fecha between :p2 and :p3 and e.idoficina = ".$_SESSION['idoficina']; 
+                            left outer join empleado as chofer on chofer.idempleado = s.idchofer and chofer.idtipo_empleado = 2
+			         WHERE    e.tipo_pro = 1 and e.estado <> 0 and  e.fecha between :p2 and :p3 and e.idoficina = ".$_SESSION['idoficina']; 
 
-        $sql_2 = "SELECT   concat(substring(e.fecha,9,2),'/',substring(e.fecha,6,2),'/',substring(e.fecha,1,4)) as fecha,
+        $sql_2 = "SELECT  distinct concat(substring(e.fecha,9,2),'/',substring(e.fecha,6,2),'/',substring(e.fecha,1,4)) as fecha,
                                 e.hora,
                                 chofer.nombre as chofer,
                                 v.placa as vechiulos,
@@ -174,11 +174,11 @@ class reportes extends Main
                                 e.cpago,
                                 1 as tipo,
                                 e.direccion as destino
-
                                 from envio as e inner join pasajero as remitente on remitente.idpasajero = e.idremitente                                                      
                                     inner join empleado as em on e.idempleado = em.idempleado and em.idtipo_empleado = 1
                                     INNER JOIN destino as d on d.iddestino = e.iddestino
-                                    left outer join salida as s on s.idsalida = e.idsalida
+                                    left outer join envio_salidas as es on es.idenvio = e.idenvio 
+                                    left outer join salida as s on s.idsalida = es.idsalida
                                     left outer join vehiculo as v on v.idvehiculo = s.idvehiculo
                                     left outer join empleado as chofer on chofer.idempleado = s.idchofer and chofer.idtipo_empleado = 2                             
                 WHERE e.tipo_pro = 1 and  e.fecha between :p2 and :p3 and e.iddestino = ".$_SESSION['idsucursal']." and e.estado = 3 ";
@@ -208,8 +208,8 @@ class reportes extends Main
                           break;
                   default: break;
                 } 
-       //$sql .= " ORDER BY e.idenvio ";
-       //echo $sql;
+       $sql .= " ORDER BY 7 ";
+       
        $stmt = $this->db->prepare($sql);
        $fechai = $this->fdate($g['fechai'],'EN');
        $fechaf = $this->fdate($g['fechaf'],'EN');
@@ -218,33 +218,33 @@ class reportes extends Main
        $stmt->bindParam(':p3',$fechaf,PDO::PARAM_STR);
        $stmt->execute();
        $r2 = $stmt->fetchAll();
-       //var_dump($g['fechai']);die;
+       
        return array($r2);
    }
-         function data_telegiro($g)
+     function data_telegiro($g)
       {
 
-       $sql = "SELECT   concat(substring(e.fecha,9,2),'/',substring(e.fecha,6,2),'/',substring(e.fecha,1,4)) as fecha,
+        $sql = "SELECT   distinct concat(substring(e.fecha,9,2),'/',substring(e.fecha,6,2),'/',substring(e.fecha,1,4)) as fecha,
                         e.hora,
                         concat(chofer.nombre,' ',coalesce(chofer.apellidos,'')) as chofer,
                         v.placa as vechiulos,
                         case remitente.nrodocumento when '00000000' then e.remitente else remitente.nombre end,
                         e.consignado,
-                        e.numero ,
+                        e.numero,
                         case e.cpago when 0 then e.monto_caja else 0 end as total,
                         e.cpago,
                         0 as tipo,
                         d.descripcion as destino
-                        
                         from envio as e inner join pasajero as remitente on remitente.idpasajero = e.idremitente                                              
                             inner join empleado as em on e.idempleado = em.idempleado and em.idtipo_empleado = 1
                             INNER JOIN destino as d on d.iddestino = e.iddestino
-                            left outer join salida as s on s.idsalida = e.idsalida
+                            left outer join envio_salidas as es on es.idenvio = e.idenvio and es.idoficina = ".$_SESSION['idoficina']."
+                            left outer join salida as s on s.idsalida = es.idsalida
                             left outer join vehiculo as v on v.idvehiculo = s.idvehiculo
-                            left outer join empleado as chofer on chofer.idempleado = s.idchofer and chofer.idtipo_empleado = 2                             
-        WHERE e.tipo_pro =2  and e.estado <> 0 and  e.fecha between :p2 and :p3 and e.idoficina = ".$_SESSION['idoficina']; 
+                            left outer join empleado as chofer on chofer.idempleado = s.idchofer and chofer.idtipo_empleado = 2
+               WHERE    e.tipo_pro = 2 and e.estado <> 0 and  e.fecha between :p2 and :p3 and e.idoficina = ".$_SESSION['idoficina']; 
 
-        $sql_2 = "SELECT   concat(substring(e.fecha,9,2),'/',substring(e.fecha,6,2),'/',substring(e.fecha,1,4)) as fecha,
+        $sql_2 = "SELECT  distinct concat(substring(e.fecha,9,2),'/',substring(e.fecha,6,2),'/',substring(e.fecha,1,4)) as fecha,
                                 e.hora,
                                 chofer.nombre as chofer,
                                 v.placa as vechiulos,
@@ -255,11 +255,11 @@ class reportes extends Main
                                 e.cpago,
                                 1 as tipo,
                                 e.direccion as destino
-
                                 from envio as e inner join pasajero as remitente on remitente.idpasajero = e.idremitente                                                      
                                     inner join empleado as em on e.idempleado = em.idempleado and em.idtipo_empleado = 1
                                     INNER JOIN destino as d on d.iddestino = e.iddestino
-                                    left outer join salida as s on s.idsalida = e.idsalida
+                                    left outer join envio_salidas as es on es.idenvio = e.idenvio 
+                                    left outer join salida as s on s.idsalida = es.idsalida
                                     left outer join vehiculo as v on v.idvehiculo = s.idvehiculo
                                     left outer join empleado as chofer on chofer.idempleado = s.idchofer and chofer.idtipo_empleado = 2                             
                 WHERE e.tipo_pro = 2 and  e.fecha between :p2 and :p3 and e.iddestino = ".$_SESSION['idsucursal']." and e.estado = 3 ";
@@ -289,7 +289,7 @@ class reportes extends Main
                           break;
                   default: break;
                 } 
-       //$sql .= " ORDER BY e.idenvio ";
+       $sql .= " ORDER BY 7 ";
        //echo $sql;
        $stmt = $this->db->prepare($sql);
        $fechai = $this->fdate($g['fechai'],'EN');
@@ -298,8 +298,7 @@ class reportes extends Main
        $stmt->bindParam(':p2',$fechai,PDO::PARAM_STR);
        $stmt->bindParam(':p3',$fechaf,PDO::PARAM_STR);
        $stmt->execute();
-       $r2 = $stmt->fetchAll();
-       //var_dump($g['fechai']);die;
+       $r2 = $stmt->fetchAll();       
        return array($r2);
    }
     function data_salida($g)

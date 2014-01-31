@@ -185,7 +185,7 @@ class salida extends Main
     function despachar($id)
     {        
         $estado = 1;
-        $hora = date('h:i:s');
+        $hora = date('H:i:s');
         $fecha = date('Y-m-d');      
         $stmt = $this->db->prepare("UPDATE salida set estado = 3, fecha_sal = :fs, hora_sal = :hs 
                                     where idsalida = :id ");
@@ -200,15 +200,32 @@ class salida extends Main
 
             //Actualizamos todos los envios que estan relacionados a esta salida
             //a un estado de enviados
-            $stmt2 = $this->db->prepare("UPDATE envio set fecha_envio = :fecha, 
-                                                         hora_envio = :hora, 
-                                                         estado = 2  
-                                        where idsalida = :id and estado = 1");
-            $stmt2->bindParam(':fecha',$fecha,PDO::PARAM_STR);
-            $stmt2->bindParam(':hora',$hora,PDO::PARAM_STR);
-            $stmt2->bindParam(':id',$id,PDO::PARAM_INT);
-            $stmt2->execute();
+            $stmt = $this->db->prepare("UPDATE envio_salidas 
+                                                    set estado = 2,
+                                                        fecha_salida = :fs,
+                                                        hora_salida = :hs
+                                        where idsalida = :p2 and estado = 1 ");                
+            $stmt->bindParam(':p2',$id,PDO::PARAM_INT);
+            $stmt->bindParam(':fs',$fecha,PDO::PARAM_STR);
+            $stmt->bindParam(':hs',$hora,PDO::PARAM_STR);  
+            $q = $stmt->execute();
 
+            $sql = "SELECT idenvio from envio_salidas where idsalida = :p2 and estado in (1,2)";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindParam(':p2',$id,PDO::PARAM_INT);
+            $q = $stmt->execute();
+            $r = $stmt->fetchAll();
+
+            foreach($r as $key => $v)
+            {
+                $id = $v['idenvio'];
+                $stmt2 = $this->db->prepare("UPDATE envio set estado = 2  
+                                            where idenvio = :id and estado <> 0");
+                $stmt2->bindParam(':id',$id,PDO::PARAM_INT);
+                $stmt2->execute();
+            }
+
+            
 
             $this->db->commit();            
             return array('res'=>'1','msg'=>$hora);

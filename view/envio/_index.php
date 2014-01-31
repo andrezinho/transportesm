@@ -2,6 +2,57 @@
 <script type="text/javascript">
 var tr = '';    
 $(document).ready(function() {
+
+
+    $("#box-envios").dialog(
+    {
+        autoOpen:false,
+        title: 'Agregar Salida a la Encomienda-Telegiro',
+        modal:true,
+        width:450,
+        height:160,
+        buttons: {
+                'Confirmar':function()
+                        {
+                            updateSend();
+                        },
+                'Cerrar':function()
+                        {
+                            $(this).dialog('close');
+                        }
+    }});
+    $("#box-msg-envios").dialog({
+        autoOpen:false,
+        title: 'Dar salida a la encomienda',
+        modal: true,
+        width:400
+    });
+    $("#box-salidas").dialog({
+        autoOpen:false,
+        title: 'Salidas Asignadas a este envio',
+        modal: true,
+        width:680
+    });
+    $("#box-recepcion").dialog(
+    {
+        autoOpen:false,
+        title: 'Encomienda de tipo Contra-Entrega',
+        modal:true,
+        width:450,
+        height:160,
+        buttons: {
+                'Confirmar Recepcion':function()
+                        {
+                            confirmRecepcion();
+                        },
+                'Cancelar':function()
+                        {
+                            $(this).dialog('close');
+                        }
+    }
+
+    });  
+
 	$(".anular").live('click',function()
     {
         var idx = $(this).attr("id");
@@ -18,6 +69,12 @@ $(document).ready(function() {
           else { alert("Seleccione algún Registro para Anularlo"); }
 	});
 
+    $(".anular-envio_salida").live('click',function(){
+        var idx = $(this).attr("id");
+            idx = idx.split("-");
+        Id = idx[1];
+        anular_es(Id);
+    })
 
     $(".conf-envio").live('click',function(){
         var idx = $(this).attr("id");
@@ -67,7 +124,7 @@ $(document).ready(function() {
     $(".recepcion").live('click',function(){
         var idx = $(this).attr("id");
             idx = idx.split("-");
-        Id = idx[1];       
+        Id = idx[1];
         recepcion(Id,tr);
     });
 
@@ -90,54 +147,7 @@ $(document).ready(function() {
             window.location = "?controller=envio&action=indexe";        
     });
 
-    $("#box-envios").dialog(
-    {
-        autoOpen:false,
-        title: 'Agregar Salida a la Encomienda-Telegiro',
-        modal:true,
-        width:450,
-        height:160,
-        buttons: {
-                'Confirmar':function()
-                        {
-                            updateSend();
-                        },
-                'Cerrar':function()
-                        {
-                            $(this).dialog('close');
-                        }
-    }});
-    $("#box-msg-envios").dialog({
-        autoOpen:false,
-        title: 'Dar salida a la encomienda',
-        modal: true,
-        width:400
-    });
-    $("#box-salidas").dialog({
-        autoOpen:false,
-        title: 'Salidas Asignadas a este envio',
-        modal: true,
-        width:580
-    });
-    $("#box-recepcion").dialog(
-    {
-        autoOpen:false,
-        title: 'Encomienda de tipo Contra-Entrega',
-        modal:true,
-        width:450,
-        height:160,
-        buttons: {
-                'Confirmar Recepcion':function()
-                        {
-                            confirmRecepcion();
-                        },
-                'Cancelar':function()
-                        {
-                            $(this).dialog('close');
-                        }
-    }
-
-    });    
+      
     $("#iddestino").live('change',function()
     {  
        var idd = $(this).val();
@@ -189,7 +199,8 @@ function updateSend()
 }
 function getlistsalidas(ide)
 {
-    $("#box-salidas").dialog('open');        
+    $("#box-salidas").dialog('open');     
+    $("#box-salidas").empty().append('Cargando datos....');       
         $.get('index.php','controller=envio&action=getlistsalidas&id='+ide,function(data){
             $("#box-salidas").empty().append(data);            
         });
@@ -200,7 +211,7 @@ function Sending(key,tr, tipo)
         if(data[0]=='1')
         {            
             if(tipo==1)
-                tr.parent().find('td:eq(7)').empty().append('<p style="font-size:9px; font-style:italic">EN PROCESO</p>');
+                tr.parent().find('td:eq(8)').empty().append('<p style="font-size:9px; font-style:italic">EN PROCESO</p>');
             else
                 tr.parent().find('td:eq(9)').empty().append('<p style="font-size:9px; font-style:italic">EN ESPERA</p>');
 
@@ -213,7 +224,19 @@ function Sending(key,tr, tipo)
         }
     },'json');
 }   
-
+function anular_es(key)
+{
+    $.post('index.php','controller=envio&action=anular_es&id='+key,function(data){ 
+        if(data[0]=='1')
+        {
+            getlistsalidas(data[2]);
+        }
+        else
+        {
+            alert("Ocurrio un error, actualiza la pagina (F5) y vuelve a intentarlo");
+        }
+    },'json');
+}
 function recepcion(key,tr)
 {
     $.post('index.php','controller=envio&action=confirmRecepcion&id='+key,function(data){

@@ -205,7 +205,7 @@
                     <?php
                 }
             ?>
-            <?php if($obj->estado==1||$obj->idenvio=="") 
+            <?php if(($obj->estado==1||$obj->idenvio=="")&&$_GET['action']!="show") 
             { 
                 ?>
                 <a href="javascript:" id="save" class="button">GRABAR</a>
@@ -213,7 +213,7 @@
             } 
             else 
             {
-                if($obj->estado=="1")
+                if($obj->estado=="1"&&$_GET['action']!="show")
                 {
                     ?>
                         <a href="index.php?controller=envio&action=anular&id=<?php echo $_GET['id']; ?>" class="button">ANULAR</a>

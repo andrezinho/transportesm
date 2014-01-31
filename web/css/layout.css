@@ -241,6 +241,7 @@ a.login { color : #E4F5F6;}
 .boton-pay { background-position: -2px -23px; }
 .boton-hand { background-position: -20px -23px; }
 .boton-ok { background-position: -59px -45px; }
+.boton-settings { background-position: -97px -44px; }
 
 .box-option { width: 70px; padding: 5px; background: #fafafa; border: 1px solid #dadada; margin-left: 140px; float: left;}
 .img-option { width: 70px; margin: 0 auto; float: left; }
