@@ -373,6 +373,28 @@ class envioController extends Controller
             $result = array('0','NO PODEMOS PROCESAR SU SOLICITUD, PORFAVOR ACTUALIZAR LA PAGINA (F5) Y VOLVER A INTENTARLO','');
         }
     }
+    public function cancelar_es()
+    {
+        $obj = new envio();
+        $result = array();     
+        $id = (int)$_POST['id'];
+        if ($id!='') 
+        {
+            $p = $obj->cancelar_es($id);
+            if ($p[0]==1)
+            {
+                $result = array("1","Ok",$p[2]);
+            } 
+            else 
+            {
+                $result = array("0","",$p[2]);
+            }
+            print_r(json_encode($result));
+        }
+        else {
+            $result = array('0','NO PODEMOS PROCESAR SU SOLICITUD, PORFAVOR ACTUALIZAR LA PAGINA (F5) Y VOLVER A INTENTARLO','');
+        }
+    }
     public function frmRecepcion()
     {
         $obj = new envio();

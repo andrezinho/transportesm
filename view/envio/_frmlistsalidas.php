@@ -63,6 +63,9 @@ session_start();
 					<?php if($v['idestado']==1&&$_SESSION['idoficina']==$v['idoficina']) { ?>
 					<a href="#" class="anular-envio_salida" id="esx-<?php echo $v['idenvio_salidas'] ?>" style="color:red;">[X]Anular</a>
 					<?php } ?>
+					<?php if($v['idestado']==2&&$_SESSION['idoficina']==$v['idoficina']) { ?>
+					<a href="#" class="cancelar-envio_salida" id="esx-<?php echo $v['idenvio_salidas'] ?>" style="color:red;">[X]Cancelar</a>
+					<?php } ?>
 				</td>
 			</tr>
 			<?php

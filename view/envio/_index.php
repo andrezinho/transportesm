@@ -74,7 +74,14 @@ $(document).ready(function() {
             idx = idx.split("-");
         Id = idx[1];
         anular_es(Id);
-    })
+    });
+
+    $(".cancelar-envio_salida").live('click',function(){
+        var idx = $(this).attr("id");
+            idx = idx.split("-");
+        Id = idx[1];
+        cancelar_es(Id);
+    });
 
     $(".conf-envio").live('click',function(){
         var idx = $(this).attr("id");
@@ -234,6 +241,19 @@ function anular_es(key)
         else
         {
             alert("Ocurrio un error, actualiza la pagina (F5) y vuelve a intentarlo");
+        }
+    },'json');
+}
+function cancelar_es(key)
+{
+    $.post('index.php','controller=envio&action=cancelar_es&id='+key,function(data){ 
+        if(data[0]=='1')
+        {
+            getlistsalidas(data[2]);
+        }
+        else
+        {
+            alert(data[2]);
         }
     },'json');
 }

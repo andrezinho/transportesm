@@ -1,6 +1,7 @@
 <?php
 include_once("Main.php");
-class envio extends Main{    
+class envio extends Main
+{    
     protected $tipo_documento = 3;
     function index($query,$p,$c) 
     {
@@ -648,6 +649,41 @@ class envio extends Main{
         
         if(!$q) return array(0,'Error,','');
             else return array(1,$hora,$id);
+    }
+    function cancelar_es($id)
+    {
+        $fecha = date('Y-m-d');
+        $hora = date('H:i:s');
+        $stmt = $this->db->prepare("SELECT count(*) as num from envio_salidas 
+                                    where estado = 2 
+                                            and idenvio_salidas = :p2");
+        $stmt->bindParam(':p2',$id,PDO::PARAM_INT);
+        $q = $stmt->execute();        
+        $r = $stmt->fetchObject();
+        $num = $r->num;        
+
+        if($num>0)
+        {
+            $stmt = $this->db->prepare("UPDATE envio_salidas 
+                                                set estado = 1
+                                    where idenvio_salidas = :p2 ");
+            $stmt->bindParam(':p2',$id,PDO::PARAM_INT);
+            $q = $stmt->execute();
+
+            $sql = "SELECT idenvio from envio_salidas where idenvio_salidas = :p2";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindParam(':p2',$id,PDO::PARAM_INT);
+            $q = $stmt->execute();
+            $r = $stmt->fetchObject();
+            $id = $r->idenvio;        
+            if(!$q) return array(0,'Error,','');
+                else return array(1,$hora,$id);
+        }
+        else
+        {
+            return array(0,'Error','No se puede cancelar este salida de la encomienda, ya que ya fue recibida. ');
+        }
+        
     }
     function anular($p) 
     {        
