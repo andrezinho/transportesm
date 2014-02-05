@@ -280,8 +280,7 @@ class envio extends Main{
                         $stmt2->bindParam(':p7',$obj->precioc[$i],PDO::PARAM_INT);
                         $stmt2->execute();
                     }
-                }
-                
+                }                
             $this->db->commit();
             unset($_SESSION['envios']);            
             return array('res'=>'1','msg'=>'Bien!','ide'=>$idenvio,'ce'=>$cp);
@@ -290,9 +289,9 @@ class envio extends Main{
         {
             $this->db->rollBack();
             return array('res'=>'2','msg'=>'Error : '.$e->getMessage() . $str);
-        }
-        
+        }        
     }   
+
     function save_ce($p) 
     {
         $id = $p['id'];
@@ -301,8 +300,7 @@ class envio extends Main{
         $idempleado = $_SESSION['idempleado'];    
         $idoficina = $_SESSION['idoficina'];
         $fecha = date('Y-m-d');
-        $idenvio  = (int)$id;
-        
+        $idenvio  = (int)$id;        
         try 
         { 
             $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -322,7 +320,8 @@ class envio extends Main{
                     else 
                         $texto = "MOVIMIENTO POR EL TELEGIRO";
                     //Cambiando el estado a entregado
-                    $update = $this->db->prepare("UPDATE envio set estado = 3, monto_caja =  :monto
+                    $update = $this->db->prepare("UPDATE envio set estado = 3, monto_caja =  :monto,
+                                                        fecha_pago = '".$fecha."'
                                                   where idenvio = :id");
                     $update->bindParam(':id',$idenvio,PDO::PARAM_INT);
                     $update->bindParam(':monto',$monto_caja,PDO::PARAM_INT);

@@ -21,7 +21,7 @@
 </head>
 <body>
     <?php 
-        //print_r($_SESSION);         
+        //print_r($_SESSION);
     ?>
     <header id="site_head">
         <div class="header_cont">

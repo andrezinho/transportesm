@@ -161,7 +161,7 @@ class reportes extends Main
                             left outer join salida as s on s.idsalida = es.idsalida
                             left outer join vehiculo as v on v.idvehiculo = s.idvehiculo
                             left outer join empleado as chofer on chofer.idempleado = s.idchofer and chofer.idtipo_empleado = 2
-			         WHERE    e.tipo_pro = 1 and e.estado <> 0 and  e.fecha between :p2 and :p3 and e.idoficina = ".$_SESSION['idoficina']; 
+			         WHERE    e.tipo_pro = 1 and e.estado <> 0 and  e.fecha_pago between :p2 and :p3 and e.idoficina = ".$_SESSION['idoficina']; 
 
         $sql_2 = "SELECT  distinct concat(substring(e.fecha,9,2),'/',substring(e.fecha,6,2),'/',substring(e.fecha,1,4)) as fecha,
                                 e.hora,
@@ -181,7 +181,7 @@ class reportes extends Main
                                     left outer join salida as s on s.idsalida = es.idsalida
                                     left outer join vehiculo as v on v.idvehiculo = s.idvehiculo
                                     left outer join empleado as chofer on chofer.idempleado = s.idchofer and chofer.idtipo_empleado = 2                             
-                WHERE e.tipo_pro = 1 and  e.fecha between :p2 and :p3 and e.iddestino = ".$_SESSION['idsucursal']." and e.estado = 3 ";
+                WHERE e.tipo_pro = 1 and  e.fecha_pago between :p2 and :p3 and e.iddestino = ".$_SESSION['idsucursal']." and e.estado = 3 ";
 
         $sql_union .= " UNION ALL ";
 
