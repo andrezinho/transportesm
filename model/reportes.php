@@ -53,9 +53,13 @@ class reportes extends Main
     
     function data_ingresos($g)
     {
-        $sql = "SELECT cm.descripcion as concepto,        
+        $sql = "SELECT  cm.descripcion as concepto,
 				        case tipo_ingreso when 1 then concat(coalesce(propietario.nombre,' '),' ',coalesce(propietario.apellidos,' '))
-                                            else pro.razonsocial end   as recibi,
+                                            else 
+                                                case pro.ruc 
+                                                when '00000000' then m.recibi 
+                                                else pro.razonsocial  end                                                
+                                            end as remitente,
 				        m.chofer,
 				        m.placa,
 				        m.fecha,
@@ -90,6 +94,31 @@ class reportes extends Main
                WHERE m.tipo = 2 and m.estado = 1 and m.fecha between :f1 and :f2
                 and m.idoficina = ".$_SESSION['idoficina']."
                 and m.serie is not null
+                and m.caja = 1
+               ORDER BY m.fecha";
+       $stmt = $this->db->prepare($sql);
+       $fechai = $this->fdate($g['fechai'],'EN');
+       $fechaf = $this->fdate($g['fechaf'],'EN');
+       $stmt = $this->db->prepare($sql);
+       $stmt->bindParam(':f1',$fechai,PDO::PARAM_STR);
+       $stmt->bindParam(':f2',$fechaf,PDO::PARAM_STR);
+       $stmt->execute();
+       $r2 = $stmt->fetchAll();
+       //var_dump($r2);die;
+       return array($r2);
+   }
+   function data_egresosc($g)
+   {
+       $sql = "SELECT cm.descripcion as concepto, concat(p.ruc,'-',p.razonsocial) as proveedor, 
+                      m.fecha, m.observacion, md.cantidad*md.monto as monto
+               FROM movimiento as m inner join movimiento_detalle as md
+                    on m.idmovimiento = md.idmovimiento inner join  proveedor as p 
+                    on p.idproveedor = m.idproveedor inner join concepto_movimiento as cm
+                    on cm.idconcepto_movimiento = md.idconcepto_movimiento 
+               WHERE m.tipo = 2 and m.estado = 1 and m.fecha between :f1 and :f2
+                and m.idoficina = ".$_SESSION['idoficina']."
+                and m.serie is not null
+                and m.caja = 2
                ORDER BY m.fecha";
        $stmt = $this->db->prepare($sql);
        $fechai = $this->fdate($g['fechai'],'EN');
@@ -149,7 +178,7 @@ class reportes extends Main
                         v.placa as vechiulos,
                         case remitente.nrodocumento when '00000000' then e.remitente else remitente.nombre end,
                         e.consignado,
-                        e.numero,
+                        concat(e.serie,'-',e.numero),
                         case e.cpago when 0 then e.monto_caja else 0 end as total,
                         e.cpago,
                         0 as tipo,
@@ -157,11 +186,11 @@ class reportes extends Main
                         from envio as e inner join pasajero as remitente on remitente.idpasajero = e.idremitente                                              
                             inner join empleado as em on e.idempleado = em.idempleado and em.idtipo_empleado = 1
                             INNER JOIN destino as d on d.iddestino = e.iddestino
-                            left outer join envio_salidas as es on es.idenvio = e.idenvio and es.idoficina = ".$_SESSION['idoficina']."
+                            left outer join envio_salidas as es on es.idenvio = e.idenvio and (es.idoficina = ".$_SESSION['idoficina']." and es.estado <> 0)
                             left outer join salida as s on s.idsalida = es.idsalida
                             left outer join vehiculo as v on v.idvehiculo = s.idvehiculo
                             left outer join empleado as chofer on chofer.idempleado = s.idchofer and chofer.idtipo_empleado = 2
-			         WHERE    e.tipo_pro = 1 and e.estado <> 0 and  e.fecha_pago between :p2 and :p3 and e.idoficina = ".$_SESSION['idoficina']; 
+			         WHERE  e.fecha between :p2 and :p3 and e.tipo_pro = 1 and e.estado <> 0 and e.idoficina = ".$_SESSION['idoficina']; 
 
         $sql_2 = "SELECT  distinct concat(substring(e.fecha,9,2),'/',substring(e.fecha,6,2),'/',substring(e.fecha,1,4)) as fecha,
                                 e.hora,
@@ -169,7 +198,7 @@ class reportes extends Main
                                 v.placa as vechiulos,
                                 case remitente.nrodocumento when '00000000' then e.remitente else remitente.nombre end,
                                 e.consignado,
-                                e.numero ,
+                                concat(e.serie,'-',e.numero),
                                 case e.cpago when 0 then 0 else e.monto_caja end as total,
                                 e.cpago,
                                 1 as tipo,
@@ -177,12 +206,20 @@ class reportes extends Main
                                 from envio as e inner join pasajero as remitente on remitente.idpasajero = e.idremitente                                                      
                                     inner join empleado as em on e.idempleado = em.idempleado and em.idtipo_empleado = 1
                                     INNER JOIN destino as d on d.iddestino = e.iddestino
-                                    left outer join envio_salidas as es on es.idenvio = e.idenvio 
+                                    left outer join envio_salidas as es on es.idenvio = e.idenvio and es.estado <> 0
                                     left outer join salida as s on s.idsalida = es.idsalida
                                     left outer join vehiculo as v on v.idvehiculo = s.idvehiculo
                                     left outer join empleado as chofer on chofer.idempleado = s.idchofer and chofer.idtipo_empleado = 2                             
-                WHERE e.tipo_pro = 1 and  e.fecha_pago between :p2 and :p3 and e.iddestino = ".$_SESSION['idsucursal']." and e.estado = 3 ";
-
+                WHERE e.num_mov in ((SELECT  mv.num_mov
+                                      FROM movimiento as mv inner join envio as em on 
+                                        em.num_mov = mv.num_mov
+                                      WHERE mv.fecha BETWEEN  :p2 and :p3
+                                        AND mv.observacion 
+                                        LIKE  '%ENCOM%'
+                       and em.cpago = 1
+                       and mv.idoficina = ".$_SESSION['idoficina']."))  or 
+                      e.tipo_pro = 1 and  e.fecha between :p2 and :p3 and e.iddestino = ".$_SESSION['idsucursal']." and e.estado = 3 ";
+        //echo $sql_2;
         $sql_union .= " UNION ALL ";
 
         $sqlw="";        
@@ -220,9 +257,9 @@ class reportes extends Main
        $r2 = $stmt->fetchAll();
        
        return array($r2);
-   }
+     }
      function data_telegiro($g)
-      {
+     {
 
         $sql = "SELECT   distinct concat(substring(e.fecha,9,2),'/',substring(e.fecha,6,2),'/',substring(e.fecha,1,4)) as fecha,
                         e.hora,
@@ -235,14 +272,14 @@ class reportes extends Main
                         e.cpago,
                         0 as tipo,
                         d.descripcion as destino
-                        from envio as e inner join pasajero as remitente on remitente.idpasajero = e.idremitente                                              
-                            inner join empleado as em on e.idempleado = em.idempleado and em.idtipo_empleado = 1
-                            INNER JOIN destino as d on d.iddestino = e.iddestino
+                        from envio as e left outer join pasajero as remitente on remitente.idpasajero = e.idremitente                                              
+                            left outer join empleado as em on e.idempleado = em.idempleado and em.idtipo_empleado = 1
+                            left outer join destino as d on d.iddestino = e.iddestino
                             left outer join envio_salidas as es on es.idenvio = e.idenvio and es.idoficina = ".$_SESSION['idoficina']."
                             left outer join salida as s on s.idsalida = es.idsalida
                             left outer join vehiculo as v on v.idvehiculo = s.idvehiculo
                             left outer join empleado as chofer on chofer.idempleado = s.idchofer and chofer.idtipo_empleado = 2
-               WHERE    e.tipo_pro = 2 and e.estado <> 0 and  e.fecha between :p2 and :p3 and e.idoficina = ".$_SESSION['idoficina']; 
+               WHERE  e.tipo_pro = 2 and e.estado <> 0 and  e.fecha between :p2 and :p3 and e.idoficina = ".$_SESSION['idoficina']; 
 
         $sql_2 = "SELECT  distinct concat(substring(e.fecha,9,2),'/',substring(e.fecha,6,2),'/',substring(e.fecha,1,4)) as fecha,
                                 e.hora,

@@ -405,7 +405,7 @@ class envioController extends Controller
         //y mostrar en una tabla con un total abajo. y un boton para confirmar el apgo
         //una vez confirmado, imprimir si asi lo requiere.
         $view->setData($data);
-        $view->setTemplate( '../view/envio/_frmRecepcionCE.php' );
+        $view->setTemplate( '../view/envio/_frmRecepcionCE.php');
         $view->setlayout( '../template/layout.php' );
         $view->renderPartial();
     }
@@ -420,7 +420,7 @@ class envioController extends Controller
             if ($p[0]==1)
             {
                 $result = array("1",$p[1],$p[2]);
-            } 
+            }
             else 
             {
                 $result = array("0","HA OCURRIDO UN ERROR, FAVOR DE ACTUALIZAR LA PAGINA (F5) Y VOLVER A INTENTARLO");

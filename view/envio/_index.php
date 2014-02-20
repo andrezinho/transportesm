@@ -2,8 +2,6 @@
 <script type="text/javascript">
 var tr = '';    
 $(document).ready(function() {
-
-
     $("#box-envios").dialog(
     {
         autoOpen:false,

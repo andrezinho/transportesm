@@ -41,9 +41,16 @@ class EgresoController extends Controller
     {
         $data = array();
         $view = new View();   
-        $data['more_options'] = $this->more_options('egreso');
-        
+        $data['more_options'] = $this->more_options('egreso');        
         $data['detalle'] = $this->viewDetalle();
+        $data['comprobante'] = $this->Select(
+                                              array(
+                                                    'id'=>'idtipo_documento',
+                                                    'name'=>'idtipo_documento',
+                                                    'table'=>'tipodoc'
+                                                    )
+                                                 );
+
          $view->setData($data);
         $view->setTemplate( '../view/egresos/_form.php' );
         $view->setlayout( '../template/layout.php' );

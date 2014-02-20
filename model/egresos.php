@@ -3,7 +3,8 @@ include_once("Main.php");
 class egresos extends Main
 {
    protected $tipo_documento = 7;
-   function index($query , $p ) {
+   function index($query , $p ) 
+   {
         $sql = "SELECT m.idmovimiento,
                        p.razonsocial,
                        cm.descripcion,
@@ -47,8 +48,8 @@ class egresos extends Main
         unset($_SESSION['conceptos']);
         return $data;
     }
-    function edit($id ) {
-        
+    function edit($id ) 
+    {
         $stmt = $this->db->prepare("SELECT m.*,p.ruc, p.razonsocial
                                     FROM movimiento as m inner join
                                         proveedor as p on p.idproveedor = m.idproveedor
@@ -73,9 +74,8 @@ class egresos extends Main
         {
             $r = $_SESSION['conceptos']->add($rows['idmovimiento'],$rows[1],$rows['cantidad'],$rows['monto']);
         }
-        return $row;
-        
-    }
+        return $row;        
+     }
      function insert($_P ) 
      {
          
@@ -85,18 +85,15 @@ class egresos extends Main
         $tipo = 2;
         $estado = 1;
         $hora = date('h:i:s');
-        $gr = '';//$_P['guia_remision'];
-        //die($idoficina);
+        $gr = '';
+        
         $_P['recibi']="";
         $_P['tipoi']=0;
-        $stmt = $this->db->prepare("select f_insert_movimiento (:p1, :p2, :p3, :p4,:p5, :p6, :p7, :p8, :p9,'','',:p12,:p13,:p14,:p15,:p16)");
+        $stmt = $this->db->prepare("select f_insert_movimiento (:p1, :p2, :p3, :p4,:p5, :p6, :p7, :p8, :p9,'','',:p12,:p13,:p14,:p15,:p16,:p17,:p18,:p19)");
         try 
         { 
             $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $this->db->beginTransaction();
-                
-                
-                
+            $this->db->beginTransaction();                
                 $stmt->bindParam(':p1', $idempleado , PDO::PARAM_INT); //empleado que realiza el registro
                 $stmt->bindParam(':p2', $idoficina , PDO::PARAM_INT);
                 $stmt->bindParam(':p3', $idperiodo , PDO::PARAM_INT);
@@ -113,6 +110,9 @@ class egresos extends Main
                 $stmt->bindParam(':p14', $_P['tipoi'] , PDO::PARAM_INT);
                 $stmt->bindParam(':p15', $_P['recibi'] , PDO::PARAM_STR);
                 $stmt->bindParam(':p16', $this->tipo_documento,PDO::PARAM_INT);
+                $stmt->bindParam(':p17', $_P['caja'],PDO::PARAM_INT);
+                $stmt->bindParam(':p18', $_P['comprobante'],PDO::PARAM_INT);
+                $stmt->bindParam(':p19', $_P['serie_numero'],PDO::PARAM_INT);
                 
                 $stmt->execute();
                 $row = $stmt->fetchAll();
@@ -154,7 +154,8 @@ class egresos extends Main
         return array($p1 , $p2[2]);
     }
     
-    function update($_P ) {
+    function update($_P ) 
+    {
         $stmt = $this->db->prepare("update movimiento set idempleado = :p1,
                                                           idproveedor = :p2,
                                                           idperiodo = :p3,

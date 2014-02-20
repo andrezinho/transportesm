@@ -7,7 +7,9 @@ $(function()
         resizable: false
         
     });
-
+    $("#idtipo_documento").chenge(function(){
+        $("#serie_numero").focus();
+    });
     $("#fecha,#fechad").datepicker({
                                         'dateFormat':'dd/mm/yy',
                                          showOn: 'both',                                         
@@ -27,7 +29,7 @@ $(function()
                 $( "#idproveedor" ).val(ui.item.id);
                 $( "#razonsocial" ).val(ui.item.name);
                 $( "#ruc" ).val(ui.item.ruc);
-                $("#observacion").focus();
+                $("#idtipo_documento").focus();
                 return false;
             },
             change: function(event, ui) { 
@@ -77,25 +79,23 @@ $(function()
                 .append( "<a>" + item.name + "</a>" )
                 .appendTo( ul );
         };
-
-    $("#adddetalle").click(function()
-    {        
-        add();
-    }
-    );
-
+    $("#adddetalle").click(function(){add();});
     $( "#save" ).click(function()
     {
         bval = true;                
+        bval = bval && $("#caja").required();
         bval = bval && $( "#fecha" ).required();
         bval = bval && $( "#ruc" ).required();
         bval = bval && $( "#razonsocial" ).required();
+
         if ( bval )
         {
             var ht = $(this).html();
             if(ht=="GRABAR")
             {
-                var str = $("#frm").serialize(); 
+                var str = $("#frm").serialize(),
+                    comp = $('#idtipo_documento option:selected').html();
+                    str += '&comprobante='+comp;
                 showMensaje('Procesando su solicitud...');
                 $.post('index.php',str,function(result)
                 {

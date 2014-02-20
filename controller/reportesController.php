@@ -199,6 +199,48 @@ class reportesController extends Controller
         $view->setlayout('../template/empty.php');
         $view->render();
     }
+    
+    
+    public function regresosc()
+    {
+        $data = array();
+        $view = new View();        
+        $data['more_options'] = $this->more_options('reportes');
+        $view->setData($data);
+        $view->setTemplate( '../view/reportes/_egresosc.php' );        
+        $view->setlayout( '../template/layout.php' );
+        $view->render();
+    }
+    public function html_egresosc()
+    {
+		
+        $obj = new reportes();
+        $data = array();
+        $result = $obj->data_egresosc($_GET);
+        $data['rowsi'] = $result[0];
+        $data['rows'] = $result[1];
+        $view = new View();
+        $view->setData($data);
+        $view->setTemplate('../view/reportes/_html_egresosc.php');
+        echo $view->renderPartial();
+    }
+    public function pdf_egresosc()
+    {
+		//var_dump($g['fechai']);die;
+        $obj = new reportes();
+        $data = array();
+        $result = $obj->data_egresosc($_GET);
+        $data['rowsi'] = $result[0];
+        $data['fechai'] = $_GET['fechai'];
+        $data['fechaf'] = $_GET['fechaf'];
+        $view = new View();
+        $view->setData($data);
+        $view->setTemplate('../view/reportes/_pdf_egresosc.php');
+        $view->setlayout('../template/empty.php');
+        $view->render();
+    }
+    
+    
     public function rventas()
     {
         $data = array();

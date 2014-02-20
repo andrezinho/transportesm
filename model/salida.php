@@ -282,7 +282,7 @@ class salida extends Main
                                             inner join empleado as e on e.idempleado = s.idempleado
                                     where s.idoficina = ".$_SESSION['idoficina']." 
                                             and s.iddestino <> ".$_SESSION['idsucursal']."
-                                           -- and s.fecha = '".$fecha."'
+                                            and s.fecha = '".$fecha."'
                                           --  and s.estado in (1,2,3)
                                     ORDER BY d.descripcion,s.idsalida desc");
         

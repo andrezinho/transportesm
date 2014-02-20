@@ -12,6 +12,30 @@
     <input type="hidden" name="action" value="save" />
     <div class="contFrm">
         <div class="contenido" >                
+            <div style="background:#fafafa; border:1px solid #dadada; padding:3px 0; text-align:right" class="ui-corner-all">
+                <label>CAJA: </label>
+                <?php 
+                    $readonly = "";
+                    $s = ""; $s1 = "";
+                    switch ($obj->tipo_pro) {
+                        case 1:
+                            $s = "selected"; $s1 = "";
+                            $readonly="disabled='disabled'";
+                            break;
+                        case 2: 
+                            $s = ""; $s1 = "selected";
+                            $readonly="disabled='disabled'";
+                            break;
+                        default:                            
+                            break;
+                    }
+                ?>
+                <select name="caja" id="caja" style="background:#2C99D0; color:#FFFFFF;" <?php echo $readonly; ?> title="Seleccione la caja que será afecta">
+                    <option value="">-Seleccione-</option>
+                    <option value="1" <?php echo $s; ?>>CAJA DIARIA</option>
+                    <option value="2" <?php echo $s1; ?>>CAJA EGRESOS</option>
+                </select>
+            </div>
             <fieldset class="ui-corner-all">
                 <legend>Datos Basicos</legend>            
                 <label for="idmovimiento" class="labels" style="width:130px">N°:</label>
@@ -24,6 +48,10 @@
                 <br/> 
                 <label for="fecha" class="labels" style="width:130px">Fecha:</label>
                 <input type="text" name="fecha" id="fecha" maxlength ="10" value="<?php if($obj->fecha!=""){echo fdate($obj->fecha,"ES");} else {echo date('d/m/Y');} ?>" class="ui-widget-content ui-corner-all text" size="10" style="text-align: center" title="Fecha del Movimiento" />                
+                <label for="idtipo_documento" class="labels">Comprobante:</label>
+                <?php echo $comprobante; ?>
+                <label for="serie_numero" class="labels" style="width:100px;">Serie-Numero:</label>
+                <input type="text" name="serie_numero" id="serie_numero" value="<?php echo $serie_numero ?>" class="text ui-widget-content ui-corner-all" />
                 <br/>                
                 <label for="observacion" class="labels" style="width:130px">Ref/Obs:</label>
                 <input type="text" id="observacion" name="observacion" value="<?php echo $obj->observacion; ?>" style="width:510px" class="ui-widget-content ui-corner-all text" title="Referencia y/o Observacion del Movimiento" placeholder="Observacion..." />  (* Opcional)                            

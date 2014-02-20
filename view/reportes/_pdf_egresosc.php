@@ -90,23 +90,20 @@ class PDF extends FPDF
             $border = 'BLRT';
             $this->SetFont('Times','',5);	
             $this->SetLineWidth(0.1);   
-
-             $to=0;
+            $to=0;
             foreach($rowsi as $r)
             {
                 $i += 1;
                 $this->background(1);
-
                 $fill = true;
                 $this->Cell($w[0], $h,str_pad($i, 3, '0', 0), $border, 0, 'C', $fill);
-                $this->Cell($w[1], $h,$r['concepto'], $border, 0, 'C', $fill); 
-                //$nh = $this->nLineaBreak($w[2], $h, utf8_decode($r['doc']), 'L');
+                $this->Cell($w[1], $h,$r['concepto'], $border, 0, 'C', $fill);                 
                 $this->Cell($w[2], $h, $r['proveedor'], $border, 0, 'C', $fill);                
                 $this->Cell($w[3], $h,$this->ffecha($r['fecha']), $border, 0, 'C', $fill);
                 $this->Cell($w[4], $h,$r['observacion'], $border, 0, 'C', $fill);
                 $this->Cell($w[5], $h,number_format($r['monto'],2), $border, 0, 'C', $fill);
 				
-                $to=$to+$r['monto'];
+		$to=$to+$r['monto'];
                 $y = $this->GetY();
                 $this->SetXY(10,$y+$h);
                 

@@ -43,7 +43,7 @@ class envio extends Main
                        end
                 from envio as e inner join pasajero as remitente on remitente.idpasajero = e.idremitente
                     inner join empleado as em on e.idempleado = em.idempleado and em.idtipo_empleado = 1
-                    INNER JOIN destino as d on d.iddestino = e.iddestino ";
+                    left outer JOIN destino as d on d.iddestino = e.iddestino ";
 
                 switch ($c) 
                 {
@@ -88,9 +88,9 @@ class envio extends Main
                        case e.estado when 0 then ''
                         when 2 then 
                             case e.cpago when 0 then
-                            concat('<a class=\"get-salidas box-boton boton-hand\" id=\"cpe-',e.idenvio,'\" href=\"#\" title=\"Confirmar Envio de la Encomienda\" ></a>')
+                            concat('<a class=\"get-salidas box-boton boton-settings\" id=\"cpe-',e.idenvio,'\" href=\"#\" title=\"Confirmar Envio de la Encomienda\" ></a>')
                             else 
-                            concat('<a class=\"recepcion-ce box-boton boton-hand\" href=\"index.php?controller=envio&action=contrae&id=',e.idenvio,'\" title=\"Confirmar la recpcion del envio\" ></a>')                        
+                            concat('<a class=\"get-salidas box-boton boton-settings\" id=\"cpe-',e.idenvio,'\" href=\"#\" title=\"Confirmar Envio de la Encomienda\" ></a>')
                             end
                        else '<span class=\"box-boton boton-ok\"></span>'
                        end
@@ -108,7 +108,7 @@ class envio extends Main
                     case 2: $c="case remitente.nrodocumento when '00000000' then e.remitente else remitente.nombre end";break;
                     case 3: $c="e.consignado";break;                    
                     default:break;
-                } 
+                }
 
             $sql .= " where es.estado in (2,3,4) and ".$c." like :query and s.iddestino = ".$_SESSION['idsucursal']." and e.estado in (2,3)
                 order by e.idenvio desc ";
@@ -173,8 +173,7 @@ class envio extends Main
             {
                 $_SESSION['ventad']->add(0,$rows['descripcion'],$rows['precio'],$rows['cantidad']);
             }
-        }
-        
+        }        
         //Retornando cabecera
         return $row;
     }
@@ -321,13 +320,13 @@ class envio extends Main
                     else 
                         $texto = "MOVIMIENTO POR EL TELEGIRO";
                     //Cambiando el estado a entregado
-                    $update = $this->db->prepare("UPDATE envio set estado = 3, monto_caja =  :monto,
+                    $update = $this->db->prepare("UPDATE envio set  estado = 3, 
+                                                                    monto_caja =  :monto,
                                                         fecha_pago = '".$fecha."'
                                                   where idenvio = :id");
                     $update->bindParam(':id',$idenvio,PDO::PARAM_INT);
                     $update->bindParam(':monto',$monto_caja,PDO::PARAM_INT);
                     $update->execute();
-
 
                     //Generando los ingresos a caja y movimientos
                     $sql = "INSERT INTO movimiento(idempleado, idperiodo, fecha, estado, observacion, idproveedor, idoficina, tipo, idpropietario,num_mov)
@@ -546,27 +545,26 @@ class envio extends Main
         if($tipo==1)
         {
 
+            $stmt = $this->db->prepare("UPDATE envio_salidas 
+                                                    set estado = 2,
+                                                        fecha_salida = '".$fecha."',
+                                                        hora_salida = '".$hora."'
+                                        where idenvio_salidas = :p2 ");                
+            $stmt->bindParam(':p2',$id,PDO::PARAM_INT);        
+            $q = $stmt->execute();
 
-        $stmt = $this->db->prepare("UPDATE envio_salidas 
-                                                set estado = 2,
-                                                    fecha_salida = '".$fecha."',
-                                                    hora_salida = '".$hora."'
-                                    where idenvio_salidas = :p2 ");                
-        $stmt->bindParam(':p2',$id,PDO::PARAM_INT);        
-        $q = $stmt->execute();
+            $sql = "SELECT idenvio from envio_salidas where idenvio_salidas = :p2";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindParam(':p2',$id,PDO::PARAM_INT);        
+            $q = $stmt->execute();
+            $r = $stmt->fetchObject();
 
-        $sql = "SELECT idenvio from envio_salidas where idenvio_salidas = :p2";
-        $stmt = $this->db->prepare($sql);
-        $stmt->bindParam(':p2',$id,PDO::PARAM_INT);        
-        $q = $stmt->execute();
-        $r = $stmt->fetchObject();
-
-        $id = $r->idenvio;
+            $id = $r->idenvio;
 
 
-        $stmt = $this->db->prepare("UPDATE envio set estado = 2  where idenvio = :p2 ");
-        $stmt->bindParam(':p2',$id,PDO::PARAM_INT);        
-        $q = $stmt->execute();
+            $stmt = $this->db->prepare("UPDATE envio set estado = 2  where idenvio = :p2 ");
+            $stmt->bindParam(':p2',$id,PDO::PARAM_INT);        
+            $q = $stmt->execute();
 
         }
         else
