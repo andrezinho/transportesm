@@ -50,8 +50,10 @@ class PDF extends FPDF
                 $this->Cell($this->widths[1], $h, 'CONCEPTO', $border, 0, 'C',$fill);
                 $this->Cell($this->widths[2], $h, 'PROVEEDOR', $border, 0, 'C',$fill);
                 $this->Cell($this->widths[3], $h, 'FECHA', $border, 0, 'C',$fill);
-                $this->Cell($this->widths[4], $h, 'OBSERVACION', $border, 0, 'C',$fill);
-                $this->Cell($this->widths[5], $h, 'MONTO', $border, 0, 'C',$fill);
+                $this->Cell($this->widths[4], $h, 'COMPROBANT', $border, 0, 'C',$fill);
+                $this->Cell($this->widths[5], $h, 'NUM. COMPR.', $border, 0, 'C',$fill);
+                $this->Cell($this->widths[6], $h, 'OBSERVACION', $border, 0, 'C',$fill);
+                $this->Cell($this->widths[7], $h, 'MONTO', $border, 0, 'C',$fill);
                 $this->Ln();
                 
 	}
@@ -100,10 +102,12 @@ class PDF extends FPDF
                 $this->Cell($w[1], $h,$r['concepto'], $border, 0, 'C', $fill);                 
                 $this->Cell($w[2], $h, $r['proveedor'], $border, 0, 'C', $fill);                
                 $this->Cell($w[3], $h,$this->ffecha($r['fecha']), $border, 0, 'C', $fill);
-                $this->Cell($w[4], $h,$r['observacion'], $border, 0, 'C', $fill);
-                $this->Cell($w[5], $h,number_format($r['monto'],2), $border, 0, 'C', $fill);
+                $this->Cell($w[4], $h, $r['comprobante'], $border, 0, 'C', $fill);                
+                $this->Cell($w[5], $h, $r['serie_numero'], $border, 0, 'C', $fill);                
+                $this->Cell($w[6], $h,$r['observacion'], $border, 0, 'C', $fill);
+                $this->Cell($w[7], $h,number_format($r['monto'],2), $border, 0, 'C', $fill);
 				
-		$to=$to+$r['monto'];
+		        $to=$to+$r['monto'];
                 $y = $this->GetY();
                 $this->SetXY(10,$y+$h);
                 
@@ -113,8 +117,10 @@ class PDF extends FPDF
 			$this->Cell($w[1], $h,"", 0, 0, 'C', $fill);
 			$this->Cell($w[2], $h,"", 0, 0, 'C', $fill);
 			$this->Cell($w[3], $h,"", 0, 0, 'C', $fill);
-			$this->Cell($w[4], $h,"TOTAL", 0, 0, 'C', $fill);
-			$this->Cell($w[5], $h,  number_format($to,2), 0, 0, 'C', $fill);
+            $this->Cell($w[4], $h,"", 0, 0, 'C', $fill);
+            $this->Cell($w[5], $h,"", 0, 0, 'C', $fill);
+			$this->Cell($w[6], $h,"TOTAL", 0, 0, 'C', $fill);
+			$this->Cell($w[7], $h,  number_format($to,2), 0, 0, 'C', $fill);
                         
 	}
 }
@@ -122,7 +128,7 @@ class PDF extends FPDF
 $pdf=new PDF();
 
 $maxw=200;
-$w = array(10,50,30,30,30,15,50,40);
+$w = array(10,50,30,10,20,20,40,10);
 $pdf->setValues($fechai, $fechaf, $maxw,$w);
 $orientacion = 'P';
 $pdf->AddPage($orientacion);

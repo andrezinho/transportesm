@@ -7,7 +7,7 @@ $(function()
         resizable: false
         
     });
-    $("#idtipo_documento").chenge(function(){
+    $("#idtipo_documento").change(function(){
         $("#serie_numero").focus();
     });
     $("#fecha,#fechad").datepicker({

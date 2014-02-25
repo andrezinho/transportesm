@@ -33,7 +33,7 @@
                 <select name="caja" id="caja" style="background:#2C99D0; color:#FFFFFF;" <?php echo $readonly; ?> title="Seleccione la caja que será afecta">
                     <option value="">-Seleccione-</option>
                     <option value="1" <?php echo $s; ?>>CAJA DIARIA</option>
-                    <option value="2" <?php echo $s1; ?>>CAJA EGRESOS</option>
+                    <option value="2" <?php echo $s1; ?>>CAJA CHICA (Egresos)</option>
                 </select>
             </div>
             <fieldset class="ui-corner-all">

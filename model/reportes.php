@@ -110,7 +110,7 @@ class reportes extends Main
    function data_egresosc($g)
    {
        $sql = "SELECT cm.descripcion as concepto, concat(p.ruc,'-',p.razonsocial) as proveedor, 
-                      m.fecha, m.observacion, md.cantidad*md.monto as monto
+                      m.fecha, m.observacion, md.cantidad*md.monto as monto, m.comprobante, m.serie_numero
                FROM movimiento as m inner join movimiento_detalle as md
                     on m.idmovimiento = md.idmovimiento inner join  proveedor as p 
                     on p.idproveedor = m.idproveedor inner join concepto_movimiento as cm
@@ -210,7 +210,7 @@ class reportes extends Main
                                     left outer join salida as s on s.idsalida = es.idsalida
                                     left outer join vehiculo as v on v.idvehiculo = s.idvehiculo
                                     left outer join empleado as chofer on chofer.idempleado = s.idchofer and chofer.idtipo_empleado = 2                             
-                WHERE e.num_mov in ((SELECT  mv.num_mov
+                    WHERE e.num_mov in ((SELECT  mv.num_mov
                                       FROM movimiento as mv inner join envio as em on 
                                         em.num_mov = mv.num_mov
                                       WHERE mv.fecha BETWEEN  :p2 and :p3
@@ -219,7 +219,7 @@ class reportes extends Main
                        and em.cpago = 1
                        and mv.idoficina = ".$_SESSION['idoficina']."))  or 
                       e.tipo_pro = 1 and  e.fecha between :p2 and :p3 and e.iddestino = ".$_SESSION['idsucursal']." and e.estado = 3 ";
-        //echo $sql_2;
+        
         $sql_union .= " UNION ALL ";
 
         $sqlw="";        

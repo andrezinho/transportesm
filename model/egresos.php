@@ -9,6 +9,7 @@ class egresos extends Main
                        p.razonsocial,
                        cm.descripcion,
                        m.fecha,
+                       case m.caja when 1 then 'CAJA DIARIA' ELSE 'CAJA CHICA' END,
                        sum(md.monto*md.cantidad),
                        case m.estado when 1 then 'ACTIVO' else 'ANULADO' end,
                        user.login,

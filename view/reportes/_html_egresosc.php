@@ -9,7 +9,9 @@
             <th >ITEM</th>
             <th >CONCEPTO</th>
             <th >PROVEEDOR</th>            
-            <th >FECHA</th>            
+            <th >FECHA</th>     
+            <th >COMPROBANTE</th>            
+            <th >NUMERO COMPR.</th>     
             <th >OBSERVACION</th>
             <th >MONTO</th>                        
          </tr>
@@ -25,9 +27,11 @@
             <tr>
                 <td align="center"><?php echo str_pad($i, 3, '0', 0); ?></td>
                 <td align="center"><?php echo $r['concepto']; ?></td>
-                <td align="center"><?php echo $r['proveedor']; ?></td>
+                <td align="left"><?php echo $r['proveedor']; ?></td>
                 <td align="center"><?php echo ffecha($r['fecha']); ?></td>
-                <td align="center"><?php echo $r['observacion']; ?></td>
+                <td align="center"><?php echo $r['comprobante'] ; ?></td>
+                <td align="center"><?php echo $r['serie_numero']; ?></td>
+                <td align="left"><?php echo $r['observacion']; ?></td>
                 <td align="center"><?php echo number_format($r['monto'],2); ?></td>
             </tr>
            <?php
@@ -38,7 +42,7 @@
    </tbody>
    <tfoot>
        <tr>
-           <td colspan="5" align="right" bgcolor="#fafafa"><b>TOTAL:&nbsp;</b></td>           
+           <td colspan="7" align="right" bgcolor="#fafafa"><b>TOTAL:&nbsp;</b></td>           
            <td align="center" bgcolor="#fafafa"><b><?php echo number_format($to,2); ?></b></td>
        </tr>
    </tfoot>
