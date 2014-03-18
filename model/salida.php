@@ -11,7 +11,7 @@ class salida extends Main
                        concat(chofer.nombre,' ',chofer.apellidos),
                        v.placa,    
                        d.descripcion,
-                       s.numero,     
+                       concat(s.serie,'-',s.numero),
                        case s.tipo when 0 then 'I' else 'I&V' end,                       
                        case s.estado when 0 then 'ANULADO'
                                      when 1 then 'RESERVADO'

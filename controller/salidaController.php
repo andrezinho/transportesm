@@ -22,7 +22,7 @@ class salidaController extends Controller
                                 "CHOFER"=>array(),
                                 "VEHICULO"=>array('ancho'=>9,'align'=>'center'),
                                 "DESTINO"=>array('ancho'=>13,'align'=>'center'),
-                                "TICKET"=>array('ancho'=>6,'align'=>'center','colspan'=>1),
+                                "TICKET"=>array('ancho'=>9,'align'=>'center','colspan'=>1),
                                 "TIPO"=>array('ancho'=>4,'align'=>'center'),
                                 "ESTADO"=>array('ancho'=>'10','align'=>'center'),
                                 "USER"=>array('ancho'=>7,'align'=>'center'),

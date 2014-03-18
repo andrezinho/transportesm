@@ -13,6 +13,7 @@
             <th >CHOFER</th>            
             <th >VEHICULO</th>          
             <th >NUMERO</th>
+            <th >DESTINO</th>
             <th width="90">MONTO (S/.)</th>
          </tr>
    </thead>
@@ -28,9 +29,10 @@
                 <td align="center"><?php echo str_pad($i, 3, '0', 0); ?></td>
                 <td align="center"><?php  echo $r[0]; ?></td>
                 <td align="center"><?php  echo $r[1]; ?></td>
-                <td align="center"><?php  echo $r[2]; ?></td>
-                <td align="center"><?php echo $r[3]; ?></td>
+                <td align="left"><?php  echo $r[2]; ?></td>
+                <td align="left"><?php echo $r[3]; ?></td>
                 <td align="center"><?php echo $r[4]; ?></td>
+                <td align="center"><?php echo $r[6]; ?></td>
                 <td align="right" ><?php echo number_format($r[5],2); ?></td>
             </tr>
            <?php
@@ -42,7 +44,7 @@
    </tbody>
    <tfood>
     <tr>
-      <td colspan="6" align="right">Total: </td>
+      <td colspan="7" align="right">Total: </td>
       <td align="right"><b><?php echo number_format($t,2); ?></b></td>
     </tr>
    </tfood>

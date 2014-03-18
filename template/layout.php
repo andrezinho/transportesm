@@ -8,21 +8,19 @@
     <link type="text/css" href="css/layout.css" rel="stylesheet" />
     <link href="css/cssmenu.css" rel="stylesheet" type="text/css" />
     <link href="css/style_forms.css" rel="stylesheet" type="text/css" />
-    <script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
-    <script type="text/javascript" src="js/jquery-ui-1.8.21.custom.min.js"></script>    
-    <script type="text/javascript" src="js/menus.js"></script>
-    <script type="text/javascript" src="js/session.js"></script>
-    <script type="text/javascript" src="js/required.js"></script>
-    <script type="text/javascript" src="js/validateradiobutton.js"></script>
-    <script type="text/javascript" src="js/utiles.js"></script>
-    <script type="text/javascript" src="js/js-layout.js"></script>
+        <script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+        <script type="text/javascript" src="js/jquery-ui-1.8.21.custom.min.js"></script>    
+        <script type="text/javascript" src="js/menus.js"></script>
+        <script type="text/javascript" src="js/session.js"></script>
+        <script type="text/javascript" src="js/required.js"></script>
+        <script type="text/javascript" src="js/validateradiobutton.js"></script>
+        <script type="text/javascript" src="js/utiles.js"></script>
+        <script type="text/javascript" src="js/js-layout.js"></script>
     <link href='http://fonts.googleapis.com/css?family=Poiret+One' rel='stylesheet' type='text/css'>    
     <link href='http://fonts.googleapis.com/css?family=Buda:300' rel='stylesheet' type='text/css'>
 </head>
 <body>
-    <?php 
-        //print_r($_SESSION);
-    ?>
+    <?php  ?>
     <header id="site_head">
         <div class="header_cont">
             <h1><a href="#">Empresa San Martin S.A.</a></h1>        

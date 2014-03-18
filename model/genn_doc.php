@@ -29,16 +29,18 @@ class genn_doc extends Main
         $stmt->execute();
         return $stmt->fetchObject();
     }
-    function insert($_P ) {
+    function insert($_P ) 
+    {
         //$idoficina = $_SESSION['idoficina'];
-        $stmt = $this->db->prepare("insert into genn_doc (idoficina, idtipo_documento, serie, numi, numf, current) 
-                                    values(:p1,:p2,:p3,:p4,:p5,:p6)");
+        $stmt = $this->db->prepare("insert into genn_doc (idoficina, idtipo_documento, serie, numi, numf, current, iddestino) 
+                                    values(:p1,:p2,:p3,:p4,:p5,:p6,:p7)");
         $stmt->bindParam(':p1',$_P['idoficina'],PDO::PARAM_INT);
         $stmt->bindParam(':p2', $_P['idtipo_documento'] , PDO::PARAM_INT);
         $stmt->bindParam(':p3', $_P['serie'] , PDO::PARAM_INT);
         $stmt->bindParam(':p4', $_P['numi'] , PDO::PARAM_INT);
         $stmt->bindParam(':p5', $_P['numf'] , PDO::PARAM_INT);
         $stmt->bindParam(':p6', $_P['current'] , PDO::PARAM_INT);
+        $stmt->bindParam(':p7', $_SESSION['idsucursal'] , PDO::PARAM_INT);
         $p1 = $stmt->execute();
         $p2 = $stmt->errorInfo();
         return array($p1 , $p2[2]);

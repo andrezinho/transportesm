@@ -207,19 +207,20 @@ class reportes extends Main
                                     inner join empleado as em on e.idempleado = em.idempleado and em.idtipo_empleado = 1
                                     INNER JOIN destino as d on d.iddestino = e.iddestino
                                     left outer join envio_salidas as es on es.idenvio = e.idenvio and es.estado <> 0
-                                    left outer join salida as s on s.idsalida = es.idsalida
+                                    inner join salida as s on s.idsalida = es.idsalida and s.iddestino = ".$_SESSION['idsucursal']." 
                                     left outer join vehiculo as v on v.idvehiculo = s.idvehiculo
                                     left outer join empleado as chofer on chofer.idempleado = s.idchofer and chofer.idtipo_empleado = 2                             
-                    WHERE e.num_mov in ((SELECT  mv.num_mov
+                    WHERE e.num_mov in 
+                                ((    SELECT  mv.num_mov
                                       FROM movimiento as mv inner join envio as em on 
                                         em.num_mov = mv.num_mov
                                       WHERE mv.fecha BETWEEN  :p2 and :p3
                                         AND mv.observacion 
                                         LIKE  '%ENCOM%'
-                       and em.cpago = 1
-                       and mv.idoficina = ".$_SESSION['idoficina']."))  or 
-                      e.tipo_pro = 1 and  e.fecha between :p2 and :p3 and e.iddestino = ".$_SESSION['idsucursal']." and e.estado = 3 ";
-        
+                                       and em.cpago = 1
+                                       and mv.idoficina = ".$_SESSION['idoficina']."
+                                ))  or 
+                        e.tipo_pro = 1 and  e.fecha between :p2 and :p3 and e.iddestino = ".$_SESSION['idsucursal']." and e.estado = 3 ";        
         $sql_union .= " UNION ALL ";
 
         $sqlw="";        
@@ -246,7 +247,7 @@ class reportes extends Main
                   default: break;
                 } 
        $sql .= " ORDER BY 7 ";
-       
+       //echo $sql;
        $stmt = $this->db->prepare($sql);
        $fechai = $this->fdate($g['fechai'],'EN');
        $fechaf = $this->fdate($g['fechaf'],'EN');
@@ -346,12 +347,14 @@ class reportes extends Main
           				salida.hora_pay,
           				concat(chofer.nombre,' ',chofer.apellidos) as nombre,
           				concat(vehiculo.marca,' - ',vehiculo.placa),
-          				salida.numero,
-                  salida.monto
+          				concat(salida.serie,'-',salida.numero) as numero,
+                  salida.monto,
+                  d.descripcion as destino
           				FROM
           				salida inner join empleado as chofer on chofer.idempleado = salida.idchofer
           				Inner Join empleado ON empleado.idempleado = salida.idempleado and empleado.idtipo_empleado=1                  
           				Inner Join vehiculo ON vehiculo.idvehiculo = salida.idvehiculo
+                  left outer join destino as d on d.iddestino = salida.iddestino
           			  WHERE salida.estado <> 0 and salida.fecha_pay between :p2 and :p3 and salida.idoficina = ".$_SESSION['idoficina']." 
                         and chofer.idtipo_empleado = 2 ";
        $stmt = $this->db->prepare($sql);

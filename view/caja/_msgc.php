@@ -10,9 +10,11 @@
            var s = $("#saldo").val();           
            if(confirm('Esta realmente seguro que el monto total en caja es S/. '+s+' ?'))
                {
-                    $.post('index.php','controller=caja&action=cerrar&s='+s,function(d){              
-                    if(d[0]==1)
-                        {
+                    $.post('index.php','controller=caja&action=cerrar&s='+s,function(d)
+                    {              
+                        //alert(d);
+                        if(d[0]==1)
+                            {
                                 $("#box-msg").hide("slow");
                                 $("#box-apertura").empty();
                                 $('#box-apertura').animate({
@@ -25,7 +27,7 @@
                                     }, 700, function() {
                                         $("#box-apertura").append(d[1]);
                                     });
-                        }
+                            }
                     else 
                     {
                         alert("A ocurrido un error, intentelo nuevamente.");

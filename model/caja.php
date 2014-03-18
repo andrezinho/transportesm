@@ -1,8 +1,7 @@
 <?php
 include_once("Main.php");
 class caja extends Main
-{
-   
+{   
     function verifApertura($turno,$fecha,$idoficina,$idempleado)
     {        
         $query = "SELECT count(*) as numero,estado,idcaja
@@ -26,7 +25,6 @@ class caja extends Main
             return array(true,$r->estado,$r->idcaja);
         }
     }
-
     function verifAperturaAll($turno,$idoficina,$idempleado)
     {
         $query = "SELECT fecha,idcaja 
@@ -62,7 +60,7 @@ class caja extends Main
         $verif = $this->verifApertura($turno,$fecha,$idoficina,$idempleado);
         if(!$verif[0])
         {
-            $si = number_format($this->getSaldoInicial($turno,$idoficina,$idempleado),5);
+            $si = $this->getSaldoInicial($turno,$idoficina,$idempleado);
             //aperturar caja
             $stmt = $this->db->prepare("INSERT into caja(idusuario,fecha,turno,estado,saldo_inicial,idoficina) 
                                         values(:p0,:p1,:p2,1,:si,:p3)");
@@ -105,6 +103,7 @@ class caja extends Main
         $stmt->execute();
         $roww = $stmt->fetchObject();
         $idcaja = $roww->idcaja;
+        
         $query = "UPDATE caja set saldo_declarado = {$sdeclarado}, 
                                                     saldo_real = {$ssistema}, 
                                                     estado = 2,
@@ -113,43 +112,35 @@ class caja extends Main
                                             and turno = {$turno}
                                             and idusuario = '{$idempleado}'
                                             and idoficina = {$idoficina}";
-        $stmt = $this->db->prepare($query);
-        try 
-        {
-            $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $this->db->beginTransaction();                                
-                $stmt->execute();
-             $this->db->commit();
-             //Obtenemos los datos para el reporte cierre de caja
-             $rows = $this->getDataCaja($fecha,$turno,$_SESSION['oficina']);
-             $idusuario = $_SESSION['idempleado'];
-             $idoficina = $_SESSION['idoficina'];
-             //$_SESSION = array();
-             //session_destroy();
-             //session_start();
-             $_SESSION['idemp'] = $idusuario;
-             $_SESSION['idof'] = $idoficina;
-             return array('res'=>"1",'rows'=>$rows,'idoficina'=>$idoficina,'idcaja'=>$idcaja);
-        }
-        catch(PDOException $e)
-        {
-            $this->db->rollBack();
-            return array('res'=>"2",'msg'=>'Error : '.$e->getMessage());
-        }        
+
+        $stmt = $this->db->prepare($query);                                    
+        $stmt->execute();
+        
+        //Obtenemos los datos para el reporte cierre de caja
+        $rows = $this->getDataCaja($fecha,$turno,$_SESSION['oficina']);
+        
+        
+
+
+        $idusuario = $_SESSION['idempleado'];
+        $idoficina = $_SESSION['idoficina'];        
+        $_SESSION['idemp'] = $idusuario;
+        $_SESSION['idof'] = $idoficina;
+        return array('res'=>"1",'rows'=>$rows,'idoficina'=>$idoficina,'idcaja'=>$idcaja);        
     }
     function getSaldoInicial($turno,$idoficina,$idempleado)
     {
-        $stmt = $this->db->prepare("SELECT coalesce(saldo_inicial+saldo_real,0),deposito
+        $stmt = $this->db->prepare("SELECT coalesce(saldo_inicial+saldo_real,0) as si,deposito
                                     from caja
                                     where estado=2 and turno = {$turno}  
                                           and idusuario = '{$idempleado}'
                                           and idoficina = {$idoficina}
-                                    order by idcaja
-                                    desc limit 1");
+                                    order by idcaja desc 
+                                    limit 1");
         $stmt->execute();
-        $r = $stmt->fetchAll();
-        $si = $r[0][0];
-        if($r[0][1]==1)
+        $r = $stmt->fetchObject();
+        $si = $r->si;
+        if($r->deposito==1)
         {
            $stmt = $this->db->prepare("SELECT monto from caja_banco where idoficina = ".$_SESSION['idoficina']." and estado = 1 
                                     order by idcaja_banco desc limit 1");
@@ -193,9 +184,9 @@ class caja extends Main
     }
     function getDataCaja($fecha,$turno,$oficina)
     {
-        $stmt = $this->db->prepare("SELECT saldo_inicial,saldo_declarado,saldo_real,fecha,turno,idusuario
-                                    from caja where fecha = '{$fecha}' and turno = {$turno} and idusuario = :idu ");
-        $stmt->bindParam(':idu',$_SESSION['idempleado'],PDO::PARAM_STR);        
+        $sql = "SELECT saldo_inicial,saldo_declarado,saldo_real,fecha,turno,idusuario
+                                    from caja where fecha = '{$fecha}' and turno = {$turno}  and idusuario = '".$_SESSION['idempleado']."' ";                                         
+        $stmt = $this->db->prepare($sql);        
         $stmt->execute();
         $r = $stmt->fetchObject();
         return array($r->saldo_inicial,$r->saldo_declarado,$r->saldo_real,$r->fecha,$r->turno,$r->idusuario,$oficina);
