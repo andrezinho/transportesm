@@ -142,6 +142,7 @@
                 <?php $ck=""; if($obj->adomicilio==1) { $ck ="checked"; } ?>
                 <input type="checkbox" name="adomicilio" id="adomicilio" value="1" <?php echo $ck; ?> /> 
                 <br/>
+                <div id="div-ce">
                 <label for="precio_encomienda" class="labels" style="width:130px">Contra-Entrega:</label>
                 <?php $ck=""; if($obj->cpago==1) { $ck ="checked"; } ?>
                 <?php if($_GET['action']=="create") { ?>
@@ -153,6 +154,7 @@
                         else echo "<b>NO</b>";
                 }
                 ?>
+                </div>
                 <span id="div-conf-salida" style="display:none">
                     <label for="confirma_salida" class="labels" style="width:130px">Confirmar Salida:</label>
                     <input type="checkbox" name="confirma_salida" id="confirma_salida" value="1" /> Si<br/>

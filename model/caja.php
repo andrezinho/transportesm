@@ -130,7 +130,7 @@ class caja extends Main
     }
     function getSaldoInicial($turno,$idoficina,$idempleado)
     {
-        $stmt = $this->db->prepare("SELECT coalesce(saldo_inicial+saldo_real,0) as si,deposito
+        $stmt = $this->db->prepare("SELECT coalesce(saldo_inicial,0)+saldo_real as si,deposito
                                     from caja
                                     where estado=2 and turno = {$turno}  
                                           and idusuario = '{$idempleado}'
@@ -146,7 +146,7 @@ class caja extends Main
                                     order by idcaja_banco desc limit 1");
            $stmt->execute();
            $r = $stmt->fetchObject();
-           $monto = (float)$r->monto;
+           $monto = $r->monto;
            $si -= $monto;
         }
         return $si;

@@ -352,7 +352,7 @@ class envio extends Main
                     $idmov = $movs->idmovimiento;
 
                     $sql = "INSERT INTO movimiento_detalle(idmovimiento,idconcepto_movimiento,monto,cantidad,descripcion) 
-                            VALUES(".$idmov.",6,".$monto_caja.",1,'* ".$texto." ".$row['serie']." - ".$row['numero']."')";
+                            VALUES(".$idmov.",6,".$monto_caja.",1,'".$texto." ".$row['serie']." - ".$row['numero']."')";
                         $detallemov = $this->db->prepare($sql);
                         $detallemov->execute();
                     //}                

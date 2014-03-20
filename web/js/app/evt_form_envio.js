@@ -618,10 +618,14 @@ function changeTipoProceso()
     {
         $("#descripcion").attr("placeholder","Descripcion del objeto a enviar.");
         $("#legend-detalle").html("Detalle de la Encomienda");
+        $("#div-ce").css("display","block");
     }
     else
     {
         $("#descripcion").attr("placeholder","Ingrese la descripcion del Telegiro");
         $("#legend-detalle").html("Detalle de Telegiro");
+        $("#div-ce").css("display","none");
+        $("#cp").attr("checked",false);
+        $("#tr-ce").show();
     }
 }
