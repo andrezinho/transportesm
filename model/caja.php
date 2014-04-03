@@ -28,11 +28,11 @@ class caja extends Main
     function verifAperturaAll($turno,$idoficina,$idempleado)
     {
         $query = "SELECT fecha,idcaja 
-                                    FROM caja 
-                                    WHERE estado = 1 
-                                        and turno = {$turno} 
-                                        and idusuario = '{$idempleado}'
-                                        and idoficina = {$idoficina}";
+                    FROM caja 
+                    WHERE estado = 1 
+                        and turno = {$turno} 
+                        and idusuario = '{$idempleado}'
+                        and idoficina = {$idoficina}";
         
         $stmt = $this->db->prepare($query);
         $stmt->execute();
@@ -147,7 +147,10 @@ class caja extends Main
            $stmt->execute();
            $r = $stmt->fetchObject();
            $monto = $r->monto;
-           $si -= $monto;
+           if($monto>$si)
+             $si = $monto - $si;
+            else 
+              $si = $si - $monto;
         }
         return $si;
     }

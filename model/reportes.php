@@ -356,13 +356,14 @@ class reportes extends Main
           				Inner Join vehiculo ON vehiculo.idvehiculo = salida.idvehiculo
                   left outer join destino as d on d.iddestino = salida.iddestino
           			  WHERE salida.estado <> 0 and salida.fecha_pay between :p2 and :p3 and salida.idoficina = ".$_SESSION['idoficina']." 
-                        and chofer.idtipo_empleado = 2 ";
+                        and chofer.idtipo_empleado = 2 and salida.iddestino = :iddes ";
        $stmt = $this->db->prepare($sql);
        $fechai = $this->fdate($g['fechai'],'EN');
        $fechaf = $this->fdate($g['fechaf'],'EN');
        $stmt = $this->db->prepare($sql);
        $stmt->bindParam(':p2',$fechai,PDO::PARAM_STR);
        $stmt->bindParam(':p3',$fechaf,PDO::PARAM_STR);
+       $stmt->bindParam(':iddes',$g['iddestino'],PDO::PARAM_INT);       
        $stmt->execute();
        $r2 = $stmt->fetchAll();
        //var_dump($g['fechai']);die;

@@ -345,11 +345,17 @@ class envio extends Main
                     $genmov->execute();
                     $query = $this->db->prepare("call genn_tmov(".$idoficina.",1)");
                     $query->execute();
+
+
                     //Generando los movimientos detalles
                     $movimiento = $this->db->prepare("SELECT idmovimiento FROM movimiento WHERE num_mov = '".$row['num_mov']."' and idoficina = ".$idoficina);
                     $movimiento->execute();
                     $movs = $movimiento->fetchObject();
                     $idmov = $movs->idmovimiento;
+
+                    //Elimino porsiaca hay duplicados
+                    $del = $this->db->prepare("DELETE FROM movimiento_detalle where idmovimiento = ".$idmov);
+                    $del->execute();
 
                     $sql = "INSERT INTO movimiento_detalle(idmovimiento,idconcepto_movimiento,monto,cantidad,descripcion) 
                             VALUES(".$idmov.",6,".$monto_caja.",1,'* ".$texto." ".$row['serie']." - ".$row['numero']."')";

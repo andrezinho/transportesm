@@ -362,6 +362,13 @@ public function rsalida()
         $data = array();
         $view = new View();        
         $data['more_options'] = $this->more_options('reportes');
+        $data['destino'] = $this->Select(
+                                            array(
+                                                    'id'=>'iddestino',
+                                                    'name'=>'iddestino',
+                                                    'table'=>'destino'
+                                                    )
+                                                 );
         $view->setData($data);
         $view->setTemplate( '../view/reportes/_salida.php' );        
         $view->setlayout( '../template/layout.php' );
