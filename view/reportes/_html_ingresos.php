@@ -26,13 +26,13 @@
             ?>
             <tr>
                 <td align="center"><?php echo str_pad($i, 2, '0', 0); ?></td>
-                <td align="center"><?php echo $r[0]; ?></td>
-                <td align="center"><?php echo $r[1]; ?></td>
-                <td align="center"><?php echo $r[2]; ?></td>
+                <td align="left"><?php echo $r[0]; ?></td>
+                <td align="left"><?php echo $r[1]; ?></td>
+                <td align="left"><?php echo $r[2]; ?></td>
                 <td align="center"><?php echo $r[3]; ?></td>
                 <td align="center"><?php echo ffecha($r[4]); ?></td>
-                <td align="center"><?php echo $r[5]; ?></td>
-                <td align="center"><?php echo $r[6]; ?></td>
+                <td align="left"><?php echo $r[5]; ?></td>
+                <td align="center"><?php echo number_format($r[6],2); ?></td>
             </tr>
            <?php
 		   $to= $to+$r['total'];

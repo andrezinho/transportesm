@@ -1,6 +1,7 @@
 <script type="text/javascript">
     $(document).ready(function(){
-        $("#fechai,#fechaf").datepicker({ dateFormat:'dd/mm/yy' });        
+        $("#fechai,#fechaf").datepicker({ dateFormat:'dd/mm/yy' });   
+        $("#idconcepto").css("width","auto");
         $("#gen").click(function(){      
             if(valid())
                 {
@@ -34,7 +35,8 @@
         <input type="text" name="fechai" id="fechai" value="<?php echo date('d/m/Y'); ?>" class="ui-widget-content ui-corner-all text" size="8" />		
         <label class="labels" for="periodof">Fecha Final: </label>
         <input type="text" name="fechaf" id="fechaf" value="<?php echo date('d/m/Y'); ?>" class="ui-widget-content ui-corner-all text" size="8" />
-		
+		<label class="labels" for="idconcepto">Conceptos: </label>
+        <?php echo $conceptos; ?>
     </form>
     <div  style="clear: both; padding: 5px; width: auto;text-align: center">
         <a href="index.php" class="button">CERRAR</a>

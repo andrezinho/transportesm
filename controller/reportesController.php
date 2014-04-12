@@ -127,6 +127,7 @@ class reportesController extends Controller
         $data = array();
         $view = new View();        
         $data['more_options'] = $this->more_options('reportes');
+        $data['conceptos'] = $this->Select(array('name'=>'idconcepto','id'=>'idconcepto','table'=>'conceptos_ingresos','text_null'=>'Todos los conceptos...'));
         $view->setData($data);
         $view->setTemplate( '../view/reportes/_ingresos.php' );        
         $view->setlayout( '../template/layout.php' );

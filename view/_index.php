@@ -36,7 +36,7 @@ $(document).ready(function(){
                         </div>                        
                     </div>
                     <div style="clear: both; text-align: right;">
-                        <a href="#" class="link_notify">[ ir al reporte ]</a>
+                        <a href="index.php?controller=reportes&action=rfec_ven_soat" class="link_notify">[ ir al reporte ]</a>
                     </div>
                     
                 </div>                

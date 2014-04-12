@@ -233,5 +233,6 @@ class personalController extends Controller {
             $view->setTemplate( '../view/personal/_json.php' );
             echo $view->renderPartial();
         }
+   
 }
 ?>
