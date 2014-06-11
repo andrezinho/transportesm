@@ -164,6 +164,47 @@ class reportesController extends Controller
     }
     //Fin de vencimiento de capasitaciones
     
+
+    //Vencimiento de licencias
+    public function rfec_ven_lic()
+    {
+        $data = array();
+        $view = new View();        
+        $data['more_options'] = $this->more_options('reportes');
+        $view->setData($data);
+        $view->setTemplate( '../view/reportes/_fec_ven_lic.php' );        
+        $view->setlayout( '../template/layout.php' );
+        $view->render();
+    }    
+    public function html_fec_ven_lic()
+    {
+        
+        $obj = new reportes();
+        $data = array();
+        $result = $obj->data_fec_ven_lic($_GET['mes']);
+        $data['rowsi'] = $result[0];
+        $data['rows'] = $result[1];
+        $view = new View();
+        $view->setData($data);
+        $view->setTemplate('../view/reportes/_html_fec_ven_lic.php');
+        echo $view->renderPartial();
+    }    
+    public function pdf_fec_ven_lic()
+    {
+        //var_dump($g['fechai']);die;
+        $obj = new reportes();
+        $data = array();
+        $result = $obj->data_fec_ven_lic($_GET['mes']);
+        $mes = array("ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SETIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE");
+        $data['mes'] = $mes[$_GET['mes']-1];
+        $data['rowsi'] = $result[0];
+        $view = new View();
+        $view->setData($data);
+        $view->setTemplate('../view/reportes/_pdf_fec_ven_lic.php');
+        $view->setlayout('../template/empty.php');
+        $view->render();
+    }
+//fin de licencias
     public function ringresos()
     {
         $data = array();

@@ -135,15 +135,18 @@
                 <label for="idconsignado" class="labels" style="width:130px">Atentamente :</label>
                 <input type="text" name="atentamente" id="atentamente" value="<?php echo $obj->atentamente; ?>" class="ui-widget-content ui-corner-all text" title="Atentamente" style="width:502px;" placeholder="Nombres del Representante" /> (* Opcional)
                 <br/>
-                
-                <label for="direccion" class="labels" style="width: 130px;">Direccion: </label>
-                <input type="text" name="direccion" id="direccion" value="<?php echo $obj->direccion; ?>" class="ui-widget-content ui-corner-all text" title="Direccion" style="width:502px;" placeholder="Direccion de domicilio y/o oficina del consignado" />                
-                <label for="adomicilio" style="font-size:9px; margin-left:15px; color:blue">ENTREGA A DOMICILIO:</label>
-                <?php $ck=""; if($obj->adomicilio==1) { $ck ="checked"; } ?>
-                <input type="checkbox" name="adomicilio" id="adomicilio" value="1" <?php echo $ck; ?> /> 
+                <label for="precio_encomienda" class="labels" style="width:130px">Entrega a Domicilio:</label>
+                <?php $ck=""; $D = "none;"; if($obj->adomicilio==1) { $ck ="checked"; $D = "block;";} ?>
+                <input type="checkbox" name="adomicilio" id="adomicilio" value="1" <?php echo $ck; ?> /> Si
                 <br/>
+                <div id="div-direccion" style="display:<?php echo $D; ?>">
+                <label for="direccion" class="labels" style="width: 130px;">Direccion: </label>
+                <input type="text" name="direccion" id="direccion" value="<?php echo $obj->direccion; ?>" class="ui-widget-content ui-corner-all text" title="Direccion" style="width:502px;" placeholder="Direccion de domicilio y/o oficina del consignado" />                                
+                <br/>
+                </div>
+                
                 <div id="div-ce">
-                <label for="precio_encomienda" class="labels" style="width:130px">Contra-Entrega:</label>
+                <label for="precio_encomienda" class="labels" style="width:130px">Pago Contra-Entrega:</label>
                 <?php $ck=""; if($obj->cpago==1) { $ck ="checked"; } ?>
                 <?php if($_GET['action']=="create") { ?>
                 <input type="checkbox" name="cp" id="cp" value="1" <?php echo $ck; ?> /> Si

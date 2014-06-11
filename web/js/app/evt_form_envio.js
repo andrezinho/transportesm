@@ -1,6 +1,7 @@
 var idventa = '';
-var source = "index.php?controller=pasajero&action=search_autocomplete&tipo=1&t=0";
+var source  = "index.php?controller=pasajero&action=search_autocomplete&tipo=1&t=0";
 var source2 = "index.php?controller=pasajero&action=search_autocomplete&tipo=1&t=1";
+var source3 = "index.php?controller=pasajero&action=search_autocomplete&tipo=2&t=0";
 $(function() {    
     $("#box-msg-result").dialog({
         autoOpen:false,
@@ -45,6 +46,15 @@ $(function() {
         {
             $("#tr-ce").show();
         }
+    });
+
+    $("#adomicilio").click(function()
+    {
+        var ck = $(this).attr("checked");
+        if(ck=='checked')        
+            $("#div-direccion").show();
+        else        
+           $("#div-direccion").hide();
     });
 
     $("#iddestino").css("width","160px");
@@ -125,7 +135,35 @@ $(function() {
                 .data( "item.autocomplete", item )
                 .append( "<a>"+ item.nrodocumento +" - " + item.nombre + "</a>" )
                 .appendTo( ul );
-    };        
+    }; 
+
+    $( "#remitente" ).autocomplete({
+            minLength: 0,
+            source: source3,
+            focus: function( event, ui ) {
+                $( "#nrodocumentor" ).val( ui.item.nrodocumento );                          
+                return false;
+            },
+            select: function( event, ui ) {
+                $("#idpasajero").val(ui.item.id);
+                $( "#nrodocumentor" ).val( ui.item.nrodocumento );
+                $( "#remitente" ).val( ui.item.nombre );                
+                habilitarr(1);
+                $("#consignado").focus();                
+                return false;
+            },
+            change: function(event, ui) { 
+                clear_remitente();
+                habilitarr(0);
+            }
+        }).data( "autocomplete" )._renderItem = function( ul, item ) {            
+            return $( "<li></li>" )
+                .data( "item.autocomplete", item )
+                .append( "<a>"+ item.nrodocumento +" - " + item.nombre + "</a>" )
+                .appendTo( ul );
+    }; 
+
+
     $("#iddestino").change(function()
     {       
        //Load precio de encomienda y Tikets disponibles
@@ -449,6 +487,7 @@ function overlay()
 
 function habilitarr(b)
 {
+    /*
     if(b==0)
         {
             $("#remitente").removeAttr("readonly");
@@ -456,6 +495,7 @@ function habilitarr(b)
       else {
           $("#remitente").attr("readonly",true);
       }
+    */
 }
 function habilitarc(b)
 {

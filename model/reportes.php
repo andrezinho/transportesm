@@ -57,12 +57,11 @@ class reportes extends Main
     function data_fec_ven_cap($g)
     {
         $anio = date('Y');
-        $sql = "SELECT concat(propietario.idempleado,' - ',propietario.nombre,' ',propietario.apellidos) as propietario,
-                concat(v.marca,' - ',v.modelo,' - ',v.placa) as vehiculo,
-                v.fec_ven_soat as fecha
-        FROM vehiculo as v inner join empleado as propietario on propietario.idempleado = v.idpropietario
-        WHERE month(v.fec_ven_soat)=:mes and year(v.fec_ven_soat)=:anio and propietario.idtipo_empleado = 3
-        ORDER by v.fec_ven_soat";
+        $sql = "SELECT nombre, apellidos, fecha_v_capacitacion as fecha
+                from empleado as chofer 
+                where chofer.idtipo_empleado = 2
+                and month(fecha_v_capacitacion)=:mes and year(fecha_v_capacitacion)=:anio 
+                ORDER by fecha_v_capacitacion";
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':mes',$g,PDO::PARAM_INT);
         $stmt->bindParam(':anio',$anio,PDO::PARAM_INT);
@@ -71,6 +70,22 @@ class reportes extends Main
         return array($r2);
     }
     //
+
+      function data_fec_ven_lic($g)
+    {
+        $anio = date('Y');
+        $sql = "SELECT nombre, apellidos, fecha_v_licencia as fecha
+                from empleado as chofer 
+                where chofer.idtipo_empleado = 2
+                and month(fecha_v_licencia)=:mes and year(fecha_v_licencia)=:anio 
+                ORDER by fecha_v_licencia";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':mes',$g,PDO::PARAM_INT);
+        $stmt->bindParam(':anio',$anio,PDO::PARAM_INT);
+        $stmt->execute();
+        $r2 = $stmt->fetchAll();        
+        return array($r2);
+    }
     
     function data_ingresos($g)
     {
