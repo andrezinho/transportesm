@@ -42,6 +42,7 @@ $(document).ready(function(){
                 </div>                
             </div>            
         </div>
+        
         <div style=" width: 35%; float: left;">
             <div style="padding: 10px;">
                 <div style="background: #dadada; padding: 10px; box-shadow: 2px 2px 5px #999;">
@@ -72,6 +73,75 @@ $(document).ready(function(){
             </div>            
         </div>
     </div>    
+    
+    <div style="padding: 10px 20px">
+        <div style="width: 65%; float: left;">
+            <div style="padding: 10px;">
+                <div style="background: #fafafa; padding: 10px; box-shadow: 2px 2px 5px #dadada;">
+                    <div>
+                        <p class="noticias-sub-titles">VENCIMIENTO DE LICENCIAS</p>
+                    </div>
+                    <div>
+                        <div style="float: left; width: 130px; text-align: center;">
+                            <div class="noticia-head-text" style="color:red">VENCIDAS</div>
+                        </div>
+                        <div style="float: left; width: 130px; text-align: center;">
+                            <div class="noticia-head-text">ESTE MES</div>
+                        </div>
+                        <div style="float: left; width: 180px; text-align: center;">
+                            <div class="noticia-head-text" style="border: 0; ">ESTA SEMANA</div>
+                        </div>                        
+                    </div>                    
+                    <div>
+                        <div style="float: left; width: 130px; text-align: center;">
+                            <div class="noticia-head-value" style="color:red"><?php echo $rows['L1']; ?></div>
+                        </div>
+                        <div style="float: left; width: 130px; text-align: center;">
+                            <div class="noticia-head-value"><?php echo $rows['L2']; ?></div>
+                        </div>
+                        <div style="float: left; width: 180px; text-align: center;">
+                            <div class="noticia-head-value" style="border: 0; "><?php echo $rows['L3']; ?></div>
+                        </div>                        
+                    </div>
+                    <div style="clear: both; text-align: right;">
+                        <a href="index.php?controller=reportes&action=rfec_ven_lic#" class="link_notify">[ ir al reporte ]</a>
+                    </div>
+                    
+                </div>                
+            </div>            
+        </div>
+        
+        <div style=" width: 35%; float: left;">
+            <div style="padding: 10px;">
+                <div style="background: #dadada; padding: 10px; box-shadow: 2px 2px 5px #999;">
+                    <div>
+                        <p class="noticias-sub-titles" style="border-color:#666;">CAPACITACIONES</p>
+                    </div>
+                    <div>                        
+                        <div style="float: left; width: 90px; text-align: center; ">
+                            <div class="noticia-head-text" style="border-color:#666; color:red;">VENCIDAS</div>
+                        </div>
+                        <div style="float: left; width: 120px; text-align: center;">
+                            <div class="noticia-head-text" style="border: 0; border-color:#666;">ESTA SEMANA</div>
+                        </div>                        
+                    </div>  
+                     <div>
+                        <div style="float: left; width: 90px; text-align: center;">
+                            <div class="noticia-head-value" style=" border-color:#666;color:red;"><?php echo $rows['vc1']; ?></div>
+                        </div>
+                        <div style="float: left; width: 120px; text-align: center;">
+                            <div class="noticia-head-value" style="border: 0; border-color:#666;"><?php echo $rows['vc2']; ?></div>
+                        </div>
+                                           
+                    </div>
+                    <div style="clear: both; text-align: right;">
+                        <a href="index.php?controller=reportes&action=rfec_ven_cap" class="link_notify">[ ir al reporte ]</a>
+                    </div>
+                </div>
+            </div>            
+        </div>
+    </div>   
+    
     <div style="padding: 20px;">
         <div style="width: 100%; float: left;">
             <div style="padding: 10px;">

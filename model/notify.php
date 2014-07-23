@@ -80,6 +80,68 @@ class notify extends Main
         $data['v3'] = $row->c2;
         
         
+        $sql = "select count(id1) as c1,count(id2) as c2,count(id3) as c3
+                                    from 
+                                    (select idempleado as id0
+                                    from empleado where idtipo_empleado=2) as t0 
+                                    left join
+                                    (
+                                            select 
+                                                idempleado as id1
+                                            from empleado
+                                            where idtipo_empleado = 2 and 
+                                                month(fecha_v_licencia) = ".date('m')."  and year(fecha_v_licencia)= ".date('Y')."
+                                        ) as t1 on t0.id0 = t1.id1
+                                    left join (
+                                    select 
+                                        idempleado as id2
+                                    from empleado
+                                    where idtipo_empleado=2 and WEEKOFYEAR(fecha_v_licencia) = WEEKOFYEAR(Now()) and year(fecha_v_licencia)=".date('Y')." ) as t2 
+                                    on t0.id0 = t2.id2
+                                    left join (
+                                    select
+                                        idempleado as id3
+                                    from empleado
+                                    where idtipo_empleado=2 and fecha_v_licencia < CURDATE() 
+                                    ) as t3 on t0.id0 = t3.id3";
+        
+        $s = $this->db->prepare($sql);
+        $s->execute();
+        $row = $s->fetchObject();
+        $data['L1'] = $row->c3;
+        $data['L2'] = $row->c1;
+        $data['L3'] = $row->c2;
+       
+        
+         //Venc. Capacitaciones
+        $sql = "select count(id2) as c2,count(id3) as c3
+                                    from 
+                                    (
+                                        select idempleado as id0
+                                        from empleado where idtipo_empleado = 2
+                                    ) as t0
+                                    left join 
+                                    (
+                                        select 
+                                            idempleado as id2
+                                        from empleado
+                                        where idtipo_empleado=2 and WEEKOFYEAR(fecha_v_capacitacion) = WEEKOFYEAR(Now()) and year(fecha_v_capacitacion)=".date('Y')." 
+                                    ) as t2 
+                                    on t0.id0 = t2.id2
+                                    left join 
+                                    (
+                                        select
+                                            idempleado as id3
+                                        from empleado
+                                        where idtipo_empleado=2 and fecha_v_capacitacion < CURDATE() 
+                                    ) as t3 on t0.id0 = t3.id3";
+        
+        $s = $this->db->prepare($sql);
+        $s->execute();
+        $row = $s->fetchObject();
+        $data['vc1'] = $row->c3;
+        $data['vc2'] = $row->c2;
+        
         //Revision Técnica
         $sql = "select count(id2) as c2,count(id3) as c3
                                     from 
