@@ -49,9 +49,9 @@
         </div>                         
     	<div id="templatemo_menu" style="margin-top: <?php echo $margin_top; ?>">        
             <ul>
-                <li><a href="index.php" class="current">Inicio</a></li>
-                <li><a href="empresa.php">Empresa</a></li>                                
-		<li><a href="contactenos.php">Contactenos</a></li>
+                <li><a href="index.php" >Inicio</a></li>
+                <li><a href="empresa.php" >Empresa</a></li>                                
+		<li><a href="#" class="current">Contactenos</a></li>
                 <?php if(isset($_SESSION['user'])&&$_SESSION['user']!="") { ?>
                 <li><a href="web/index.php">Sistema</a></li>
                 <?php } ?>
@@ -94,51 +94,7 @@
     	<div id="content">
        <div class="full_width">
             
-            	<div class="section_w280 margin_r_30 w280_bg">
-                
-                	<h2 class="services">Nuestros Servicios</h2>
-                    
-                    <p>Empresa San Martin les ofrece los siguientes servicios con la total garantia de un exelente servicio.</p>
-                    
-                    <ul class="service_list" style="padding-bottom: 7px;">
-                      <li><a href="#">Transporte de Encomiendas</a></li>
-                      <li><a href="#">Telegiros</a></li>
-                      <li><a href="#">Recojo de pasajeros a domicilio.</a></li>                      
-                      <li><a href="#">Pasajes a diferentes Destinos</a></li>
-                  </ul>
-<!--                    <div class="button_01 float_r"><a href="#">Ver Todos</a></div>-->
-                        <br/><br/><br/>
-                </div>
-                
-                <div class="section_w280 margin_r_30 w280_bg">                
-                  <h2 class="project">Servicios Turisticos</h2>                    
-                  <a href="#"><img src="web/images/templatemo_image_08.png" alt="image" /></a>                    
-                  <p>Realize sus viajes turisticos con toda la seguridad, comodidad y experiencia que nuestros Choferes cuentan. </p>
-                  <br/><br/><br/>
-                  <br/><br/>
-              </div>
-                
-                <div class="section_w280 w280_bg">
-                
-                    <h2 class="project">Nuestras Rutas</h2>                    
-                    <p>Empresa San Martin les ofrece las siguientes Rutas.</p>                    
-                    <ul class="service_list" style="padding-bottom: 7px;">
-                      <li><a href="#">Naranjos</a></li>
-                      <li><a href="#">Nva. Cajamarca</a></li>
-                      <li><a href="#">Rioja - Moyobamba</a></li>                      
-                      <li><a href="#">Tarapoto - Picota</a></li>
-                      <li><a href="#">Bellavista - Juanjui</a></li>
-                      <li><a href="#">Yurimaguas</a></li>
-                      <li><a href="#">Y viceversa</a></li>
-                  </ul>
-                	
-                </div>
-                
-                <div class="cleaner"></div>
-            
-            </div>
-            
-            <div class="full_width">
+            	<div class="full_width">
             
             	<div class="section_w590 margin_r_30" style="">                	
                     <h2 class="current_activities">Nuestras Oficinas</h2>
@@ -183,27 +139,21 @@
                     
            	</div>
                 
-                <?php if(!isset($_SESSION['user'])) { ?>
-                <div class="section_w280 w280_bg" style="margin-bottom: 10px">                
-                   <h2 class="portfolio" >Intranet</h2>                    
-                   <a href="web/">Acceda a la Intranet</a>
-                   <br/>
-                   Solo personal autorizado
-                   <br/><br/>
-                </div>
-                <?php } ?>
+                
                 <div class="section_w280">                
-                    <h2 class="newsletter">Boletines</h2>                    
-                    <form action="#" method="get" class="search_box">
-                        <input type="text" value="Enter your email" name="q" size="10" id="searchfield" title="searchfield" onfocus="clearText(this)" onblur="clearText(this)" />
-                        <input type="submit" name="Search" value="Subscribe" alt="Search" id="searchbutton" title="Search" />
-                    </form>                    
+                    <h2 class="newsletter">E-mail</h2>                                        
 		    <strong>Email:</strong> <a href="#">em.sanmartinsa@hotmail.com</a>    
                 </div>
                 
                 <div class="cleaner"></div>
             
             </div>
+                
+                <div class="cleaner"></div>
+            
+            </div>
+            
+           
             
 
         
