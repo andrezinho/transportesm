@@ -22,15 +22,17 @@ $(function() {
                 }, 100, function(){
                     $("#nrodocumentor").val('00000000');
                 });
+                $("#remitente").focus();
             }
-        else
-            {
+        else{
                 $("#nrodocumentor").show();
                 $("#remitente").animate({
                     width:'394px'
-                }, 100, function(){
+                }, 100, 
+                 function(){
                     $("#nrodocumentor,#idremitente").val('');                    
                 });
+                $("#remitente").focus();
             }
     });
 
@@ -119,7 +121,7 @@ $(function() {
                 return false;
             },
             select: function( event, ui ) {
-                $("#idpasajero").val(ui.item.id);
+                $("#idremitente").val(ui.item.id);
                 $( "#nrodocumentor" ).val( ui.item.nrodocumento );
                 $( "#remitente" ).val( ui.item.nombre );                
                 habilitarr(1);
@@ -145,8 +147,8 @@ $(function() {
                 return false;
             },
             select: function( event, ui ) {
-                $("#idpasajero").val(ui.item.id);
-                $( "#nrodocumentor" ).val( ui.item.nrodocumento );
+                $("#idremitente").val(ui.item.id);
+                $( "#nrodocumentor" ).val(ui.item.nrodocumento);
                 $( "#remitente" ).val( ui.item.nombre );                
                 habilitarr(1);
                 $("#consignado").focus();                
@@ -159,7 +161,7 @@ $(function() {
         }).data( "autocomplete" )._renderItem = function( ul, item ) {            
             return $( "<li></li>" )
                 .data( "item.autocomplete", item )
-                .append( "<a>"+ item.nrodocumento +" - " + item.nombre + "</a>" )
+                .append( "<a>" + item.nombre + "</a>" )
                 .appendTo( ul );
     }; 
 
@@ -385,7 +387,15 @@ function load_sernum2(idtd)
 }
 function clear_remitente()
 {
-    $("#idremitente,#remitente").val('');    
+    var ck = $("#sdni").attr("checked");
+    if(ck!=="checked")
+    {
+        $("#idremitente,#remitente").val('');    
+    }
+    else
+    {
+        $("#idremitente").val('');
+    }
 }
 function clear_consignado()
 {

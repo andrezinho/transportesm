@@ -189,19 +189,36 @@ class envio extends Main
             //Validaciones
         */
         $bval = true;
-
+        if($_P['idremitente']=="")
+        {$_P['idremitente']=0;}
         $dni_ruc = $_P['nrodocumentor'];
         $t = strlen($dni_ruc);
-        if($t==8||$t==11)
-        { 
-            if($t==8) $bval = $this->isDNI($dni_ruc);
-                else $bval = $this->isRUC($dni_ruc);
-            if(!$bval) return array('res'=>'2','msg'=>'Error : El numero de documento del remitente es invalido');
-        }
-        else 
+        if($dni_ruc!="00000000"&&$_P['idremitente']!=0)
         {
-            return array('res'=>'2','msg'=>'Error : El numero de documento del remitente es invalido');
+            if($t==8||$t==11)
+            { 
+                if($t == 8) 
+                {
+                    $bval = $this->isDNI($dni_ruc);
+                } 
+                else 
+                {
+                    $bval = $this->isRUC($dni_ruc);
+                }
+                if(!$bval) {return array('res'=>'2','msg'=>'Error : El numero de documento del remitente es invalido');}
+            }
+            else 
+            {
+                if($_P['idremitente']==0)
+                {
+                    return array('res'=>'2','msg'=>'Error : El numero de documento del remitente es invalido');
+                }
+                
+            }
         }
+        
+        
+        
         //Validando consignado
         $_P['consignado'] = trim($_P['consignado']);
         $t = strlen($_P['consignado']);
@@ -232,13 +249,15 @@ class envio extends Main
         { 
             $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $this->db->beginTransaction();                
+            
+            
                 $stmt->bindParam(':p1',$idperiodo,PDO::PARAM_INT);
                 $stmt->bindParam(':p2',$idempleado,PDO::PARAM_INT);
                 $stmt->bindParam(':p3',$_P['iddestino'],PDO::PARAM_INT);
 
                 $stmt->bindParam(':p4',$_P['salidas'],PDO::PARAM_INT);                
 
-                $stmt->bindParam(':p6',$_P['idremitente'],PDO::PARAM_STR);
+                $stmt->bindParam(':p6',$_P['idremitente'],PDO::PARAM_INT);
                 $stmt->bindParam(':p7',$_P['nrodocumentor'],PDO::PARAM_STR);
                 $stmt->bindParam(':p8',$_P['remitente'],PDO::PARAM_STR);
                 
