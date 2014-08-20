@@ -233,6 +233,10 @@ img { margin: 0px; padding: 0px; border: none; }
 
 .section_w280 .newsletter { background: url(../images/newsletter_icon.png) no-repeat bottom left; }
 
+.section_w280 .newsletter2 { background: url(../images/newsletter_icon_lr.png) no-repeat bottom left; }
+
+.newsletter2 a { text-decoration: none; font-weight: normal; color: #606060;}
+
 .divider {
 	border-bottom: 1px solid #d6d6d6;
 }

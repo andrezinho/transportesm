@@ -1,6 +1,4 @@
-<?php 
-    session_start();
-?>
+<?php session_start(); ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -27,38 +25,36 @@
 <div id="templatemo_wrapper">
 
 	<div id="temmplatmeo_header">  
-            <?php 
-                    $margin_top = "90px";
-                    $padding_top = "35px";
-                    if(isset($_SESSION['user'])&&$_SESSION['user']!="") 
-                    {
-                        $margin_top = "70px";
-                        $padding_top = "15px";
-                 ?>
-            <span style="float: right; display: block; clear: both; color: #fff; font-weight: bold;">BIENVENIDO: <?php echo $_SESSION['name']; ?> - <a href="web/logout.php">Cerrar Sesión</a></span>
-                 <?php
-                    }
-            ?>
-                        <div style="clear: both"></div>
+        <?php 
+                $margin_top = "90px";
+                $padding_top = "35px";
+                if(isset($_SESSION['user'])&&$_SESSION['user']!="") 
+                {
+                    $margin_top = "70px";
+                    $padding_top = "15px";
+             ?>
+        <span style="float: right; display: block; clear: both; color: #fff; font-weight: bold;">BIENVENIDO: <?php echo $_SESSION['name']; ?> - <a href="web/logout.php">Cerrar Sesión</a></span>
+             <?php
+                }
+        ?>
+    <div style="clear: both"></div>
    	<div id="site_title" style="padding-top: <?php echo $padding_top; ?>" >                
            	<a href="#">
-            	<img src="web/images/LOGO.png" alt="free css template" />
-            	
-                <span>PUNTUALIDAD&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SEGURIDAD&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RESPONSABILIDAD</span>
-                </a>
-        </div>                         
-    	<div id="templatemo_menu" style="margin-top: <?php echo $margin_top; ?>">        
+        	<img src="web/images/LOGO.png" alt="free css template" />            	
+            <span>PUNTUALIDAD&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SEGURIDAD&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RESPONSABILIDAD</span>
+            </a>
+    </div>                         
+    <div id="templatemo_menu" style="margin-top: <?php echo $margin_top; ?>">        
             <ul>
                 <li><a href="index.php" class="current">Inicio</a></li>
                 <li><a href="empresa.php">Empresa</a></li>                                
-		<li><a href="contactenos.php">Contactenos</a></li>
+		        <li><a href="contactenos.php">Contactenos</a></li>
                 <?php if(isset($_SESSION['user'])&&$_SESSION['user']!="") { ?>
                 <li><a href="web/index.php">Sistema</a></li>
                 <?php } ?>
-            </ul>    	        
+            </ul>
         </div> <!-- end of _menu -->
-    
-    </div> <!-- end of _header -->    
+    </div> <!-- end of _header -->
     <div id="templatemo_content_wrapper_top"></div>
     <div id="templatemo_content_wrapper">
         <div id="templatemo_banner"><span class="frame"></span>        
@@ -109,17 +105,14 @@
 <!--                    <div class="button_01 float_r"><a href="#">Ver Todos</a></div>-->
                         <br/><br/><br/>
                 </div>
-                
                 <div class="section_w280 margin_r_30 w280_bg">                
                   <h2 class="project">Servicios Turisticos</h2>                    
                   <a href="#"><img src="web/images/templatemo_image_08.png" alt="image" /></a>                    
                   <p>Realize sus viajes turisticos con toda la seguridad, comodidad y experiencia que nuestros Choferes cuentan. </p>
                   <br/><br/><br/>
                   <br/><br/>
-              </div>
-                
-                <div class="section_w280 w280_bg">
-                
+              </div>                
+                <div class="section_w280 w280_bg">                
                     <h2 class="project">Nuestras Rutas</h2>                    
                     <p>Empresa San Martin les ofrece las siguientes Rutas.</p>                    
                     <ul class="service_list" style="padding-bottom: 7px;">
@@ -130,16 +123,12 @@
                       <li><a href="#">Bellavista - Juanjui</a></li>
                       <li><a href="#">Yurimaguas</a></li>
                       <li><a href="#">Y viceversa</a></li>
-                  </ul>
-                	
-                </div>
-                
-                <div class="cleaner"></div>
-            
+                  </ul>                	
+                </div>                
+                <div class="cleaner"></div>            
             </div>
             
             <div class="full_width">
-            
             	<div class="section_w590 margin_r_30" style="">                	
                     <h2 class="current_activities">Nuestras Oficinas</h2>
                     <div class="box-sucrusales ui-corner-all">
@@ -178,37 +167,46 @@
                         Telf: (042) 552022 <br/>
                         RPM: #788177  <br/> Cel: 942626686
                     </div>
+                    <div class="box-sucrusales ui-corner-all">
+                        <span class="title-oficina">Nueva Cajamarca</span><br/>
+                        Av. Cajamarca Sur N&deg; 654 <br/>
+                        Telf: (042) 500436 <br/>
+                        RPM: #949689698  <br/> Cel: 949689698
+                    </div>
                     <div class="cleaner"></div>
-                    
-                    
            	</div>
                 
                 <?php if(!isset($_SESSION['user'])) { ?>
                 <div class="section_w280 w280_bg" style="margin-bottom: 10px">                
                    <h2 class="portfolio" >Intranet</h2>                    
-                   <a href="web/">Acceda a la Intranet</a>
+                   <a target="_blank" href="web/">Acceda a la Intranet</a>
                    <br/>
                    Solo personal autorizado
                    <br/><br/>
                 </div>
                 <?php } ?>
+                <div class="section_w280 w280_bg">                
+                    <h2 class="newsletter2"><a href="reclamos.php">Libro de Reclamaciones</a></h2>
+                    <p style="text-align:center">Conforme a lo establecido en el Código de 
+                    Protección y Defensa del Consumidor este 
+                    establecimiento cuenta con un Libro de 
+                    Reclamaciones a tu disposición. Solicítalo para 
+                    registrar la queja o reclamo que tengas.
+                    </p>
+                    <br/>
+                  
+                </div>
                 <div class="section_w280">                
                     <h2 class="newsletter">Boletines</h2>                    
                     <form action="#" method="get" class="search_box">
                         <input type="text" value="Enter your email" name="q" size="10" id="searchfield" title="searchfield" onfocus="clearText(this)" onblur="clearText(this)" />
                         <input type="submit" name="Search" value="Subscribe" alt="Search" id="searchbutton" title="Search" />
                     </form>                    
-		    <strong>Email:</strong> <a href="#">em.sanmartinsa@hotmail.com</a>    
+		          <strong>Email:</strong> <a href="#">em.sanmartinsa@hotmail.com</a>    
                 </div>
-                
                 <div class="cleaner"></div>
-            
             </div>
-            
-
-        
 		</div> <!-- end of content -->
-        
 </div><div id="templatemo_content_wrapper_bottom"></div> <!-- end of templatemo_wrapper -->
 
         <div id="templatemo_footer">

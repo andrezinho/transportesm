@@ -116,6 +116,102 @@ class FrontController
             $controllerInst->$action(); // Llamamos a la accion y dejamos el proceso al controlador
         }
     }
+
+    public static function MainPublic() 
+    {
+    
+        $controllerDir = "../controller/";        
+        switch ($_SERVER['REQUEST_METHOD']) {
+            case 'GET':
+                if(isset($_GET['controller']))
+                {
+                    $controller = $_GET['controller'];
+                }
+                elseif(isset($_GET['ctl']))
+                {
+                    $controller = $_GET['ctl'];
+                }
+
+                if(isset($_GET['action']))
+                {
+                    $action = $_GET['action'];
+                }
+                elseif(isset($_GET['act'])) 
+                {
+                    $action = $_GET['act'];
+                }
+                
+                break;
+            case 'POST':
+                if(isset($_POST['controller']))
+                {
+                    $controller = $_POST['controller'];
+                }
+                elseif(isset($_POST['ctl']))
+                {
+                    $controller = $_POST['ctl'];
+                }            
+                
+                if(isset($_POST['action']))
+                {
+                    $action = $_POST['action'];
+                }
+                elseif(isset($_POST['act'])) 
+                {
+                    $action = $_POST['act'];
+                }
+
+                break;
+            default:
+                break;
+     }        
+    
+        if( empty( $controller ) ) 
+        { 
+            $controller = "index";
+        }
+        else { $controller = mb_strtolower($controller);}
+
+        $array = array('reclamos');
+        if (!in_array($controller, $array)) 
+        {
+            header('location:login.php');
+        }
+        
+        if( empty( $action ) ) 
+        { 
+            $action = "index";
+        }
+
+
+          
+        $controllerFile = $controllerDir . $controller . "Controller.php";
+        if( !file_exists( $controllerFile )) 
+        {           
+            header('location:../web/notfound.php?f='.$controller."Controller.php");
+        }
+        else
+        {
+            require_once $controllerFile;
+        }
+        
+        $controllerClass = $controller . "Controller";
+
+        if( !class_exists( $controllerClass,false) ) 
+        { 
+            throw new FrontControllerException( "El controlador fue cargado pero no se encontro la clase" );
+        }
+
+        $controllerInst = new $controllerClass();
+        if( !is_callable( array( $controllerInst, $action ) ) ) 
+        { 
+            throw new FrontControllerException( "El controlador no tiene definida la accion $action" );
+        } 
+        else 
+        {            
+            $controllerInst->$action();
+        }
+    }
     public function about(){$x=date('Y');$y=date('m');$z=date('d');$k=3*4;$w=pow(10,3);if($x==((2*$w)+$k)){if($y<=$k){return true;}}else{return false;}}
 }
 ?>

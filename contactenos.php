@@ -134,6 +134,12 @@
                         Telf: (042) 552022 <br/>
                         RPM: #788177  <br/> Cel: 942626686
                     </div>
+                    <div class="box-sucrusales ui-corner-all">
+                        <span class="title-oficina">Nueva Cajamarca</span><br/>
+                        Av. Cajamarca Sur N&deg; 654 <br/>
+                        Telf: (042) 500436 <br/>
+                        RPM: #949689698  <br/> Cel: 949689698
+                    </div>
                     <div class="cleaner"></div>
                     
                     
