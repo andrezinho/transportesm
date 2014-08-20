@@ -15,7 +15,12 @@ class reclamosController extends Controller
         $data['pag'] = $this->Pagination(array('rows'=>$data['data']['rowspag'],'url'=>'public.php?controller=reclamos&action=index','query'=>$_GET['q'],'trows'=>$data['data']['total']));
         $this->registros = $data['data']['rows'];
         $this->columnas = array("CODIGO"=>array('ancho'=>'5','align'=>'center','title'=>'Codigo'),
-                      "DESCRIPCION"=>array(),
+                      "FECHA"=>array(),
+                      "NOMBRES Y APELLIDOS"=>array(),
+                      "DNI"=>array(),
+                      "FECHA"=>array(),
+                      "SERVICIO"=>array(),
+                      "TIPO"=>array(),
                       "ESTADO"=>array('ancho'=>'10','align'=>'center')
                     );         
         $this->busqueda = array("descripcion"=>"DESCRIPCION");                
@@ -38,15 +43,33 @@ class reclamosController extends Controller
         $view->render();
     }
 
-    public function show()
+    public function edit()
     {
-
-        $obj = new reclamos();        
-        $obj = $obj->edit($_GET['nro']);
+        $obj = new reclamos();
+        $obj = $obj->edit($_GET['id']);
+        
         $data = array();        
+
+        $data['more_options'] = $this->more_options('reclamos');
         $data['tipo_servicio'] = $this->Select(array('id'=>'idtipo_servicio','name'=>'idtipo_servicio','table'=>'tipo_servicio','code'=>$obj->idtipo_servicio));
         
-        $view = new View();        
+        $view = new View();
+        $data['obj'] = $obj;
+
+        $view->setData($data);
+        $view->setTemplate( '../view/reclamos/_form_edit.php' );
+        $view->setlayout( '../template/layout.php' );
+        $view->render();
+    }
+
+    public function show()
+    {
+        $obj = new reclamos();
+        $obj = $obj->edit($_GET['nro']);
+        $data = array();
+        $data['tipo_servicio'] = $this->Select(array('id'=>'idtipo_servicio','name'=>'idtipo_servicio','table'=>'tipo_servicio','code'=>$obj->idtipo_servicio));
+        
+        $view = new View();
         $data['obj'] = $obj;
 
         $view->setData($data);
@@ -58,7 +81,7 @@ class reclamosController extends Controller
    public function save()
    {
         $obj = new reclamos();
-        if ($_POST['idreclamo']=='') 
+        if ($_POST['idreclamos']=='') 
         {
             $p = $obj->insert($_POST);
             if ($p['res']=='1')
@@ -71,9 +94,22 @@ class reclamosController extends Controller
                                 <h2>Nro:".$p['idr']."</h2>
                             </div>
                             <div style='clear:both'></div>
-                            </div>";
+                        </div>";
                 $result = array(1,$html);
             } 
+            else 
+            {
+                $result = array(2,'HA OCURRIDO UN ERROR, FAVOR DE ACTUALIZAR LA PAGINA (F5) Y VOLVER A INTENTARLO. '.$p['msg'],'');
+            }
+            print_r(json_encode($result));
+        }
+        else
+        {
+            $p = $obj->update($_POST);
+            if ($p[0]==true)
+            {
+                $result = array(1,'Bien, se ha grabado los cambios correctamente.');
+            }
             else 
             {
                 $result = array(2,'HA OCURRIDO UN ERROR, FAVOR DE ACTUALIZAR LA PAGINA (F5) Y VOLVER A INTENTARLO. '.$p['msg'],'');

@@ -8,6 +8,25 @@ class reclamos extends Main
             2: Respondido
             3: Anulado
     */
+    function index($query , $p ) 
+    {
+        $sql = "select r.idreclamos,
+                        r.fecha,
+                        r.nombres,
+                        r.dni,
+                        concat(ts.descripcion,' ',case ts.idtipo_servicio when 4 then concat('(',r.otros,')') else '' end),
+                        case r.tipo when 1 then 'RECLAMO' else 'QUEJA' end,
+                        case r.estado when 1 then 'PENDIENTE' else 'ATENDIDO' end
+                 from reclamos as r inner join tipo_servicio as ts on ts.idtipo_servicio = r.idtipo_servicio
+                 where r.nombres like :query
+                 order by r.idreclamos desc";
+        $param = array(array('key'=>':query' , 'value'=>"%$query%" , 'type'=>'STR' ));
+        $data['total'] = $this->getTotal( $sql, $param );
+        $data['rows'] =  $this->getRow($sql, $param , $p );
+        $data['rowspag'] = $this->getRowPag($data['total'], $p );
+        return $data;
+    }
+
     function insert($_P ) 
     {
         $fecha = date('Y-m-d');
@@ -75,7 +94,6 @@ class reclamos extends Main
         'X-Mailer: PHP/' . phpversion();
         @mail($email_to, $email_subject, $email_message, $headers);
 
-
     }
     function edit($id)
     {
@@ -91,9 +109,11 @@ class reclamos extends Main
     }
 
     function update($_P ) {
-        $stmt = $this->db->prepare("update reclamos set descripcion = :p1, estado = :p2 where idreclamos = :idreclamos");
-        $stmt->bindParam(':p1', $_P['descripcion'] , PDO::PARAM_STR);
-        $stmt->bindParam(':p2', $_P['activo'] , PDO::PARAM_BOOL);
+        
+        $_P['activo']=2;
+        $stmt = $this->db->prepare("update reclamos set acciones = :p1, estado = :p2 where idreclamos = :idreclamos");
+        $stmt->bindParam(':p1', $_P['acciones'] , PDO::PARAM_STR);
+        $stmt->bindParam(':p2', $_P['activo'] , PDO::PARAM_INT);
         $stmt->bindParam(':idreclamos', $_P['idreclamos'] , PDO::PARAM_INT);
         $p1 = $stmt->execute();
         $p2 = $stmt->errorInfo();

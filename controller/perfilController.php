@@ -37,7 +37,8 @@ class PerfilController extends Controller
         $view->setlayout( '../template/layout.php' );
         $view->render();
     }
-    public function edit() {
+    public function edit() 
+    {
         $obj = new Perfil();
         $data = array();
         $data['more_options'] = $this->more_options('Perfil');

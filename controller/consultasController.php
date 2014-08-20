@@ -78,7 +78,40 @@ class consultasController extends Controller
     //Fin de Consultas de Choferes
     //-----------------------------
     
+    public function reclamos()
+    {
+        $data = array();
+        $view = new View();        
+        $data['more_options'] = $this->more_options('consultas');        
+        $view->setData($data);
+        $view->setTemplate( '../view/consultas/reclamos/_index.php' );        
+        $view->setlayout( '../template/layout.php' );
+        $view->render();
+    }    
+    public function html_reclamos()
+    {
+        $obj = new consultas();
+        $data = array();
+        $result = $obj->data_reclamos($_GET);
+        $stado = "PENDIENTES";
+        
+        if($_GET['estado']==2)
+        {
+            $stado = "ATENDIDOS";
+        }
+
+        $data['title'] = "CONSULTA DE RECLAMOS ".$stado;
+        $data['rowsi'] = $result[0];
+        $data['rows'] = $result[1];
+        $view = new View();
+        $view->setData($data);
+        $view->setTemplate('../view/consultas/reclamos/_html.php');
+        echo $view->renderPartial();
+    }    
+    public function pdf_reclamos()
+    {
     
+    } 
     //-----------------------
     //Consultas de empleados
     //-----------------------

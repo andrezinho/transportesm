@@ -3,6 +3,26 @@ include_once("Main.php");
 class consultas extends Main
 {    
     
+    function data_reclamos($g)
+    {
+        $sql = "SELECT 
+                        r.fecha,
+                        r.nombres,
+                        r.dni,
+                        concat(ts.descripcion,' ',case ts.idtipo_servicio when 4 then concat('(',r.otros,')') else '' end),
+                        case r.tipo when 1 then 'RECLAMO' else 'QUEJA' end,
+                        case r.estado when 1 then 'PENDIENTE' else 'ATENDIDO' end
+                 from reclamos as r inner join tipo_servicio as ts on ts.idtipo_servicio = r.idtipo_servicio
+                WHERE   r.estado = :g and month(r.fecha) = :g2 and anio = :g3";
+      $stmt = $this->db->prepare($sql);
+      $stmt->bindParam(':g',$g['estado'],PDO::PARAM_INT);
+      $stmt->bindParam(':g2',$g['mes'],PDO::PARAM_INT);
+      $stmt->bindParam(':g3',$g['anio'],PDO::PARAM_INT);
+      $stmt->execute();
+        $r2 = $stmt->fetchAll();        
+        return array($r2);
+    }
+    
     function data_grupos($g)
     {
         $sql = "SELECT concat(prop.nombre,' ',prop.apellidos) AS propietario,
