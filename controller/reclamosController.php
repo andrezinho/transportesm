@@ -21,7 +21,8 @@ class reclamosController extends Controller
                       "FECHA"=>array(),
                       "SERVICIO"=>array(),
                       "TIPO"=>array(),
-                      "ESTADO"=>array('ancho'=>'10','align'=>'center')
+                      "ESTADO"=>array('ancho'=>'10','align'=>'center'),
+                      "&nbsp;"=>array('ancho'=>'3','align'=>'center')
                     );         
         $this->busqueda = array("descripcion"=>"DESCRIPCION");                
         $data['grilla'] = $this->grilla("reclamos",$data['pag']);        
@@ -86,6 +87,8 @@ class reclamosController extends Controller
             $p = $obj->insert($_POST);
             if ($p['res']=='1')
             {
+                $i=(int)$p['idr'];
+                $obj->enviar_email($i);
                 $html = "<div style='width:340px; margin:0 auto; height:300px; '>
                             <div><a href='reclamos.php'>Registrar Nuevo</a></div>
                             <div class='ui-corner-all' style='text-align:center;  color:#FFFFFF; padding:20px;background:url(web/images/header.jpg) repeat;'>
@@ -126,6 +129,34 @@ class reclamosController extends Controller
         $view->setData($data);
         $view->setTemplate( '../view/reclamos/_form.php' );        
         return $view->renderPartial();
+    }
+
+    public function printer()
+    {
+        $data = array();
+        $view = new View();                
+        $obj = new reclamos();
+        $result = $obj->getdata((int)$_GET['ir']);
+        if($result[0])
+        {
+            $data['head'] = $result[1];
+            $view->setData($data);
+            $view->setTemplate( '../view/reclamos/_print.php');
+            $view->setlayout( '../template/empty.php' );
+            $view->render();
+        }
+        else 
+        {
+            $data = array();
+            $view = new View();
+            $data['msg'] = 'No se ha podido encontrar el reclamo solicitado.';
+            $data['url'] =  'index.php?controller=reclamos';
+            $view->setData($data);
+            $view->setTemplate( '../view/_error_app.php' );
+            $view->setlayout( '../template/layout.php' );
+            $view->render();
+        }
+        
     }
 }
 ?>

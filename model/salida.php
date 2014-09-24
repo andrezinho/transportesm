@@ -65,7 +65,7 @@ class salida extends Main
                         inner join empleado as e on e.idempleado = s.idempleado and e.idtipo_empleado=1
                 where cast(".$c." as char) like :query and chofer.idtipo_empleado = 2 
                         and s.idoficina = ".$_SESSION['idoficina']."
-                order by s.idsalida desc";
+                order by s.estado,s.idsalida desc";
         
         $param = array(array('key'=>':query' , 'value'=>"%$query%" , 'type'=>'STR' ));
         $data['total'] = $this->getTotal( $sql, $param );

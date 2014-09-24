@@ -10,7 +10,7 @@ class envio extends Main
                        case e.tipo_pro when 1 then '<span class=\"box-encomienda\">ENC</span>' else '<span class=\"box-telegiro\">TEL</span>' end,
                        case remitente.nrodocumento when '00000000' then e.remitente else remitente.nombre end,
                        e.consignado,
-                       e.numero,
+                       CONCAT(e.serie,' ',e.numero),
                        d.descripcion,
                        case e.cpago when 1 then 'CE' else '-' end,
                        case e.estado when 1 then '<p style=\"font-size:9px; font-style:italic\">EN ESPERA...</p>'
@@ -55,7 +55,7 @@ class envio extends Main
                 } 
                 
                 $sql .= " where ".$c." like :query and e.idoficina = ".$_SESSION['idoficina']." 
-                order by e.idenvio desc ";
+                order by e.estado,e.idenvio desc ";
 
         $param = array(array('key'=>':query' , 'value'=>"%$query%" , 'type'=>'STR' ));
         $data['total'] = $this->getTotal( $sql, $param );
@@ -71,7 +71,7 @@ class envio extends Main
                        case e.tipo_pro when 1 then '<span class=\"box-encomienda\">ENC</span>' else '<span class=\"box-telegiro\">TEL</span>' end,
                        case remitente.nrodocumento when '00000000' then e.remitente else remitente.nombre end,
                        e.consignado,
-                       e.numero,
+                       concat(e.serie,' ',e.numero),
                        d.descripcion,
                        d2.descripcion,
                        case e.cpago when 1 then 'CE' else '-' end,

@@ -6,7 +6,8 @@ require_once '../model/tipo_pasajero.php';
 require_once '../model/destino.php';
 class salidaController extends Controller
 {
-   public function index() {
+   public function index() 
+   {
         if (!isset($_GET['p'])){$_GET['p']=1;}
         if(!isset($_GET['q'])){$_GET['q']="";} 
         if(!isset($_GET['criterio'])){$_GET['criterio']="chofer.nombre";} 

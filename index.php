@@ -75,13 +75,15 @@
             <div id="canadaprovinces" class="glidecontentwrapper">            
             <div class="glidecontent">
                 <img src="web/images/banner.jpg" alt="bird" />
+            </div>           
+            <!-- 
+            <div class="glidecontent">
+                <img src="web/images/templatemo_image_02.jpg" alt="image" />
             </div>            
             <div class="glidecontent">
-            <img src="web/images/templatemo_image_02.jpg" alt="image" />
+                <img src="web/images/templatemo_image_03.jpg" alt="image" />
             </div>            
-            <div class="glidecontent">
-            <img src="web/images/templatemo_image_03.jpg" alt="image" />
-            </div>            
+            -->
             </div>            
             <div id="p-select" class="cssbuttonstoggler">
             <a href="#" class="toc"><span>1</span></a> <a href="#" class="toc"><span>2</span></a> <a href="#" class="toc"><span>3</span></a>            

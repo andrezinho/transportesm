@@ -16,7 +16,8 @@ class reclamos extends Main
                         r.dni,
                         concat(ts.descripcion,' ',case ts.idtipo_servicio when 4 then concat('(',r.otros,')') else '' end),
                         case r.tipo when 1 then 'RECLAMO' else 'QUEJA' end,
-                        case r.estado when 1 then 'PENDIENTE' else 'ATENDIDO' end
+                        case r.estado when 1 then 'PENDIENTE' else 'ATENDIDO' end,
+                        concat('<a  target=\"_blank\" href=\"index.php?controller=reclamos&action=printer&ir=',r.idreclamos,'\" title=\"Imprimir\" class=\"box-boton boton-print\"></a>')
                  from reclamos as r inner join tipo_servicio as ts on ts.idtipo_servicio = r.idtipo_servicio
                  where r.nombres like :query
                  order by r.idreclamos desc";
@@ -62,7 +63,7 @@ class reclamos extends Main
             $idreclamo = $row->idreclamo;
 
             //Enviamos un correo de confirmacion al reclamante
-            $this->enviar_email($idreclamo);
+            
             $idreclamo = str_pad($idreclamo, 5, '0',0);
             $this->db->commit();            
             return array('res'=>"1",'msg'=>'Bien!','idr'=>$idreclamo);
@@ -75,24 +76,40 @@ class reclamos extends Main
     }
     function enviar_email($idreclamo)
     {
-        $stmt = $this->db->prepare("select * from reclamos where idreclamos = ".$idreclamo);
+        $stmt = $this->db->prepare("select r.*,ts.descripcion as tipo_servicio from reclamos as r inner join tipo_servicio as ts
+                                        on ts.idtipo_servicio = r.idtipo_servicio
+                                     where idreclamos = ".$idreclamo);
         $stmt->execute();
         $r = $stmt->fetchObject();
-        $email_from = "admin@empresasanmartin.com";
         
-        $email_to = $r->email;        
+        $email_to  = 'andres147_7@outlook.com' . ', ';        
+        $email_to .= $r->email;
+        
+        $tipo = "de la Queja";
+        if($r->tipo==1)        
+            $tipo = "del Reclamo";
+        
+        $tipo_servicio = $r->tipo_servicio;
+        if($r->idtipo_servicio==4)
+        {
+            $tipo_servicio = $r->tipo_servicio." (".$r->otros.")";
+        }
+       
         $email_subject = "Libro de Reclamaciones - Empresa SanMartin";
 
-        $email_messaje = "<b>".$obj->nombres.",</b><br/>";
+        $email_messaje .= "<b>".$r->nombres.",</b><br/>";
         $email_messaje .= "Su reclamo fue registrado satisfactoriamente, el cual sera atendido lo mas pronto posible.<br/>";
         $email_messaje .= "Para que usted pueda hacer seguimiento de su Reclamo puede hacerlo a traves de nuestras oficinas o desde nuestra pagina web.<br/>";
-        $email_messaje .= "Descripcion del Reclamo: <br/>";
-        $email_messaje .= "<i>".$obj->detalle."</i>";
+        $email_messaje .= "------------------------------------------------<br/>";
+        $email_messaje .= "<h2>Reclamo Numero : ".str_pad($r->idreclamos,5,'0',0)."</h2>";
+        $email_messaje .= "Servicio: ".$tipo_servicio."<br/>";        
+        $email_messaje .= "<i><b>Descripcion ".$tipo.":</b><br/>".$r->detalle."</i>";
 
-        $headers = 'From: '.$email_from."\r\n".
-        'Reply-To: '.$email_from."\r\n" .
-        'X-Mailer: PHP/' . phpversion();
-        @mail($email_to, $email_subject, $email_message, $headers);
+        $headers  = 'MIME-Version: 1.0' . "\r\n";
+        $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+        $headers .= 'From: Reclamo <webmaster@empresasanmartin.com>' . "\r\n";
+
+        mail($email_to, $email_subject, $email_messaje, $headers);
 
     }
     function edit($id)
@@ -125,6 +142,38 @@ class reclamos extends Main
         $p1 = $stmt->execute();
         $p2 = $stmt->errorInfo();
         return array($p1 , $p2[2]);
+    }
+
+    function getdata($idv)
+    {
+        $stmt = $this->db->prepare("SELECT  r.idreclamos,
+                                            r.anio,
+                                            r.fecha,
+                                            r.nombres,
+                                            r.domicilio,
+                                            r.dni,
+                                            r.telefono,
+                                            r.email,
+                                            concat(ts.descripcion,' ',case ts.idtipo_servicio when 4 then concat('(',r.otros,')') else '' end) as servicio,
+                                            case r.tipo when 1 then 'RECLAMO' else 'QUEJA' end as tipo,
+                                            case r.estado when 1 then 'PENDIENTE' else 'ATENDIDO' end as estado,
+                                            r.detalle,
+                                            r.acciones
+                                     from reclamos as r inner join tipo_servicio as ts on ts.idtipo_servicio = r.idtipo_servicio
+                                    where r.idreclamos = :id");
+        $stmt->bindParam(':id',$idv,PDO::PARAM_INT);
+        $stmt->execute();
+        $n = $stmt->rowCount();
+        
+        if($n>0)
+        {
+            $head = $stmt->fetchObject();                        
+            return array(true,$head);
+        }
+        else 
+        {
+            return array(false,'','');
+        }
     }
 }
 ?>

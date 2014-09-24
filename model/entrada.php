@@ -11,7 +11,7 @@ class entrada extends Main
                        concat(chofer.nombre,' ',chofer.apellidos),
                        v.placa,    
                        do.descripcion,
-                       s.numero,     
+                       concat(s.serie,' ',s.numero),     
                        case s.tipo when 0 then 'I' else 'I&V' end,
                        case s.estado WHEN 3 THEN 'EN CURSO'
                                      WHEN 4 then 'CONCLUIDO'
