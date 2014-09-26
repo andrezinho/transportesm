@@ -486,6 +486,48 @@ public function rsalida()
         $view->render();
     }
 
+
+    //Mensualidades
+    public function mensualidades()
+    {
+        $data = array();
+        $view = new View();        
+        $data['more_options'] = $this->more_options('reportes');        
+        $view->setData($data);
+        $view->setTemplate( '../view/reportes/_mensualidades.php' );     
+        $view->setlayout( '../template/layout.php' );
+        $view->render();
+    }    
+    public function html_mensualidades()
+    {
+        //var_dump($_POST);die;
+        $obj = new reportes();
+        $data = array();
+        $result = $obj->data_mensualidades($_GET);
+        $data['rowsi'] = $result[0];
+        $data['rows'] = $result[1];
+        $view = new View();
+        $view->setData($data);
+        $view->setTemplate('../view/reportes/_html_mensualidades.php');
+        echo $view->renderPartial();
+    }    
+    public function pdf_mensualidades()
+    {
+        //var_dump($g['fechai']);die;
+        $obj = new reportes();
+        $data = array();
+        $result = $obj->data_mensualidades($_GET);
+        $data['rowsi'] = $result[0];
+        $data['rows'] = $result[1];
+        $data['fechai'] = $_GET['fechai'];
+        $data['fechaf'] = $_GET['fechaf'];
+        $view = new View();
+        $view->setData($data);
+        $view->setTemplate('../view/reportes/_pdf_mensualidades.php');
+        $view->setlayout('../template/empty.php');
+        $view->render();
+    }
+
 }
 
 ?>

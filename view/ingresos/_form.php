@@ -46,7 +46,7 @@
                     </span>
                 </div>
                 <div id="tipo-1" style="display: <?php echo $d1; ?>;">
-                <label for="idempleado" class="labels" style="width:130px">Propietario:</label>
+                <label for="idempleado" class="labels" style="width:130px">Empleado/Accionista:</label>
                 <input type="text" name="idempleado" id="idempleado" maxlength="8" value="<?php echo $obj->idempleado; ?>" class="ui-widget-content ui-corner-all text" onkeypress="return permite(event,'num')" placeholder="Nro Documento" />                
                 <input type="text" name="nombre" id="nombre" value="<?php echo $obj->nombre; ?>" class="ui-widget-content ui-corner-all text" title="Nombre del Propietario" style="width:400px" placeholder="Nombres y Apellidos" />
                 <br/>

@@ -1,5 +1,6 @@
 <?php 
 session_start();
+include_once("../lib/helpers.php"); 
 ?>
 <div>
 <p>Lista de salida(s) asignada(s) a este envio.</p> 
@@ -16,6 +17,8 @@ session_start();
 		<th>CHOFER</th>
 		<th>VEHICULO</th>
 		<th>DESTINO</th>
+		<th>SALIDA</th>
+		<th>LLEGADA</th>
 		<th>ESTADO</th>
 		<th>&nbsp;</th>
 		<th>&nbsp;</th>
@@ -31,7 +34,9 @@ session_start();
 				<td align="center"><?php echo $c; ?></td>
 				<td><?php echo $v['chofer'] ?></td>
 				<td align="center"><?php echo $v['vehiculo'] ?></td>
-				<td><?php echo $v['origen']." - ".$v['destino']; ?></td>
+				<td align="center"><?php echo $v['origen']." - ".$v['destino']; ?></td>
+				<td align="center"><?php echo fdate($v['fecha_salida'],"ES")." ".$v['hora_salida'] ?></td>
+				<td align="center"><?php if($v['fecha_llegada']!="") echo fdate($v['fecha_llegada'],"ES")." ".$v['hora_llegada']; else echo "";?></td>				
 				<td align="center"><?php echo $v['estado'] ?></td>
 				<td align="center">
 					<?php if($v['idestado']==1&&$_SESSION['idoficina']==$v['idoficina']) { ?>

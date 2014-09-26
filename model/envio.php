@@ -10,7 +10,7 @@ class envio extends Main
                        case e.tipo_pro when 1 then '<span class=\"box-encomienda\">ENC</span>' else '<span class=\"box-telegiro\">TEL</span>' end,
                        case remitente.nrodocumento when '00000000' then e.remitente else remitente.nombre end,
                        e.consignado,
-                       CONCAT(e.serie,' ',e.numero),
+                       CONCAT(e.serie,'-',e.numero),
                        d.descripcion,
                        case e.cpago when 1 then 'CE' else '-' end,
                        case e.estado when 1 then '<p style=\"font-size:9px; font-style:italic\">EN ESPERA...</p>'
@@ -223,6 +223,33 @@ class envio extends Main
         $_P['consignado'] = trim($_P['consignado']);
         $t = strlen($_P['consignado']);
         if($t==0) return array('res'=>'2','msg'=>'Error : No a definido a un consignado, porfavor ingrese el nombre completo');
+
+        if(trim($_P['idconsignado'])=="")
+        {
+            $idtp=1;
+            $stmt = $this->db->prepare("INSERT INTO pasajero(idtipo_pasajero,nombre,nrodocumento,direccion) values(:p1,:p2,:p3,:p4) ");
+            $stmt->bindParam(':p1',$idtip,PDO::PARAM_INT);
+            $stmt->bindParam(':p2',$_P['consignado'],PDO::PARAM_STR);
+            $stmt->bindParam(':p3',$_P['nrodocumentoc'],PDO::PARAM_STR);
+            $stmt->bindParam(':p4',$_P['direccion'],PDO::PARAM_STR);
+            $stmt->execute();
+        }
+        else
+        {
+            $idtp=1;
+            $stmt = $this->db->prepare("UPDATE pasajero SET idtipo_pasajero=:p1,
+                                                            nombre=:p2,
+                                                            nrodocumento=:p3,
+                                                            direccion =:p4
+                                        WHERE idpasajero = :idpasajero");
+            $stmt->bindParam(':p1',$idtip,PDO::PARAM_INT);
+            $stmt->bindParam(':p2',$_P['consignado'],PDO::PARAM_STR);
+            $stmt->bindParam(':p3',$_P['nrodocumentoc'],PDO::PARAM_STR);
+            $stmt->bindParam(':p4',$_P['direccion'],PDO::PARAM_STR);
+            $stmt->bindParam(':idpasajero',$_P['idconsignado'],PDO::PARAM_INT);
+            $stmt->execute();
+        }
+
         //Verificando numero de items en el detalle
         if($obj->count_items()==0)  
         {
@@ -792,7 +819,11 @@ class envio extends Main
                        es.estado as idestado,
                        e.cpago,
                        e.idenvio,
-                       es.idoficina
+                       es.idoficina,
+                       es.fecha_salida,
+                       es.hora_salida,
+                       case es.estado when 3 then es.fecha_llegada else '' end as fecha_llegada,
+                       case es.estado when 3 then es.hora_llegada else '' end as hora_llegada
                 from envio_salidas as es inner join salida as s on es.idsalida = s.idsalida
                     inner join empleado as chofer on chofer.idempleado = s.idchofer
                     inner join vehiculo as v on v.idvehiculo = s.idvehiculo

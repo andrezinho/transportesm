@@ -164,7 +164,32 @@ $(function() {
                 .append( "<a>" + item.nombre + "</a>" )
                 .appendTo( ul );
     }; 
-
+    $("#consignado").autocomplete({
+            minLength: 0,
+            source: source3,
+            focus: function( event, ui ) {
+                $( "#nrodocumentoc" ).val( ui.item.nrodocumento );                          
+                return false;
+            },
+            select: function( event, ui ) {
+                $("#idconsignado").val(ui.item.id);
+                $( "#nrodocumetoc" ).val(ui.item.nrodocumento);
+                $( "#consignado" ).val(ui.item.nombre);                
+                $("#direccion").val(ui.item.direccion);
+                //habilitarr(1);
+                $("#atentamente").focus();                
+                return false;
+            },
+            change: function(event, ui) { 
+                clear_remitente();
+                habilitarr(0);
+            }
+        }).data( "autocomplete" )._renderItem = function( ul, item ) {            
+            return $( "<li></li>" )
+                .data( "item.autocomplete", item )
+                .append( "<a>" + item.nombre + "</a>" )
+                .appendTo( ul );
+    }; 
 
     $("#iddestino").change(function()
     {       

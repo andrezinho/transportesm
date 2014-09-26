@@ -104,9 +104,9 @@ class ingresos extends Main
         $estado = 1;
         $hora = date('h:i:s');
         $gr = '';
-        $_P['caja'] = 1;
-        $_P['comprobante'] = "";
-        $_P['serie_numero'] = "";
+		$_P['caja'] = 1;
+		$_P['comprobante'] = "";
+		$_P['serie_numero'] = "";
         $stmt = $this->db->prepare("SELECT f_insert_movimiento(:p1, :p2, :p3, :p4,:p5, :p6, :p7, :p8, :p9, :p10, :p11, :rs,:ruc,:p12,:p13,:p14,:p15,:p16,:p17)");
         try
         {
@@ -129,7 +129,7 @@ class ingresos extends Main
                 $stmt->bindParam(':p12', $_P['tipoi'] , PDO::PARAM_INT);
                 $stmt->bindParam(':p13', $_P['razonsocial'] , PDO::PARAM_STR);
                 $stmt->bindParam(':p14', $this->tipo_documento,PDO::PARAM_INT);
-                $stmt->bindParam(':p15', $_P['caja'],PDO::PARAM_INT);
+				$stmt->bindParam(':p15', $_P['caja'],PDO::PARAM_INT);
                 $stmt->bindParam(':p16', $_P['comprobante'],PDO::PARAM_INT);
                 $stmt->bindParam(':p17', $_P['serie_numero'],PDO::PARAM_INT);
                 $stmt->execute();

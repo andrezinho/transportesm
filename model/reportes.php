@@ -412,6 +412,89 @@ class reportes extends Main
        return array($r2);
    }
    
+   function data_mensualidades($g)
+    {
+      
+        $sql = "SELECT  cm.idtipo_concepto,
+                      cm.descripcion as concepto,
+                      m.tipo_ingreso,
+                      concat(coalesce(propietario.nombre,' '),' ',coalesce(propietario.apellidos,' ')) as remitente,
+                          propietario.idempleado,
+                      m.chofer,
+                      m.placa,
+                      m.fecha,
+                      m.observacion,
+                      md.cantidad*md.monto as total
+                  FROM movimiento as m inner join movimiento_detalle as md on m.idmovimiento = md.idmovimiento
+                      inner join concepto_movimiento as cm on cm.idconcepto_movimiento = md.idconcepto_movimiento                                        
+                      left outer join proveedor as pro on pro.idproveedor = m.idproveedor
+                      left join empleado as propietario on propietario.idempleado = m.idpropietario and propietario.idtipo_empleado = 3   
+        WHERE m.tipo = 1 AND m.estado = 1 and m.fecha between :f1 and :f2 and m.idoficina = ".$_SESSION['idoficina']."
+              and m.serie is not null 
+        and md.idconcepto_movimiento in (11,12,69)
+        ORDER by m.idmovimiento desc";
+        
+        $fechai = $this->fdate($g['fechai'],'EN');
+        $fechaf = $this->fdate($g['fechaf'],'EN');
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':f1',$fechai,PDO::PARAM_STR);
+        $stmt->bindParam(':f2',$fechaf,PDO::PARAM_STR);
+        $stmt->execute();
+        $data = array();        
+        foreach ($stmt->fetchAll() as $row) 
+        {
+            $data[] = array($row['concepto'],$row['remitente'],$row['idempleado'],$row['chofer'],$row['placa'],$row['fecha'],$row['observacion'],$row['total']);
+        }
 
+        $sql = "SELECT idempleado,concat(nombre,' ',apellidos),estado 
+                from empleado where idtipo_empleado = 3 and estado = 1
+                order by concat(nombre,' ',apellidos) asc";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        $records = array();
+        foreach ($stmt->fetchAll() as $r) 
+        {
+            $s = $this->search($r['idempleado'],$data);
+            $n = count($s);
+            if($n>0)
+            {
+                foreach ($s as $k) {
+                  $records[] = array('concepto'=>$k[0],
+                                    'remitente'=>$k[1],                                
+                                    'idempleado'=>$k[2],
+                                    'chofer'=>$k[3],
+                                    'placa'=>$k[4],
+                                    'fecha'=>$k[5],
+                                    'observacion'=>$k[6],
+                                    'total'=>$k[7]);
+                }
+            }
+            else
+            {
+              $records[] = array('concepto'=>'',
+                                'remitente'=>$r[1],                                
+                                'idempleado'=>$r[0],
+                                'chofer'=>'',
+                                'placa'=>'',
+                                'fecha'=>'',
+                                'observacion'=>'',
+                                'total'=>'0.00');
+            }
+        }
+        return array($records);
+    }
+    //Functions ultilities
+    function search($buscar,$en)
+    {
+      $result = array();
+      foreach($en as $k)
+      {
+          if($k[2]==$buscar)          
+            {$result[] = array($k[0],$k[1],$k[2],$k[3],$k[4],$k[5],$k[6],$k[7]);}
+      }
+      return $result;
+    }
 }
+
 ?>
