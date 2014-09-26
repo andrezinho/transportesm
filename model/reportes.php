@@ -105,7 +105,7 @@ class reportes extends Main
 				        inner join concepto_movimiento as cm on cm.idconcepto_movimiento = md.idconcepto_movimiento                                        
                 left outer join proveedor as pro on pro.idproveedor = m.idproveedor
 				        left join empleado as propietario on propietario.idempleado = m.idpropietario and propietario.idtipo_empleado = 3                                        
-				WHERE m.tipo = 1 AND m.estado = 1 and m.fecha between :f1 and :f2 and m.idoficina = ".$_SESSION['idoficina']."
+				WHERE m.tipo = 1 AND m.estado = 1 and m.caja = 1 and m.fecha between :f1 and :f2 and m.idoficina = ".$_SESSION['idoficina']."
               and m.serie is not null ";
 
         if($g['idconcepto']!="")
@@ -124,7 +124,43 @@ class reportes extends Main
        	$r2 = $stmt->fetchAll();        
         return array($r2);
     }
-    
+    function data_ingresosc($g)
+    {
+        $sql = "SELECT  cm.descripcion as concepto,
+                case tipo_ingreso when 1 then concat(coalesce(propietario.nombre,' '),' ',coalesce(propietario.apellidos,' '))
+                                            else 
+                                                case pro.ruc 
+                                                when '00000000' then m.recibi 
+                                                else pro.razonsocial  end                                                
+                                            end as remitente,
+                m.chofer,
+                m.placa,
+                m.fecha,
+                m.observacion,
+                md.cantidad*md.monto as total
+        FROM movimiento as m inner join movimiento_detalle as md on m.idmovimiento = md.idmovimiento
+                inner join concepto_movimiento as cm on cm.idconcepto_movimiento = md.idconcepto_movimiento                                        
+                left outer join proveedor as pro on pro.idproveedor = m.idproveedor
+                left join empleado as propietario on propietario.idempleado = m.idpropietario and propietario.idtipo_empleado = 3                                        
+        WHERE m.tipo = 1 AND m.estado = 1 and m.caja = 2 and m.fecha between :f1 and :f2 and m.idoficina = ".$_SESSION['idoficina']."
+              and m.serie is not null ";
+
+        if($g['idconcepto']!="")
+        {
+           $sql .= " and md.idconcepto_movimiento = ".(int)$g['idconcepto'];
+        }
+
+        $sql .= " ORDER by m.idmovimiento desc";
+        
+        $fechai = $this->fdate($g['fechai'],'EN');
+        $fechaf = $this->fdate($g['fechaf'],'EN');
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':f1',$fechai,PDO::PARAM_STR);
+        $stmt->bindParam(':f2',$fechaf,PDO::PARAM_STR);
+        $stmt->execute();
+        $r2 = $stmt->fetchAll();        
+        return array($r2);
+    }
    function data_egresos($g)
    {
        $sql = "SELECT cm.descripcion as concepto, concat(p.ruc,'-',p.razonsocial) as proveedor, 

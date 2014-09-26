@@ -209,6 +209,7 @@ $(function() {
     );
     $( "#save" ).click(function(){
         bval = true;                
+        bval = bval && $("#caja").required();
         bval = bval && $( "#fecha" ).required();    
          var ti = $("#tipoi").val();
          if(ti==1)

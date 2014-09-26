@@ -56,7 +56,6 @@
     <div style="float: right; display: inline; width: 18px; height: 18px; margin: 3px 5px">
         <a href="<?php echo $_SERVER['PHP_SELF']."?controller=".$name; ?>" class="box-boton boton-refresh" title="Recargar Registros"></a>
     </div>
-    
     <div style="float: right; display: inline; width: 18px; height: 18px; margin: 3px 5px">
         <a href="index.php" style="border:0" title="Cerrar" class="box-boton boton-close" ></a>
     </div>

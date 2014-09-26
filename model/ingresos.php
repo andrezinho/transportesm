@@ -15,6 +15,7 @@ class ingresos extends Main
                                                 else pro.razonsocial  end                                                
                                             end as remitente,
                         m.chofer,
+                        concat(m.serie,'-',m.numero),
                         m.fecha,                        
                         m.observacion,
                         case m.estado when 1 then 'ACTIVO'                                      
@@ -104,7 +105,7 @@ class ingresos extends Main
         $estado = 1;
         $hora = date('h:i:s');
         $gr = '';
-        $_P['caja'] = 1;
+        //$_P['caja'] = 1;
         $_P['comprobante'] = "";
         $_P['serie_numero'] = "";
         $stmt = $this->db->prepare("SELECT f_insert_movimiento(:p1, :p2, :p3, :p4,:p5, :p6, :p7, :p8, :p9, :p10, :p11, :rs,:ruc,:p12,:p13,:p14,:p15,:p16,:p17)");

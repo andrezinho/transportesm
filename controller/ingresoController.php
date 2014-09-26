@@ -18,6 +18,7 @@ class ingresoController extends Controller
         $this->columnas = array("CODIGO"=>array('ancho'=>'5','align'=>'center','title'=>'Codigo'),
                       "RECIBI DE"=>array(),                      
                       "CHOFER"=>array(),
+                      "SERIE-NUM"=>array('align'=>'center'),
                       "FECHA"=>array('align'=>'center'),
                       "OBSERVCION"=>array(),                    
                       "ESTADO"=>array('align'=>'center'),

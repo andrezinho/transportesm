@@ -244,7 +244,48 @@ class reportesController extends Controller
         $view->setlayout('../template/empty.php');
         $view->render();
     }
+    //Ingresos caja chica
+     public function ringresosc()
+    {
+        $data = array();
+        $view = new View();        
+        $data['more_options'] = $this->more_options('reportes');
+        $data['conceptos'] = $this->Select(array('name'=>'idconcepto','id'=>'idconcepto','table'=>'conceptos_ingresos','text_null'=>'Todos los conceptos...'));
+        $view->setData($data);
+        $view->setTemplate( '../view/reportes/_ingresosc.php' );        
+        $view->setlayout( '../template/layout.php' );
+        $view->render();
+    }    
+    public function html_ingresosc()
+    {
+        
+        $obj = new reportes();
+        $data = array();
+        $result = $obj->data_ingresosc($_GET);
+        $data['rowsi'] = $result[0];
+        $data['rows'] = $result[1];
+        $view = new View();
+        $view->setData($data);
+        $view->setTemplate('../view/reportes/_html_ingresosc.php');
+        echo $view->renderPartial();
+    }    
+    public function pdf_ingresosc()
+    {
+        //var_dump($g['fechai']);die;
+        $obj = new reportes();
+        $data = array();
+        $result = $obj->data_ingresosc($_GET);
+        $data['rowsi'] = $result[0];
+        $data['fechai'] = $_GET['fechai'];
+        $data['fechaf'] = $_GET['fechaf'];
+        $view = new View();
+        $view->setData($data);
+        $view->setTemplate('../view/reportes/_pdf_ingresosc.php');
+        $view->setlayout('../template/empty.php');
+        $view->render();
+    }
     
+    //fin ingresos caja chica
     public function regresos()
     {
         $data = array();

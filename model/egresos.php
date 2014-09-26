@@ -8,6 +8,7 @@ class egresos extends Main
         $sql = "SELECT m.idmovimiento,
                        p.razonsocial,
                        cm.descripcion,
+                       concat(m.serie,'-',m.numero),
                        m.fecha,
                        case m.caja when 1 then 'CAJA DIARIA' ELSE 'CAJA CHICA' END,
                        sum(md.monto*md.cantidad),

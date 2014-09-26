@@ -17,6 +17,7 @@ class EgresoController extends Controller
                     "CODIGO"=>array('ancho'=>'5','align'=>'center','title'=>'Codigo'),
                       "PAGUESE A"=>array(),
                       "POR CONCEPTO"=>array(),
+                      "SERIE-NUM"=>array('align'=>'center'),
                       "FECHA"=>array('align'=>'center'),
                       "CAJA"=>array('align'=>'center'),
                       "TOTAL"=>array('align'=>'right'),
