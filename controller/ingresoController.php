@@ -20,6 +20,7 @@ class ingresoController extends Controller
                       "CHOFER"=>array(),
                       "SERIE-NUM"=>array('align'=>'center'),
                       "FECHA"=>array('align'=>'center'),
+                      "CAJA"=>array('align'=>'center'),
                       "OBSERVCION"=>array(),                    
                       "ESTADO"=>array('align'=>'center'),
                        "TIPO"=>array('align'=>'center'),

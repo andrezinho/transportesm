@@ -16,7 +16,8 @@ class ingresos extends Main
                                             end as remitente,
                         m.chofer,
                         concat(m.serie,'-',m.numero),
-                        m.fecha,                        
+                        m.fecha, 
+                        case m.caja when 1 then 'CAJA DIARIA' ELSE 'CAJA CHICA' END,                       
                         m.observacion,
                         case m.estado when 1 then 'ACTIVO'                                      
                                     when 0 then 'ANULADO'

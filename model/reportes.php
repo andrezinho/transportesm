@@ -40,13 +40,22 @@ class reportes extends Main
     {
         $anio = date('Y');
         $sql = "SELECT concat(propietario.idempleado,' - ',propietario.nombre,' ',propietario.apellidos) as propietario,
-				        concat(v.marca,' - ',v.modelo,' - ',v.placa) as vehiculo,
-				        v.fec_ven_soat as fecha
-				FROM vehiculo as v inner join empleado as propietario on propietario.idempleado = v.idpropietario
-				WHERE month(v.fec_ven_soat)=:mes and year(v.fec_ven_soat)=:anio and propietario.idtipo_empleado = 3
-				ORDER by v.fec_ven_soat";
+  				        concat(v.marca,' - ',v.modelo,' - ',v.placa) as vehiculo,
+  				        v.fec_ven_soat as fecha
+        				FROM vehiculo as v inner join empleado as propietario on propietario.idempleado = v.idpropietario
+        				WHERE propietario.idtipo_empleado = 3 ";
+        
+        if($g!="")      
+          $sql .= " and year(v.fec_ven_soat)=:anio and month(v.fec_ven_soat)=:mes ";
+        else
+          $sql .= " and v.fec_ven_soat < CURDATE() ";
+
+        $sql .= " ORDER by v.fec_ven_soat";
 		    $stmt = $this->db->prepare($sql);
-		    $stmt->bindParam(':mes',$g,PDO::PARAM_INT);
+        
+        if($g!="")          
+		      $stmt->bindParam(':mes',$g,PDO::PARAM_INT);
+
         $stmt->bindParam(':anio',$anio,PDO::PARAM_INT);
     	  $stmt->execute();
        	$r2 = $stmt->fetchAll();        

@@ -67,9 +67,9 @@ class notify extends Main
                                     on t0.id0 = t2.id2
                                     left join (
                                     select
-                                        idvehiculo as id3
-                                    from vehiculo
-                                    where fec_ven_soat < CURDATE() 
+                                        v.idvehiculo as id3
+                                    from vehiculo as v left outer join empleado as propietario on propietario.idempleado = v.idpropietario
+                                    where v.fec_ven_soat < CURDATE() and  propietario.idtipo_empleado = 3
                                     ) as t3 on t0.id0 = t3.id3";
         
         $s = $this->db->prepare($sql);

@@ -20,8 +20,8 @@
             ?>
             <tr>
                 <td align="center"><?php echo str_pad($i, 3, '0', 0); ?></td>
-                <td align="center"><?php echo $r['propietario']; ?></td>
-                <td align="center"><?php echo $r['vehiculo']; ?></td>
+                <td align="left"><?php echo $r['propietario']; ?></td>
+                <td align="left"><?php echo $r['vehiculo']; ?></td>
                 <td align="center"><?php echo ffecha($r['fecha']); ?></td>
             </tr>
              <?php
