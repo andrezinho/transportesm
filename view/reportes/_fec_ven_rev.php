@@ -1,24 +1,23 @@
 <script type="text/javascript">
     $(document).ready(function(){
-        $("#fechai,#fechaf").datepicker({ dateFormat:'dd/mm/yy' });
-		
+        $("#fechai,#fechaf").datepicker({ dateFormat:'dd/mm/yy' });		
 		$("#periodoi,#periodof").css("width","auto");
         $("#idarticulo").focus();
         $("#gen").click(function(){      
             if(valid())
-                {
-                    var str = $("#frm").serialize();
-                    $.get('index.php','controller=reportes&action=html_fec_ven_rev&'+str,function(data){
-                        $("#wcont").empty().append(data);
-                    });
-                }
+            {
+                var str = $("#frm").serialize();
+                $.get('index.php','controller=reportes&action=html_fec_ven_rev&'+str,function(data){
+                    $("#wcont").empty().append(data);
+                });
+            }
         });
         $("#pdf").click(function(){
             if(valid())
-                {
-                    var str = $("#frm").serialize();
-                    window.open('index.php?controller=reportes&action=pdf_fec_ven_rev&'+str,"Reporte");
-                }
+            {
+                var str = $("#frm").serialize();
+                window.open('index.php?controller=reportes&action=pdf_fec_ven_rev&'+str,"Reporte");
+            }
         });
     });
     function valid()
@@ -26,6 +25,16 @@
         var bval = true;
             //bval = bval && $("#idarticulo").required();
         return bval;
+    }
+    function exec_reporte()
+    {
+        if(valid())
+        {
+            var str = $("#frm").serialize();
+            $.get('index.php','controller=reportes&action=html_fec_ven_rev&'+str,function(data){
+                $("#wcont").empty().append(data);
+            });
+        }
     }
 </script>
 <div class="div_container">
@@ -40,6 +49,7 @@
         ?>
         <label class="labels" for="periodoi">Mes: </label>
         <select class="ui-widget-content ui-corner-all text" name="mes" id="mes">
+            <option value="">-Todos-</option>
             <?php
                     foreach ($mes as $key => $value) {
                         ?>
@@ -57,3 +67,11 @@
 </div>
 <div id="wcont" style="padding: 10px;"></div>
 </div>
+<?php 
+    if(isset($_GET['p'])&&$_GET['p']==1) 
+    {
+        ?>
+        <script type="text/javascript">exec_reporte();</script>
+        <?php
+    }
+?>

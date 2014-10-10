@@ -27,6 +27,16 @@
             //bval = bval && $("#idarticulo").required();
         return bval;
     }
+    function exec_reporte()
+    {
+        if(valid())
+        {
+            var str = $("#frm").serialize();
+                    $.get('index.php','controller=reportes&action=html_fec_ven_lic&'+str,function(data){
+                        $("#wcont").empty().append(data);
+                    });
+        }
+    }
 </script>
 <div class="div_container">
 <h6 class="ui-widget-header">Reporte de Vencimiento de Licencias de Vehiculos</h6>
@@ -40,6 +50,7 @@
         ?>
         <label class="labels" for="periodoi">Mes: </label>
         <select class="ui-widget-content ui-corner-all text" name="mes" id="mes">
+            <option value="">-Todos-</option>
             <?php
                     foreach ($mes as $key => $value) {
                         ?>
@@ -57,3 +68,11 @@
 </div>
 <div id="wcont" style="padding: 10px;"></div>
 </div>
+<?php 
+    if(isset($_GET['p'])&&$_GET['p']==1) 
+    {
+        ?>
+        <script type="text/javascript">exec_reporte();</script>
+        <?php
+    }
+?>

@@ -31,7 +31,7 @@ class caja_banco extends Main
     }
     function insert($_P ) 
     {
-        $total = 0;        
+        $total = 0;
         //Obtenemos el total de caja
         $stmt = $this->db->prepare("SELECT total from caja_banco where  estado = 1 
                                     order by idcaja_banco desc limit 1");
@@ -47,6 +47,7 @@ class caja_banco extends Main
         $fecha = $this->fdate($_P['fecha'], 'EN');
         $stmt = $this->db->prepare("insert into caja_banco (idoficina,fecha,tipo,monto,total,idusuario,observacion) 
                                     values(:p1,:p2,:p3,:p4,:p5,:p6,:p7)");
+        
         $stmt->bindParam(':p1', $_SESSION['idoficina'] , PDO::PARAM_INT);
         $stmt->bindParam(':p2', $fecha , PDO::PARAM_STR);
         $stmt->bindParam(':p3', $_P['tipo'] , PDO::PARAM_INT);
@@ -57,6 +58,7 @@ class caja_banco extends Main
         $p1 = $stmt->execute();
         $p2 = $stmt->errorInfo();
         return array($p1 , $p2[2]);
+        
     }   
     function dep_caja($_P ) 
     {

@@ -48,28 +48,28 @@ class notify extends Main
     function getResumen()
     {
         $data = array();
-        $sql = "select count(id1) as c1,count(id2) as c2,count(id3) as c3
+        $sql = "SELECT count(id1) as c1,count(id2) as c2,count(id3) as c3
                                     from 
-                                    (select idvehiculo as id0
+                                    (select distinct idvehiculo as id0
                                     from vehiculo) as t0 
                                     left join
                                     (
-                                            select 
-                                                idvehiculo as id1
-                                            from vehiculo
-                                            where month(fec_ven_soat) = ".date('m')."  and year(fec_ven_soat)= ".date('Y')."
-                                        ) as t1 on t0.id0 = t1.id1
+                                        select 
+                                            distinct idvehiculo as id1
+                                        from vehiculo
+                                        where month(fec_ven_soat) = ".date('m')."  and year(fec_ven_soat)= ".date('Y')."
+                                    ) as t1 on t0.id0 = t1.id1
                                     left join (
                                     select 
-                                        idvehiculo as id2
+                                       distinct idvehiculo as id2
                                     from vehiculo
                                     where WEEKOFYEAR(fec_ven_soat) = WEEKOFYEAR(Now()) and year(fec_ven_soat)=".date('Y')." ) as t2 
                                     on t0.id0 = t2.id2
                                     left join (
                                     select
-                                        v.idvehiculo as id3
-                                    from vehiculo as v left outer join empleado as propietario on propietario.idempleado = v.idpropietario
-                                    where v.fec_ven_soat < CURDATE() and  propietario.idtipo_empleado = 3
+                                        distinct v.idvehiculo as id3
+                                    from vehiculo as v left outer join empleado as propietario on propietario.idempleado = v.idpropietario and propietario.idtipo_empleado = 3
+                                    where v.fec_ven_soat < CURDATE() 
                                     ) as t3 on t0.id0 = t3.id3";
         
         $s = $this->db->prepare($sql);
@@ -90,19 +90,19 @@ class notify extends Main
                                                 idempleado as id1
                                             from empleado
                                             where idtipo_empleado = 2 and 
-                                                month(fecha_v_licencia) = ".date('m')."  and year(fecha_v_licencia)= ".date('Y')."
+                                                month(fecha_v_licencia) = ".date('m')."  and year(fecha_v_licencia)= ".date('Y')." and fecha_v_licencia is not null and fecha_v_licencia <> '0000-00-00'
                                         ) as t1 on t0.id0 = t1.id1
                                     left join (
                                     select 
                                         idempleado as id2
                                     from empleado
-                                    where idtipo_empleado=2 and WEEKOFYEAR(fecha_v_licencia) = WEEKOFYEAR(Now()) and year(fecha_v_licencia)=".date('Y')." ) as t2 
+                                    where  fecha_v_licencia is not null and fecha_v_licencia <> '0000-00-00' and idtipo_empleado=2 and WEEKOFYEAR(fecha_v_licencia) = WEEKOFYEAR(Now()) and year(fecha_v_licencia)=".date('Y')." ) as t2 
                                     on t0.id0 = t2.id2
                                     left join (
                                     select
                                         idempleado as id3
                                     from empleado
-                                    where idtipo_empleado=2 and fecha_v_licencia < CURDATE() 
+                                    where idtipo_empleado=2 and fecha_v_licencia < CURDATE()  and fecha_v_licencia is not null and fecha_v_licencia <> '0000-00-00'
                                     ) as t3 on t0.id0 = t3.id3";
         
         $s = $this->db->prepare($sql);
@@ -143,27 +143,27 @@ class notify extends Main
         $data['vc2'] = $row->c2;
         
         //Revision Técnica
-        $sql = "select count(id2) as c2,count(id3) as c3
-                                    from 
-                                    (
-                                        select idvehiculo as id0
-                                        from vehiculo
-                                    ) as t0
-                                    left join 
-                                    (
-                                        select 
-                                            idvehiculo as id2
-                                        from vehiculo
-                                        where WEEKOFYEAR(fec_ven_rev) = WEEKOFYEAR(Now()) and year(fec_ven_rev)=".date('Y')." 
-                                    ) as t2 
-                                    on t0.id0 = t2.id2
-                                    left join 
-                                    (
-                                        select
-                                            idvehiculo as id3
-                                        from vehiculo
-                                        where fec_ven_rev < CURDATE() 
-                                    ) as t3 on t0.id0 = t3.id3";
+        $sql = "SELECT count(id2) as c2,count(id3) as c3
+                from 
+                (
+                    select idvehiculo as id0
+                    from vehiculo
+                ) as t0
+                left join 
+                (
+                    select 
+                        distinct idvehiculo as id2
+                    from vehiculo
+                    where WEEKOFYEAR(fec_ven_rev) = WEEKOFYEAR(Now()) and year(fec_ven_rev)=".date('Y')."  and fec_ven_rev is not null and fec_ven_rev <> '0000-00-00' 
+                ) as t2 
+                on t0.id0 = t2.id2
+                left join 
+                (
+                    select
+                        distinct idvehiculo as id3
+                    from vehiculo
+                    where fec_ven_rev < CURDATE() and fec_ven_rev is not null and fec_ven_rev <> '0000-00-00'
+                ) as t3 on t0.id0 = t3.id3";
         
         $s = $this->db->prepare($sql);
         $s->execute();

@@ -13,25 +13,40 @@ class reportes extends Main
                                      inner join oficina as o on e.idoficina = o.idoficina
 				WHERE month(e.fecha_nacimiento)=:mes
 				ORDER by e.fecha_nacimiento";
-		$stmt = $this->db->prepare($sql);
-		$stmt->bindParam(':mes',$g,PDO::PARAM_STR);
+		    $stmt = $this->db->prepare($sql);
+		    $stmt->bindParam(':mes',$g,PDO::PARAM_STR);
         
-    	$stmt->execute();
+    	  $stmt->execute();
        	$r2 = $stmt->fetchAll();        
         return array($r2);
     }
     
     function data_fec_ven_rev($g)
     {
-        $sql = "SELECT concat(propietario.idempleado,' - ',propietario.nombre,' ',propietario.apellidos) as propietario,
+        $sql = "SELECT distinct concat(propietario.idempleado,' - ',propietario.nombre,' ',propietario.apellidos) as propietario,
 				        concat(v.marca,' - ',v.modelo,' - ',v.placa) as vehiculo,
 				        v.fec_ven_rev as fecha
-				FROM vehiculo as v inner join empleado as propietario on propietario.idempleado = v.idpropietario
-				WHERE month(v.fec_ven_rev)=:mes and propietario.idtipo_empleado = 3
-				ORDER by v.fec_ven_rev";
-		$stmt = $this->db->prepare($sql);
-		$stmt->bindParam(':mes',$g,PDO::PARAM_STR);
-    	$stmt->execute();
+				FROM vehiculo as v left outer join empleado as propietario on propietario.idempleado = v.idpropietario and propietario.idtipo_empleado = 3
+				WHERE v.fec_ven_rev is not null and v.fec_ven_rev <> '0000-00-00' ";
+        if($g!="")
+        {
+          $sql .= " and month(v.fec_ven_rev)=:mes ";
+        }
+        else
+        {
+          $sql .= " and v.fec_ven_rev < CURDATE() ";
+        }
+        
+				$sql .= " ORDER by concat(v.marca,' - ',v.modelo,' - ',v.placa),v.fec_ven_rev";
+
+    		$stmt = $this->db->prepare($sql);
+
+        if($g!="")
+        {
+          $stmt->bindParam(':mes',$g,PDO::PARAM_STR);
+        }
+    		
+    	  $stmt->execute();
        	$r2 = $stmt->fetchAll();        
         return array($r2);
     }
@@ -42,13 +57,13 @@ class reportes extends Main
         $sql = "SELECT concat(propietario.idempleado,' - ',propietario.nombre,' ',propietario.apellidos) as propietario,
   				        concat(v.marca,' - ',v.modelo,' - ',v.placa) as vehiculo,
   				        v.fec_ven_soat as fecha
-        				FROM vehiculo as v inner join empleado as propietario on propietario.idempleado = v.idpropietario
-        				WHERE propietario.idtipo_empleado = 3 ";
+        				FROM vehiculo as v left outer join empleado as propietario on propietario.idempleado = v.idpropietario and propietario.idtipo_empleado = 3 
+        				 ";
         
         if($g!="")      
-          $sql .= " and year(v.fec_ven_soat)=:anio and month(v.fec_ven_soat)=:mes ";
+          $sql .= " WHERE year(v.fec_ven_soat)=:anio and month(v.fec_ven_soat)=:mes ";
         else
-          $sql .= " and v.fec_ven_soat < CURDATE() ";
+          $sql .= " where v.fec_ven_soat < CURDATE() ";
 
         $sql .= " ORDER by v.fec_ven_soat";
 		    $stmt = $this->db->prepare($sql);
@@ -68,9 +83,19 @@ class reportes extends Main
         $anio = date('Y');
         $sql = "SELECT nombre, apellidos, fecha_v_capacitacion as fecha
                 from empleado as chofer 
-                where chofer.idtipo_empleado = 2
-                and month(fecha_v_capacitacion)=:mes and year(fecha_v_capacitacion)=:anio 
-                ORDER by fecha_v_capacitacion";
+                where chofer.idtipo_empleado = 2 and fecha_v_capacitacion is not null and fecha_v_capacitacion <> '0000-00-00'  ";
+
+        if($g!="")
+        {
+          $sql .= " and month(fecha_v_capacitacion)=:mes and year(fecha_v_capacitacion)=:anio  ";
+        }
+        else
+        {
+          $sql .= " and fecha_v_capacitacion < CURDATE() ";
+        }
+
+        $sql .= " ORDER by fecha_v_capacitacion";
+
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':mes',$g,PDO::PARAM_INT);
         $stmt->bindParam(':anio',$anio,PDO::PARAM_INT);
@@ -80,17 +105,28 @@ class reportes extends Main
     }
     //
 
-      function data_fec_ven_lic($g)
+    function data_fec_ven_lic($g)
     {
         $anio = date('Y');
         $sql = "SELECT nombre, apellidos, fecha_v_licencia as fecha
                 from empleado as chofer 
-                where chofer.idtipo_empleado = 2
-                and month(fecha_v_licencia)=:mes and year(fecha_v_licencia)=:anio 
-                ORDER by fecha_v_licencia";
+                where chofer.idtipo_empleado = 2 and fecha_v_licencia is not null and fecha_v_licencia <> '0000-00-00' ";
+        if($g!="")
+        {
+          $sql .= " and month(fecha_v_licencia)=:mes and year(fecha_v_licencia)=:anio ";
+        }
+        else
+        {
+          $sql .= " and fecha_v_licencia < CURDATE() ";
+        }
+                
+        $sql .= " ORDER by fecha_v_licencia";
         $stmt = $this->db->prepare($sql);
-        $stmt->bindParam(':mes',$g,PDO::PARAM_INT);
-        $stmt->bindParam(':anio',$anio,PDO::PARAM_INT);
+        if($g!="")
+        {
+          $stmt->bindParam(':mes',$g,PDO::PARAM_INT);
+          $stmt->bindParam(':anio',$anio,PDO::PARAM_INT);
+        }
         $stmt->execute();
         $r2 = $stmt->fetchAll();        
         return array($r2);

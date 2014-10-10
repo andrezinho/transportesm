@@ -36,7 +36,7 @@ $(document).ready(function(){
                         </div>                        
                     </div>
                     <div style="clear: both; text-align: right;">
-                        <a href="index.php?controller=reportes&action=rfec_ven_soat" class="link_notify">[ ir al reporte ]</a>
+                        <a href="index.php?controller=reportes&action=rfec_ven_soat&p=1" class="link_notify">[ ir al reporte ]</a>
                     </div>
                     
                 </div>                
@@ -67,7 +67,7 @@ $(document).ready(function(){
                                            
                     </div>
                     <div style="clear: both; text-align: right;">
-                        <a href="index.php?controller=reportes&action=rfec_ven_rev#" class="link_notify">[ ir al reporte ]</a>
+                        <a href="index.php?controller=reportes&action=rfec_ven_rev&p=1" class="link_notify">[ ir al reporte ]</a>
                     </div>
                 </div>
             </div>            
@@ -104,7 +104,7 @@ $(document).ready(function(){
                         </div>                        
                     </div>
                     <div style="clear: both; text-align: right;">
-                        <a href="index.php?controller=reportes&action=rfec_ven_lic#" class="link_notify">[ ir al reporte ]</a>
+                        <a href="index.php?controller=reportes&action=rfec_ven_lic&p=1" class="link_notify">[ ir al reporte ]</a>
                     </div>
                     
                 </div>                
@@ -135,7 +135,7 @@ $(document).ready(function(){
                                            
                     </div>
                     <div style="clear: both; text-align: right;">
-                        <a href="index.php?controller=reportes&action=rfec_ven_cap" class="link_notify">[ ir al reporte ]</a>
+                        <a href="index.php?controller=reportes&action=rfec_ven_cap&p=1" class="link_notify">[ ir al reporte ]</a>
                     </div>
                 </div>
             </div>            

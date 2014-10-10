@@ -20,8 +20,8 @@
             ?>
             <tr>
                 <td align="center"><?php echo str_pad($i, 3, '0', 0); ?></td>
-                <td align="center"><?php echo $r['nombre']; ?></td>
-                <td align="center"><?php echo $r['apellidos']; ?></td>
+                <td align="left"><?php echo $r['nombre']; ?></td>
+                <td align="left"><?php echo $r['apellidos']; ?></td>
                 <td align="center"><?php echo ffecha($r['fecha']); ?></td>
             </tr>
              <?php

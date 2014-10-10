@@ -678,9 +678,15 @@ function loadSalidas(idd)
             $.get('index.php','controller=salida&action=getSalidasOk&idd='+idd,function(result){
                 $("#salidas").empty();
                 var html = '';
-                $.each(result, function(index, value) {
-                    html += '<option value="'+value['idsalida']+'">'+value['descripcion']+'</option>';
-                });                
+                
+                $.each(result, function(index, value) 
+                {
+                    html += '<optgroup label="'+value['fecha']+'">';
+                    $.each(value['salidas'],function(i,j){
+                        html += '<option value="'+j['idsalida']+'">'+j['descripcion']+'</option>';
+                    })                    
+                    html += '</optgruop>';
+                });                                
                 $("#salidas").append(html);
                 $("#loadsalida").css("display","none");
             },'json')

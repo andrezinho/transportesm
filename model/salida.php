@@ -274,34 +274,53 @@ class salida extends Main
     function getSalidasOk($idd,$fecha)
     {
         $fecha = $this->fdate($fecha,'EN');
-        $stmt = $this->db->prepare("SELECT distinct s.idsalida,
-                                            concat('(A ',d.descripcion,') ',coalesce(chofer.nombre,''),' ',coalesce(chofer.apellidos,''),' - ',v.placa)
+        $data = array();
+        $stmt = $this->db->prepare("SELECT fecha, COUNT( idsalida ) 
+                                    FROM salida
+                                    WHERE estado
+                                    IN ( 1, 2, 3 )  and idoficina = ".$_SESSION['idoficina']." and iddestino <> ".$_SESSION['idsucursal']."
+                                    GROUP BY fecha
+                                    having count(idsalida)>0
+                                    ORDER BY fecha DESC ");
+        $stmt->execute();
+        $c = 0;
+        foreach ($stmt->fetchAll() as $f)
+        {
+            if($f[0]==$fecha)
+            {
+                $ff = "Hoy día";
+                $data[$c] = array('fecha'=>$ff,'salidas'=>array());
+            }
+            else 
+            {
+                $data[$c] = array('fecha'=>$this->fdate($f[0],'ES'),'salidas'=>array());
+            }
+            
+            
+            $stmt2 = $this->db->prepare("SELECT distinct s.idsalida,
+                                            concat('(A ',d.descripcion,') ',coalesce(chofer.nombre,''),' ',coalesce(chofer.apellidos,''),' - ',v.placa) as descripcion,
+                                            s.fecha
                                     FROM salida as s inner join empleado as chofer on chofer.idempleado = s.idchofer
                                             inner join vehiculo as v on v.idvehiculo = s.idvehiculo
                                             inner join destino as d on d.iddestino = s.iddestino
                                             inner join empleado as e on e.idempleado = s.idempleado
                                     where s.idoficina = ".$_SESSION['idoficina']." 
                                             and s.iddestino <> ".$_SESSION['idsucursal']."
-                                            and s.fecha = '".$fecha."'
-                                          --  and s.estado in (1,2,3)
-                                    ORDER BY d.descripcion,s.idsalida desc");
-        
-        $stmt->bindParam(':idd',$idd,PDO::PARAM_INT);
-        $stmt->execute();
-        $data = array();
-        $n = $stmt->rowCount();
-        if($n>0)
-        {
-            $data[] = array('idsalida'=>'','descripcion'=>'-Seleccione-');
-            foreach($stmt->fetchAll() as $row)
-            {
-                $data[] = array('idsalida'=>$row[0],'descripcion'=>$row[1]);
+                                            and s.fecha = '".$f[0]."'  
+                                    ORDER BY fecha,descripcion,idsalida asc  ");
+            $stmt2->execute();
+            $n = $stmt2->rowCount();
+            if($c==0){$data[$c]['salidas'][] = array('idsalida'=>'','descripcion'=>'-Seleccione-');}
+            if($n>0)
+            {                
+                foreach($stmt2->fetchAll() as $r)
+                {
+                    $data[$c]['salidas'][] = array('idsalida'=>$r[0],'descripcion'=>$r[1]);
+                }                
             }
+            $c += 1;
         }
-        else 
-        {
-            $data[] = array('idsalida'=>'','descripcion'=>'-No hay disponibles-');
-        }
+        
         return $data;
 
     }
